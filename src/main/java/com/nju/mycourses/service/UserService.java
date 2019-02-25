@@ -30,11 +30,21 @@ public class UserService {
     public String registerCheck(String userName,String email){
         User user=userRepository.findByUserName(userName);
         if(user!=null){
-            return "The userName has existed!!!Try another.";
+            if(!user.getEmail().equals(email))
+                return "The userName has existed!!!Try another.";
+            else{
+                if(user.getActive())
+                    return "You have registered before...";
+                else
+                    return "The email should be activated again!!!";
+            }
         }else{
             user=userRepository.findByEmail(email);
             if(user!=null){
-                return "The email has been registered!!!";
+                if(user.getActive())
+                    return "The email has been registered!!!";
+                else
+                    return "The email should be activated again!!!";
             }else{
                 return "Check passed!";
             }
@@ -61,5 +71,13 @@ public class UserService {
     public void loginCookie(HttpServletResponse response,String email){
         User user=userRepository.findByEmail(email);
         CookieUtils.setCookie(response,"userName",user.getUserName());
+    }
+
+    public void registerUser(String userName,String email,String password){
+        User user=userRepository.findByEmail(email);
+        user.setUserName(userName);
+        user.setPassword(password);
+        userRepository.save(user);
+        mailUtil.sendRegisterMail(user.getUserName(),user.getEmail());
     }
 }

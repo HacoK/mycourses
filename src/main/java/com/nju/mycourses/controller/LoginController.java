@@ -45,9 +45,16 @@ public class LoginController {
 
         String checkResult=userService.registerCheck(userName,email);
         if(!checkResult.equals("Check passed!")){
-            prompt=new Prompt(checkResult);
-            response.setContentType("application/json; charset=UTF-8");
-            response.getWriter().print(new JSONObject(prompt));
+            if(!checkResult.equals("The email should be activated again!!!")) {
+                prompt = new Prompt(checkResult);
+                response.setContentType("application/json; charset=UTF-8");
+                response.getWriter().print(new JSONObject(prompt));
+            }else{
+                userService.registerUser(userName,email,password);
+                prompt = new Prompt("Register successfully! Activate now!!!");
+                response.setContentType("application/json; charset=UTF-8");
+                response.getWriter().print(new JSONObject(prompt));
+            }
         }else{
             User user;
             String patternST = ".*@smail\\.nju\\.edu\\.cn$";
