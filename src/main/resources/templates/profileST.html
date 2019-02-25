@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>My Homepage</title>
-  <link rel="stylesheet" href="layui/css/layui.css">
+  <link rel="stylesheet" href="/layui/css/layui.css">
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -14,13 +14,14 @@
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">
         <a href="javascript:;">
-          <img src="cute-kitten-wallpaper-18701-wallpaperesque.jpg" class="layui-nav-img">
+          <img src="/cute-kitten-wallpaper-18701-wallpaperesque.jpg" class="layui-nav-img">
           Haco
         </a>
         <dl class="layui-nav-child">
-          <dd><a href="">个人信息</a></dd>
-		  <dd><a href="">统计详情</a></dd>
-          <dd><a href="">修改密码</a></dd>
+          <dd><a href="/profileST#profile=1" onclick='window.location.hash="#profile=1"; '>个人信息</a></dd>
+		  <dd><a href="/profileST#profile=2">统计详情</a></dd>
+          <dd><a href="/profileST#profile=3">修改密码</a></dd>
+		  <dd><a href="">注销账号</a></dd>
 		  <dd><a href="">退出登录</a></dd>
         </dl>
       </li>
@@ -123,7 +124,7 @@
   </div>
 </div>
 
-<script src="layui/layui.js"></script>
+<script src="/layui/layui.js"></script>
 
 <script>
 //JavaScript代码区域

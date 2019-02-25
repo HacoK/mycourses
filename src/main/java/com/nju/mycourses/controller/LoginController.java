@@ -103,4 +103,8 @@ public class LoginController {
         return "homepageST";
     }
 
+    @GetMapping("/profileST")
+    public String profileST() {
+        return "profileST";
+    }
 }
