@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -13,9 +15,9 @@
     <!-- 头部区域（可配合layui已有的水平导航） -->
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">
-        <a href="javascript:;">
+        <a href="">
           <img src="/cute-kitten-wallpaper-18701-wallpaperesque.jpg" class="layui-nav-img">
-          Haco
+            <span th:text="${userName}"></span>
         </a>
           <dl class="layui-nav-child">
               <dd><a href="/profileST#profile=1" onclick='window.location.hash="#profile=1"; '>个人信息</a></dd>

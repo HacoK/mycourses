@@ -2,9 +2,12 @@ package com.nju.mycourses.service;
 
 import com.nju.mycourses.DAO.UserRepository;
 import com.nju.mycourses.entity.User;
+import com.nju.mycourses.util.CookieUtils;
 import com.nju.mycourses.util.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 public class UserService {
@@ -45,10 +48,18 @@ public class UserService {
         }else{
             String verify=user.getPassword();
             if(verify.equals(password)){
-                return "Check passed!";
+                if(user.getActive())
+                    return "Check passed!";
+                else
+                    return "You must activate your email before login!";
             }else{
                 return "Sorry!The password may be wrong...";
             }
         }
+    }
+
+    public void loginCookie(HttpServletResponse response,String email){
+        User user=userRepository.findByEmail(email);
+        CookieUtils.setCookie(response,"userName",user.getUserName());
     }
 }

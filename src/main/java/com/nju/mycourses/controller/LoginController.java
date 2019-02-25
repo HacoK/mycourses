@@ -18,8 +18,6 @@ import java.util.regex.Pattern;
 @Controller
 public class LoginController {
 
-
-
     @Autowired
     UserService userService;
 
@@ -75,7 +73,7 @@ public class LoginController {
 
     }
 
-    @RequestMapping(value = "activation/{userName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/activation/{userName}", method = RequestMethod.GET)
     public void activation(@PathVariable String userName, HttpServletResponse response) throws IOException {
         userService.activateUser(userName);
         response.sendRedirect("/login");
@@ -86,7 +84,9 @@ public class LoginController {
         String email=request.getParameter("email");
         String password=request.getParameter("password");
         String checkResult=userService.loginCheck(email,password);
-
+        if(checkResult.equals("Check passed!")){
+            userService.loginCookie(response,email);
+        }
         Prompt prompt=new Prompt(checkResult);
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(new JSONObject(prompt));
@@ -98,13 +98,4 @@ public class LoginController {
         return "forgot";
     }
 
-    @GetMapping("/homepageST")
-    public String homepageST() {
-        return "homepageST";
-    }
-
-    @GetMapping("/profileST")
-    public String profileST() {
-        return "profileST";
-    }
 }

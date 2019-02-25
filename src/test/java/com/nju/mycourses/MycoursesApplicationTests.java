@@ -67,12 +67,8 @@ public class MycoursesApplicationTests {
 
     @Test
     public void test() throws Exception {
-        userRepository.save(new User("aa@126.com", "aa", "aa123456", UserType.Student));
-        userRepository.save(new User("bb@126.com", "bb", "bb123456",UserType.Student));
-        userRepository.save(new User("cc@126.com", "cc", "cc123456",UserType.Teacher));
-
-        Assert.assertEquals(3, userRepository.findAll().size());
-        userRepository.delete(userRepository.findByUserName("aa"));
+        userRepository.save(new User("HacoK", "haco@nju.edu.cn", "haco", UserType.Teacher));
+        userRepository.save(new User("Haco", "161250098@smail.nju.edu.cn", "haco", UserType.Student));
     }
 }
 

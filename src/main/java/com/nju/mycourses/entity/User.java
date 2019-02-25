@@ -79,7 +79,11 @@ public class User {
         this.type = type;
     }
 
-    public static String getStudentGrade(User user){
-        return user.email.substring(0,2);
+    public String getStudentID(){
+        return email.substring(0,email.indexOf('@'));
+    }
+
+    public String getStudentGrade(){
+        return email.substring(0,2);
     }
 }
