@@ -71,11 +71,11 @@ public class User {
     public User() {
     }
 
-    public User(String email, String userName, String password, Boolean active, UserType type) {
+    public User(String userName, String email, String password, UserType type) {
         this.email = email;
         this.userName = userName;
         this.password = password;
-        this.active = active;
+        this.active = false;
         this.type = type;
     }
 

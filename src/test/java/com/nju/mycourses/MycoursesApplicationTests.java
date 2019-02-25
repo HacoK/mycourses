@@ -34,16 +34,6 @@ public class MycoursesApplicationTests {
     public void contextLoads() {
     }
 
-//    @Autowired
-//    private MockMvc mvc;
-//
-//    @Test
-//    public void getHello() throws Exception {
-//        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(content().string(equalTo("Greetings from Spring Boot!")));
-//    }
-
 
     /**
      * 发送模板邮件
@@ -77,12 +67,11 @@ public class MycoursesApplicationTests {
 
     @Test
     public void test() throws Exception {
-        userRepository.save(new User("aa@126.com", "aa", "aa123456",false, UserType.Student));
-        userRepository.save(new User("bb@126.com", "bb", "bb123456",false,UserType.Student));
-        userRepository.save(new User("cc@126.com", "cc", "cc123456",false,UserType.Teacher));
+        userRepository.save(new User("aa@126.com", "aa", "aa123456", UserType.Student));
+        userRepository.save(new User("bb@126.com", "bb", "bb123456",UserType.Student));
+        userRepository.save(new User("cc@126.com", "cc", "cc123456",UserType.Teacher));
 
         Assert.assertEquals(3, userRepository.findAll().size());
-        Assert.assertEquals("bb123456", userRepository.findByUserNameOrEmail("bb", "cc2@126.com").getPassword());
         userRepository.delete(userRepository.findByUserName("aa"));
     }
 }

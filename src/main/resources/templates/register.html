@@ -9,72 +9,109 @@
 	<link rel="stylesheet" type="text/css" href="/my-login-master/css/my-login.css">
 </head>
 <body class="my-login-page">
-	<section class="h-100">
-		<div class="container h-100">
-			<div class="row justify-content-md-center h-100">
-				<div class="card-wrapper">
-					<div class="brand">
-						<img src="/my-login-master/img/logo.jpg" alt="bootstrap 4 login page">
-					</div>
-					<div class="card fat">
-						<div class="card-body">
-							<h4 class="card-title">Register</h4>
-							<form method="POST" class="my-login-validation" novalidate="">
-								<div class="form-group">
-									<label for="name">Name</label>
-									<input id="name" type="text" class="form-control" name="name" required autofocus>
+<section class="h-100">
+	<div class="container h-100">
+		<div class="row justify-content-md-center h-100">
+			<div class="card-wrapper">
+				<div class="brand">
+					<img src="/my-login-master/img/logo.jpg" alt="bootstrap 4 login page">
+				</div>
+				<div class="card fat">
+					<div class="card-body">
+						<h4 class="card-title">Register</h4>
+						<form method="POST" class="my-login-validation" novalidate="" onsubmit="return false">
+							<div class="form-group">
+								<label for="name">Name</label>
+								<input id="name" type="text" class="form-control" name="name" required autofocus>
+								<div class="invalid-feedback">
+									What's your name?
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="email">E-Mail Address</label>
+								<input id="email" type="email" class="form-control" name="email" required>
+								<div class="invalid-feedback">
+									Your email is invalid
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="password">Password</label>
+								<input id="password" type="password" class="form-control" name="password" required data-eye>
+								<div class="invalid-feedback">
+									Password is required
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="custom-checkbox custom-control">
+									<input type="checkbox" name="agree" id="agree" class="custom-control-input" required="">
+									<label for="agree" class="custom-control-label">I agree to the <a href="#">Terms and Conditions</a></label>
 									<div class="invalid-feedback">
-										What's your name?
+										You must agree with our Terms and Conditions
 									</div>
 								</div>
+							</div>
 
-								<div class="form-group">
-									<label for="email">E-Mail Address</label>
-									<input id="email" type="email" class="form-control" name="email" required>
-									<div class="invalid-feedback">
-										Your email is invalid
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label for="password">Password</label>
-									<input id="password" type="password" class="form-control" name="password" required data-eye>
-									<div class="invalid-feedback">
-										Password is required
-									</div>
-								</div>
-
-								<div class="form-group">
-									<div class="custom-checkbox custom-control">
-										<input type="checkbox" name="agree" id="agree" class="custom-control-input" required="">
-										<label for="agree" class="custom-control-label">I agree to the <a href="#">Terms and Conditions</a></label>
-										<div class="invalid-feedback">
-											You must agree with our Terms and Conditions
-										</div>
-									</div>
-								</div>
-
-								<div class="form-group m-0">
-									<button type="submit" class="btn btn-primary btn-block">
-										Register
-									</button>
-								</div>
-								<div class="mt-4 text-center">
-									Already have an account? <a href="#" onclick="window.location.href='login'">Login</a>
-								</div>
-							</form>
-						</div>
+							<div class="form-group m-0">
+								<button type="submit" class="btn btn-primary btn-block" onclick="register()">
+									Register
+								</button>
+							</div>
+							<div class="mt-4 text-center">
+								Already have an account? <a href="#" onclick="window.location.href='login'">Login</a>
+							</div>
+						</form>
 					</div>
-					<div class="footer">
-						Copyright &copy; 2019 &mdash; My Courses
-					</div>
+				</div>
+				<div class="footer">
+					Copyright &copy; 2019 &mdash; My Courses
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
+</section>
 
-	<script src="/my-login-master/js/jquery.min.js"></script>
-	<script src="/my-login-master/bootstrap/js/bootstrap.min.js"></script>
-	<script src="/my-login-master/js/my-login.js"></script>
+<script src="/my-login-master/js/jquery.min.js"></script>
+<script src="/my-login-master/bootstrap/js/bootstrap.min.js"></script>
+<script src="/my-login-master/js/my-login.js"></script>
+<script src="/my-login-master/layer/layer.js"></script>
+
+<script>
+	var prompt=function(data,num) {
+		layer.msg(data, {
+			icon: num,
+			time: 2000 //2秒关闭（如果不配置，默认是3秒）
+		}, function () {
+			window.location.href='register';
+		});
+	}
+	var register=function() {
+		var userName=$('input[name=name]').val(),
+			email = $('input[name=email]').val(),
+			password = $('input[name=password]').val();
+		$.ajax({
+			type: 'post', // 提交方式 get/post
+			url: '/register', // 需要提交的 url
+			dataType: "json",
+			data: {
+				'userName':userName,
+				'email': email,
+				'password': password
+			},
+			success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+				// 此处可对 data 作相关处理
+				if(data.msg==="Register successfully(Student)! Activate now!!!")
+					prompt(data.msg,6);
+				else if(data.msg==="Register successfully(Teacher)! Activate now!!!")
+					prompt(data.msg,6);
+				else
+					prompt(data.msg,5);
+			}
+		});
+	}
+</script>
+
 </body>
 </html>

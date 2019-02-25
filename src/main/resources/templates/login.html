@@ -20,7 +20,7 @@
 					<div class="card fat">
 						<div class="card-body">
 							<h4 class="card-title">Login</h4>
-							<form method="POST" class="my-login-validation" novalidate="">
+							<form method="POST" class="my-login-validation" novalidate="" onsubmit="return false">
 								<div class="form-group">
 									<label for="email">E-Mail Address</label>
 									<input id="email" type="email" class="form-control" name="email" value="" required autofocus>
@@ -49,7 +49,7 @@
 								</div>
 
 								<div class="form-group m-0">
-									<button type="submit" class="btn btn-primary btn-block">
+									<button type="submit" class="btn btn-primary btn-block" onclick="login()">
 										Login
 									</button>
 								</div>
@@ -70,5 +70,37 @@
 	<script src="/my-login-master/js/jquery.min.js"></script>
 	<script src="/my-login-master/bootstrap/js/bootstrap.min.js"></script>
 	<script src="/my-login-master/js/my-login.js"></script>
+	<script src="/my-login-master/layer/layer.js"></script>
+
+<script>
+	var prompt=function(data) {
+		layer.msg(data, {
+			icon: 5,
+			time: 2000 //2秒关闭（如果不配置，默认是3秒）
+		}, function () {
+			window.location.href='login';
+		});
+	}
+	var login=function() {
+			var email = $('input[name=email]').val(),
+					password = $('input[name=password]').val();
+			$.ajax({
+			type: 'post', // 提交方式 get/post
+			url: '/login', // 需要提交的 url
+			dataType: "json",
+			data: {
+				'email': email,
+				'password': password
+			},
+			success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+				// 此处可对 data 作相关处理
+				if(data.msg==="Check passed!")
+					window.location.href='homepageST';
+				else
+					prompt(data.msg);
+			}
+		});
+	}
+</script>
 </body>
 </html>
