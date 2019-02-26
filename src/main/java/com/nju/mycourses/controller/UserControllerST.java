@@ -48,4 +48,40 @@ public class UserControllerST {
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(new JSONObject(prompt));
     }
+
+    @PostMapping("/resetPasswordST")
+    public void resetPasswordST(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userName=request.getParameter("userName");
+        String passwordO=request.getParameter("passwordO");
+        String passwordN=request.getParameter("passwordN");
+        User user=userRepository.findByUserName(userName);
+        Prompt prompt;
+        if(user.getPassword().equals(passwordO)){
+            user.setPassword(passwordN);
+            userRepository.save(user);
+            prompt=new Prompt("Reset successfully!");
+        }else{
+            prompt=new Prompt("Wrong PasswordO!");
+        }
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(new JSONObject(prompt));
+    }
+
+    @PostMapping("/changeNameST")
+    public void changeNameST(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userName=request.getParameter("userName");
+        String newName=request.getParameter("newName");
+        User user=userRepository.findByUserName(newName);
+        Prompt prompt;
+        if(user!=null){
+            prompt=new Prompt("UserName Exist...");
+        }else{
+            user=userRepository.findByUserName(userName);
+            user.setUserName(newName);
+            userRepository.save(user);
+            prompt=new Prompt("Change successfully!");
+        }
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(new JSONObject(prompt));
+    }
 }
