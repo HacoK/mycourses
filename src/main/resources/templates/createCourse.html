@@ -39,16 +39,43 @@
 
 <script src="/layui/layui.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script src="/js.cookie.js"></script>
+<script src="/my-login-master/js/jquery.min.js"></script>
+
+
 <script>
 layui.use(['form'], function(){
-  var form = layui.form
-  ,layer = layui.layer
-
+  var form = layui.form,
+  layer = layui.layer;
+  var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
   //监听提交
   form.on('submit(formDemo)', function(data){
-    layer.alert(JSON.stringify(data.field), {
-      title: '最终的提交信息'
-    })
+    var userName=Cookies.get('userName');
+    var courseName=data.field.courseName;
+    var desc=data.field.desc;
+
+    $.ajax({
+      type: 'post', // 提交方式 get/post
+      url: '/createCourse', // 需要提交的 url
+      dataType: "json",
+      data: {
+        'userName': userName,
+        'courseName': courseName,
+        'desc': desc
+      },
+      success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+        // 此处可对 data 作相关处理
+        if(data.msg==="Create course successfully!"){
+          layer.msg("课程创建成功", {
+            icon: 6,
+            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+          }, function () {
+            parent.layer.close(index);
+          });
+        }
+      }
+    });
+
     return false;
   });
 
