@@ -108,7 +108,7 @@
                         <div class="layui-form-item">
                             <div class="layui-input-block">
                                 <button class="layui-btn" lay-filter="formDemo" onclick="resetPassword()">保存</button>
-                                <button type="reset" class="layui-btn layui-btn-primary" onclick="$('#resetP')[0].reset()">取消</button>
+                                <button type="reset" class="layui-btn layui-btn-primary" onclick="$('#resetP')[0].reset()">重置</button>
                             </div>
                         </div>
                     </form>
@@ -182,8 +182,9 @@
         layui.use('layer', function(){
             var layer = layui.layer;
             layer.open({
+                title: false,
                 type: 2,
-                area: ['750px', '400px'],
+                area: ['650px', '400px'],
                 fixed: false, //不固定
                 maxmin: true,
                 scrollbar: false,
