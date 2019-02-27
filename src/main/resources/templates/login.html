@@ -22,11 +22,8 @@
                         <h4 class="card-title">Login</h4>
                         <form method="POST" class="my-login-validation" novalidate="" onsubmit="return false">
                             <div class="form-group">
-                                <label for="email">E-Mail Address</label>
-                                <input id="email" type="email" class="form-control" name="email" value="" required autofocus>
-                                <div class="invalid-feedback">
-                                    Email is invalid
-                                </div>
+                                <label for="email">EmailAddress/UserName</label>
+                                <input id="email" class="form-control" name="email" value="" required autofocus>
                             </div>
 
                             <div class="form-group">
@@ -94,8 +91,10 @@
             },
             success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
                 // 此处可对 data 作相关处理
-                if(data.msg==="Check passed!")
+                if(data.msg==="Check passed!(ST)")
                     window.location.href='homepageST';
+                else if(data.msg==="Check passed!(TC)")
+                    window.location.href='homepageTC';
                 else
                     prompt(data.msg);
             }

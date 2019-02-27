@@ -91,7 +91,7 @@ public class LoginController {
         String email=request.getParameter("email");
         String password=request.getParameter("password");
         String checkResult=userService.loginCheck(email,password);
-        if(checkResult.equals("Check passed!")){
+        if(checkResult.contains("Check passed!")){
             userService.loginCookie(response,email);
         }
         Prompt prompt=new Prompt(checkResult);
