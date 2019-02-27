@@ -1,10 +1,6 @@
 package com.nju.mycourses.controller;
 
-import com.nju.mycourses.DAO.CourseRepository;
-import com.nju.mycourses.DAO.UserRepository;
-import com.nju.mycourses.config.PathConfig;
-import com.nju.mycourses.entity.Course;
-import com.nju.mycourses.entity.User;
+import com.nju.mycourses.service.CourseService;
 import com.nju.mycourses.util.Prompt;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +14,7 @@ import java.io.IOException;
 @Controller
 public class CourseController {
     @Autowired
-    CourseRepository courseRepository;
-    @Autowired
-    UserRepository userRepository;
+    CourseService courseService;
 
     @PostMapping("/createCourse")
     public void createCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -28,11 +22,7 @@ public class CourseController {
         String courseName=request.getParameter("courseName");
         String description=request.getParameter("desc");
 
-        User user=userRepository.findByUserName(userName);
-        Long teacher_id=user.getUserId();
-        String courseware= PathConfig.getCoursewareRootPath()+teacher_id+'/';
-        Course course=new Course(courseName,description,courseware,0,teacher_id);
-        courseRepository.save(course);
+        courseService.createCourse(userName,courseName,description);
 
         Prompt prompt=new Prompt("Create course successfully!");
         response.setContentType("application/json; charset=UTF-8");
