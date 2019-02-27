@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+
+<body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+    <legend>创建课程</legend>
+</fieldset>
+
+<form class="layui-form layui-form-pane" action="" lay-filter="formDemo">
+    <div class="layui-form-item">
+        <label class="layui-form-label">课程</label>
+        <div class="layui-input-block">
+            <select name="course" lay-filter="aihao" id="course">
+                <option value="">请选择课程</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">学期</label>
+        <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="year" placeholder="年份" name='year'>
+        </div>
+        <div class="layui-input-inline">
+            <select name="season">
+                <option value="">请选择季度</option>
+                <option value="spring">春</option>
+                <option value="autumn">秋</option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item" style="text-align:center">
+        <button class="layui-btn layui-bg-blue" lay-submit="" lay-filter="formDemo">提交</button>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+
+
+</form>
+
+<script src="/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script src="/js.cookie.js"></script>
+<script src="/my-login-master/js/jquery.min.js"></script>
+
+<script>
+    layui.use(['form','laydate'], function(){
+        var form = layui.form,
+            laydate = layui.laydate,
+            layer = layui.layer,
+            $=layui.$;
+
+        laydate.render({
+            elem: '#year' //指定元素
+            ,type: 'year'
+            ,min: 0
+            ,max: 999
+        });
+
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            console.log(data.field.year);
+            console.log(typeof data.field.year);
+            return false;
+        });
+
+    });
+</script>
+<script>
+    $(function(){
+        var userName=Cookies.get('userName');
+        $.ajax({
+            type: 'get', // 提交方式 get/post
+            url: '/selectCourse', // 需要提交的 url
+            dataType: "json",
+            data: {
+                'userName': userName
+            },
+            success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+                layui.use('form', function(){
+                    var form = layui.form;
+                    var select = document.getElementById("course");
+                    $.each(data,function(key,value){  //遍历键值对
+                        select.add(new Option(key,value));
+                    });
+                    form.render('select');
+                })
+            }
+        });
+    });
+
+</script>
+</body>
+
+</html>

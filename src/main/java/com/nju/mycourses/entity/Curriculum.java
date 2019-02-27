@@ -12,25 +12,28 @@ public class Curriculum {
     @Column(nullable = false)
     private Long course_id;
     @Column(nullable = false)
-    private String semester; //年份+春/秋
+    private String semesterYear; //年份
+    @Column(nullable = false)
+    private String semesterSeason; //春/秋
     @Column(nullable = false)
     private String schedule;
     @Column(nullable = false)
     private Integer restriction;
     @Column(nullable = false)
     private Integer approved;
-    @Column
+    @Column(nullable = false)
     private String scoreExcel;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column
     private ScoreType scoreType;
 
     public Curriculum() {
     }
 
-    public Curriculum(Long course_id, String semester, String schedule, Integer restriction, Integer approved) {
+    public Curriculum(Long course_id, String semesterYear,String semesterSeason,String schedule, Integer restriction, Integer approved) {
         this.course_id = course_id;
-        this.semester = semester;
+        this.semesterYear = semesterYear;
+        this.semesterSeason=semesterSeason;
         this.schedule = schedule;
         this.restriction = restriction;
         this.approved = approved;
@@ -52,12 +55,20 @@ public class Curriculum {
         this.course_id = course_id;
     }
 
-    public String getSemester() {
-        return semester;
+    public String getSemesterYear() {
+        return semesterYear;
     }
 
-    public void setSemester(String semester) {
-        this.semester = semester;
+    public void setSemesterYear(String semesterYear) {
+        this.semesterYear = semesterYear;
+    }
+
+    public String getSemesterSeason() {
+        return semesterSeason;
+    }
+
+    public void setSemesterSeason(String semesterSeason) {
+        this.semesterSeason = semesterSeason;
     }
 
     public String getSchedule() {

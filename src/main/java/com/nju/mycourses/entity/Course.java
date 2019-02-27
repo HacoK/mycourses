@@ -17,17 +17,17 @@ public class Course {
     @Column(nullable = false)
     private Integer approved;
     @Column(nullable = false)
-    private Long teacher_id;
+    private Long teacherId;
 
     public Course() {
     }
 
-    public Course(String courseName, String description, String courseware, Integer approved, Long teacher_id) {
+    public Course(String courseName, String description, String courseware, Integer approved, Long teacherId) {
         this.courseName = courseName;
         this.description = description;
         this.courseware = courseware;
         this.approved = approved;
-        this.teacher_id = teacher_id;
+        this.teacherId = teacherId;
     }
 
     public Long getCourseId() {
@@ -70,11 +70,11 @@ public class Course {
         this.approved = approved;
     }
 
-    public Long getTeacher_id() {
-        return teacher_id;
+    public Long getTeacherId() {
+        return teacherId;
     }
 
-    public void setTeacher_id(Long teacher_id) {
-        this.teacher_id = teacher_id;
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
     }
 }

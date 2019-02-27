@@ -23,8 +23,13 @@ public class UserControllerTC {
     }
 
     @GetMapping("/createCourse")
-    public String iframe() {
+    public String createCourse() {
         return "createCourse";
+    }
+
+    @GetMapping("/releaseCourse")
+    public String releaseCourse() {
+        return "releaseCourse";
     }
 
     @GetMapping("/profileTC")

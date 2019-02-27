@@ -18,7 +18,7 @@
         <a href="javascript:;">课程相关</a>
         <dl class="layui-nav-child">
           <dd><a href="javascript:;" onclick="createCourse()">创建课程</a></dd>
-          <dd><a href="">发布课程</a></dd>
+          <dd><a href="javascript:;" onclick="releaseCourse()">发布课程</a></dd>
         </dl>
       </li>
     </ul>
@@ -93,8 +93,21 @@ layui.use('layer', function(){
 	scrollbar: false,
 	content: '/createCourse'
 });
-}); 
-
+});
+}
+var releaseCourse=function(){
+    layui.use('layer', function(){
+        var layer = layui.layer;
+        layer.open({
+            title: false,
+            type: 2,
+            area: ['800px', '400px'],
+            fixed: false, //不固定
+            maxmin: true,
+            scrollbar: false,
+            content: '/releaseCourse'
+        });
+    });
 }
 </script>
 
@@ -117,7 +130,7 @@ layui.use('layer', function(){
                 }
             }
         });
-    }
+    };
     var logout=function () {
         Cookies.remove('userName');
         window.location.href='login';
