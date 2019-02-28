@@ -37,4 +37,25 @@ public class CourseController {
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(courseService.selectCourse(userName));
     }
+
+    @PostMapping("/releaseCourse")
+    public void releaseCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userName=request.getParameter("userName");
+        Long courseId= Long.valueOf(request.getParameter("courseId"));
+        String year=request.getParameter("year");
+        String season=request.getParameter("season");
+        String schedule=request.getParameter("schedule");
+        Integer restriction= Integer.valueOf(request.getParameter("restriction"));
+
+        System.out.println(userName);
+        System.out.println(courseId);
+        System.out.println(year);
+        System.out.println(season);
+        System.out.println(schedule);
+        System.out.println(restriction);
+
+        Prompt prompt=new Prompt("Release course successfully!");
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(new JSONObject(prompt));
+    }
 }

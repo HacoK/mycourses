@@ -81,7 +81,7 @@ layui.use(['form'], function(){
       success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
         // 此处可对 data 作相关处理
         if(data.msg==="Create course successfully!"){
-          layer.msg("课程创建成功", {
+          layer.msg("课程创建成功，已提交审批", {
             icon: 6,
             time: 2000 //2秒关闭（如果不配置，默认是3秒）
           }, function () {

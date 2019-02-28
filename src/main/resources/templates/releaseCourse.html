@@ -225,7 +225,7 @@
 
     <div class="layui-form-item" style="text-align:center">
         <button class="layui-btn layui-bg-blue" lay-submit="" lay-filter="formDemo">提交</button>
-        <button type="reset" class="layui-btn layui-btn-primary" onclick="getSchedule()">重置</button>
+        <button type="reset" class="layui-btn layui-btn-primary" onclick="resetForm()">重置</button>
     </div>
 
 
@@ -236,6 +236,29 @@
 <script src="/js.cookie.js"></script>
 <script src="/my-login-master/js/jquery.min.js"></script>
 
+<script>
+    $(function(){
+        var userName=Cookies.get('userName');
+        $.ajax({
+            type: 'get', // 提交方式 get/post
+            url: '/selectCourse', // 需要提交的 url
+            dataType: "json",
+            data: {
+                'userName': userName
+            },
+            success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+                layui.use('form', function(){
+                    var form = layui.form;
+                    var select = document.getElementById("course");
+                    $.each(data,function(key,value){  //遍历键值对
+                        select.add(new Option(key,value));
+                    });
+                    form.render('select');
+                })
+            }
+        });
+    });
+</script>
 <script type="text/javascript">
     /*
         var tab=document.getElementById('tab') //获取表格元素
@@ -269,6 +292,21 @@
         }
     }
     tabCell()
+    function resetForm(){
+        $('form')[0].reset();
+        var tab=document.getElementById('tab')
+        var rows=tab.rows;
+        var rlen=rows.length;
+        for (var i = 1; i <rlen; i++) { //遍历所有行
+            var cells=rows[i].cells; //得到这一行的所有单元格
+            for (var j = 0; j < cells.length; j++)
+            {
+                if(cells[j].classList.length!=0) {
+                    cells[j].style.background = '';
+                }
+            }
+        }
+    }
 </script>
 <script>
     var getSchedule=function () {
@@ -296,7 +334,7 @@
                 schedule+='\n';
             }
         }
-        console.log(schedule);
+        return schedule;
     }
 </script>
 <script>
@@ -316,37 +354,51 @@
         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
         //监听提交
         form.on('submit(formDemo)', function(data){
-            console.log(data.field);
-            console.log(data.field.course);
+            var schedule=getSchedule();
+            if(schedule.length==0)
+            {
+                layer.msg("未对相应班次进行标注", {
+                    icon: 5,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                }, function () {
+                });
+            }else{
+                var userName=Cookies.get('userName');
+                var course=data.field.course;
+                var year=data.field.year;
+                var season=data.field.season;
+                var restriction=data.field.restriction;
+                $.ajax({
+                    type: 'post', // 提交方式 get/post
+                    url: '/releaseCourse', // 需要提交的 url
+                    dataType: "json",
+                    data: {
+                        'userName': userName,
+                        'courseId': course,
+                        'year': year,
+                        'season': season,
+                        'schedule': schedule,
+                        'restriction': restriction
+                    },
+                    success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+                        // 此处可对 data 作相关处理
+                        if(data.msg==="Release course successfully!"){
+                            layer.msg("课程发布成功，已提交审批", {
+                                icon: 6,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function () {
+                                parent.layer.close(index);
+                            });
+                        }
+                    }
+                });
+            }
             return false;
         });
 
     });
 </script>
-<script>
-    $(function(){
-        var userName=Cookies.get('userName');
-        $.ajax({
-            type: 'get', // 提交方式 get/post
-            url: '/selectCourse', // 需要提交的 url
-            dataType: "json",
-            data: {
-                'userName': userName
-            },
-            success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
-                layui.use('form', function(){
-                    var form = layui.form;
-                    var select = document.getElementById("course");
-                    $.each(data,function(key,value){  //遍历键值对
-                        select.add(new Option(key,value));
-                    });
-                    form.render('select');
-                })
-            }
-        });
-    });
 
-</script>
 </body>
 
 </html>
