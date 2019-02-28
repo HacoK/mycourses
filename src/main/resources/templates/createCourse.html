@@ -54,6 +54,21 @@ layui.use(['form'], function(){
     var courseName=data.field.courseName;
     var desc=data.field.desc;
 
+    if(courseName===''){
+      layer.msg("请输入课程名称", {
+        icon: 5,
+        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+      }, function () {
+      });
+    }
+    else if (desc===''){
+      layer.msg("请输入课程描述", {
+        icon: 5,
+        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+      }, function () {
+      });
+    }
+    else{
     $.ajax({
       type: 'post', // 提交方式 get/post
       url: '/createCourse', // 需要提交的 url
@@ -75,7 +90,7 @@ layui.use(['form'], function(){
         }
       }
     });
-
+    }
     return false;
   });
 

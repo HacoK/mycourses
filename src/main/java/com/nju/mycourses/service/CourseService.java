@@ -34,7 +34,8 @@ public class CourseService {
         List<Course> courses=courseRepository.findByTeacherId(teacher_id);
         JSONObject json=new JSONObject();
         for(Course c:courses){
-            json.put(c.getCourseName(),c.getCourseId());
+            if(c.getApproved()==1)
+                json.put(c.getCourseName(),c.getCourseId());
         }
         return json;
     }
