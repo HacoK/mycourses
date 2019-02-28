@@ -95,4 +95,9 @@ public class UserService {
         userRepository.save(user);
         mailUtil.sendRegisterMail(user.getUserName(),user.getEmail());
     }
+
+    public String getEmail(String userName){
+        User user=userRepository.findByUserName(userName);
+        return user.getEmail();
+    }
 }

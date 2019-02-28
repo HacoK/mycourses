@@ -2,6 +2,7 @@ package com.nju.mycourses.controller;
 
 import com.nju.mycourses.DAO.UserRepository;
 import com.nju.mycourses.entity.User;
+import com.nju.mycourses.service.UserService;
 import com.nju.mycourses.util.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class UserControllerTC {
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @GetMapping("/homepageTC")
     public String homepageTC(HttpServletRequest request, Model model) {
@@ -35,9 +36,8 @@ public class UserControllerTC {
     @GetMapping("/profileTC")
     public String profileTC(HttpServletRequest request, Model model) {
         String userName=CookieUtils.getCookieValue(request,"userName");
-        User user=userRepository.findByUserName(userName);
         model.addAttribute("userName",userName);
-        model.addAttribute("email",user.getEmail());
+        model.addAttribute("email",userService.getEmail(userName));
         return "profileTC";
     }
 }

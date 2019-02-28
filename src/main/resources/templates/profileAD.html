@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>My Homepage</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">My Course</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:void(0)">
+                    <img src="/sit.jpg" class="layui-nav-img">
+                    <span th:text="${userName}"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:void(0)" onclick='window.location.hash="#profile=1"; window.location.reload()'>个人信息</a></dd>
+                    <dd><a href="javascript:void(0)" onclick='window.location.hash="#profile=2"; window.location.reload()'>修改密码</a></dd>
+                    <dd><a href="javascript:void(0)" onclick="logout()">退出登录</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">课程审批</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">审批创建</a></dd>
+                        <dd><a href="javascript:;">审批发布</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">统计查看</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">教师统计</a></dd>
+                        <dd><a href="javascript:;">学生统计</a></dd>
+                        <dd><a href="javascript:;">MyCourses使用情况</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+            <legend>My Course Profile</legend>
+        </fieldset>
+        <div class="layui-tab" lay-filter="profile">
+            <ul class="layui-tab-title">
+                <li class="layui-this" lay-id="1">个人信息</li>
+                <li lay-id="2">修改密码</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                        <legend>个人信息</legend>
+                    </fieldset>
+                    <form class="layui-form layui-form-pane" onsubmit="return false">
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="userName" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" th:value="${userName}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">邮箱</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="email" autocomplete="off" placeholder="" class="layui-input" disabled="" th:value="${email}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <button class="layui-btn" onclick="changeName()">提交更改</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="layui-tab-item">
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                        <legend>修改密码</legend>
+                    </fieldset>
+                    <form class="layui-form layui-form-pane" id="resetP" onsubmit="return false">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">原密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="passwordO" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">新密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="passwordN" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">确认密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="passwordC" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-filter="formDemo" onclick="resetPassword()">保存</button>
+                                <button type="reset" class="layui-btn layui-btn-primary" onclick="$('#resetP')[0].reset()">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © My Course
+    </div>
+</div>
+
+<script src="layui/layui.js"></script>
+<script src="/js.cookie.js"></script>
+<script src="/my-login-master/js/jquery.min.js"></script>
+
+<script>
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var $ = layui.jquery
+            ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+
+        //Hash地址的定位
+        var layid = location.hash.replace(/^#profile=/, '');
+        element.tabChange('profile', layid);
+
+        element.on('tab(profile)', function(elem){
+            location.hash = 'profile='+ $(this).attr('lay-id');
+        });
+
+    });
+</script>
+
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+</script>
+
+<script>
+    var prompt=function(data,num) {
+        layer.msg(data, {
+            icon: num,
+            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+        }, function () {
+            $('#resetP')[0].reset();
+        });
+    };
+    var logout=function () {
+        Cookies.remove('userName');
+        window.location.href='login';
+    };
+    var resetPassword=function () {
+        var passwordO=$('input[name=passwordO]').val(),
+            passwordN=$('input[name=passwordN]').val(),
+            passwordC=$('input[name=passwordC]').val();
+        if(passwordN!==passwordC)
+            prompt("两次输入密码不一致！",5);
+        else{
+            var userName=Cookies.get('userName');
+            $.ajax({
+                type: 'post', // 提交方式 get/post
+                url: '/resetPasswordST', // 需要提交的 url
+                dataType: "json",
+                data: {
+                    'userName': userName,
+                    'passwordO':passwordO,
+                    'passwordN':passwordN
+                },
+                success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+                    // 此处可对 data 作相关处理
+                    if(data.msg==="Reset successfully!"){
+                        prompt("密码修改成功！",6);
+                    }else{
+                        prompt("修改失败，原密码错误！",5);
+                    }
+                }
+            });
+        }
+    };
+    var changeName=function () {
+        var userName=Cookies.get('userName');
+        var newName=$('input[name=userName]').val();
+        $.ajax({
+            type: 'post', // 提交方式 get/post
+            url: '/changeNameST', // 需要提交的 url
+            dataType: "json",
+            data: {
+                'userName': userName,
+                'newName':newName
+            },
+            success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+                // 此处可对 data 作相关处理
+                if(data.msg==="Change successfully!"){
+                    prompt("用户名修改成功！",6);
+                    Cookies.set('userName', newName);
+                    window.location.reload();
+                }else{
+                    prompt("修改失败，用户名已存在！",5);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>
