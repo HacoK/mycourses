@@ -66,12 +66,12 @@ public class MycoursesApplicationTests {
 //    }
 
     @Autowired
-    private CurriculumRepository curriculumRepositoryi;
+    private UserRepository userRepository;
 
     @Test
     public void test() throws Exception {
-        Curriculum c=curriculumRepositoryi.findById((long) 1).get();
-        System.out.println(c.getSchedule());
+        User user=new User("admin","admin@nju.edu.cn","admin",UserType.Administrator);
+        userRepository.save(user);
     }
 }
 
