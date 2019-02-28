@@ -10,7 +10,7 @@ public class Curriculum {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long curriculumId;
     @Column(nullable = false)
-    private Long course_id;
+    private Long courseId;
     @Column(nullable = false)
     private String semesterYear; //年份
     @Column(nullable = false)
@@ -30,13 +30,15 @@ public class Curriculum {
     public Curriculum() {
     }
 
-    public Curriculum(Long course_id, String semesterYear,String semesterSeason,String schedule, Integer restriction, Integer approved) {
-        this.course_id = course_id;
+    public Curriculum(Long courseId, String semesterYear, String semesterSeason, String schedule, Integer restriction, Integer approved, String scoreExcel, ScoreType scoreType) {
+        this.courseId = courseId;
         this.semesterYear = semesterYear;
-        this.semesterSeason=semesterSeason;
+        this.semesterSeason = semesterSeason;
         this.schedule = schedule;
         this.restriction = restriction;
         this.approved = approved;
+        this.scoreExcel = scoreExcel;
+        this.scoreType = scoreType;
     }
 
     public Long getCurriculumId() {
@@ -47,12 +49,12 @@ public class Curriculum {
         this.curriculumId = curriculumId;
     }
 
-    public Long getCourse_id() {
-        return course_id;
+    public Long getCourseId() {
+        return courseId;
     }
 
-    public void setCourse_id(Long course_id) {
-        this.course_id = course_id;
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 
     public String getSemesterYear() {

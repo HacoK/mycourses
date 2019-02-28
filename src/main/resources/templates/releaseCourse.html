@@ -363,7 +363,6 @@
                 }, function () {
                 });
             }else{
-                var userName=Cookies.get('userName');
                 var course=data.field.course;
                 var year=data.field.year;
                 var season=data.field.season;
@@ -373,7 +372,6 @@
                     url: '/releaseCourse', // 需要提交的 url
                     dataType: "json",
                     data: {
-                        'userName': userName,
                         'courseId': course,
                         'year': year,
                         'season': season,

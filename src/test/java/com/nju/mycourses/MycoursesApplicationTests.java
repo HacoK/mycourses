@@ -1,6 +1,8 @@
 package com.nju.mycourses;
 
+import com.nju.mycourses.DAO.CurriculumRepository;
 import com.nju.mycourses.DAO.UserRepository;
+import com.nju.mycourses.entity.Curriculum;
 import com.nju.mycourses.entity.User;
 import com.nju.mycourses.enums.UserType;
 import org.junit.Assert;
@@ -24,6 +26,7 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -63,12 +66,12 @@ public class MycoursesApplicationTests {
 //    }
 
     @Autowired
-    private UserRepository userRepository;
+    private CurriculumRepository curriculumRepositoryi;
 
     @Test
     public void test() throws Exception {
-        userRepository.save(new User("HacoK", "haco@nju.edu.cn", "haco", UserType.Teacher));
-        userRepository.save(new User("Haco", "161250098@smail.nju.edu.cn", "haco", UserType.Student));
+        Curriculum c=curriculumRepositoryi.findById((long) 1).get();
+        System.out.println(c.getSchedule());
     }
 }
 
