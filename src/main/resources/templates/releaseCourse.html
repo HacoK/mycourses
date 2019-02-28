@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/layui/css/layui.css">
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
     <style type="text/css">
-        table {
+        #tab {
             background-color: transparent;
             border-spacing: 0;
             border-collapse: collapse;
@@ -17,15 +17,15 @@
             margin:0 auto;
             width:560px;
         }
-        thead{
+        #tab thead{
             background-color: #f9f9f9;
         }
 
-        th {
+        #tab th {
             padding: 8px;
             line-height: 1.42857143;
         }
-        td {
+        #tab td {
             border: 1px solid #e4e4e4;
             cursor: pointer;
             text-align: center;
@@ -44,7 +44,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">课程</label>
         <div class="layui-input-block">
-            <select name="course" lay-filter="aihao" id="course">
+            <select name="course" lay-filter="course" id="course">
                 <option value="">请选择课程</option>
             </select>
         </div>
@@ -216,6 +216,13 @@
         <div class="layui-form-item" style="font-size: 12px; color: rgb(135, 154, 172); margin-top: 2px;text-align:center;">备注:点击标记班次（二次点击取消）</div>
     </div>
 
+    <div class="layui-form-item">
+        <label class="layui-form-label">限选人数</label>
+        <div class="layui-input-inline">
+            <input type="text" name="restriction" lay-verify="number" placeholder="请输入限选人数" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
     <div class="layui-form-item" style="text-align:center">
         <button class="layui-btn layui-bg-blue" lay-submit="" lay-filter="formDemo">提交</button>
         <button type="reset" class="layui-btn layui-btn-primary" onclick="getSchedule()">重置</button>
@@ -280,10 +287,16 @@
                 schedule+='节';
                 schedule=$('th.'+i).text()+" "+schedule;
                 list.push(schedule);
-                console.log(schedule);
                 schedule='';
             }
         }
+        for(var j = 0,len = list.length; j < len; j++){
+            schedule+=list[j];
+            if(j!=(len-1)){
+                schedule+='\n';
+            }
+        }
+        console.log(schedule);
     }
 </script>
 <script>
@@ -303,8 +316,8 @@
         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
         //监听提交
         form.on('submit(formDemo)', function(data){
-            console.log(data.field.year);
-            console.log(typeof data.field.year);
+            console.log(data.field);
+            console.log(data.field.course);
             return false;
         });
 
