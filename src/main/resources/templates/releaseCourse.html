@@ -8,11 +8,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="/layui/css/layui.css">
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <style type="text/css">
+        table {
+            background-color: transparent;
+            border-spacing: 0;
+            border-collapse: collapse;
+            text-align: center;
+            margin:0 auto;
+            width:560px;
+        }
+        thead{
+            background-color: #f9f9f9;
+        }
+
+        th {
+            padding: 8px;
+            line-height: 1.42857143;
+        }
+        td {
+            border: 1px solid #e4e4e4;
+            cursor: pointer;
+            text-align: center;
+            padding: 0 !important;
+            height: 30px;
+        }
+    </style>
 </head>
 
 <body>
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
-    <legend>创建课程</legend>
+    <legend>发布课程</legend>
 </fieldset>
 
 <form class="layui-form layui-form-pane" action="" lay-filter="formDemo">
@@ -38,11 +63,162 @@
             </select>
         </div>
     </div>
+    <div>
+        <table id="tab">
+            <thead>
+            <tr class="0">
+                <th>班次</th>
+                <th class="1">周一</th>
+                <th class="2">周二</th>
+                <th class="3">周三</th>
+                <th class="4">周四</th>
+                <th class="5">周五</th>
+                <th class="6">周六</th>
+                <th class="7">周日</th>
+            </tr>
+            </thead>
 
+            <tbody>
+            <tr class="1">
+                <td>第1节</td>
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+                <td class="6"></td>
+                <td class="7"></td>
+            </tr>
+
+            <tr class="2">
+                <td>第2节</td>
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+                <td class="6"></td>
+                <td class="7"></td>
+            </tr>
+
+            <tr class="3">
+                <td>第3节</td>
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+                <td class="6"></td>
+                <td class="7"></td>
+            </tr>
+
+            <tr class="4">
+                <td>第4节</td>
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+                <td class="6"></td>
+                <td class="7"></td>
+            </tr>
+
+            <tr class="5">
+                <td>第5节</td>
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+                <td class="6"></td>
+                <td class="7"></td>
+            </tr>
+
+            <tr class="6">
+                <td>第6节</td>
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+                <td class="6"></td>
+                <td class="7"></td>
+            </tr>
+
+            <tr class="7">
+                <td>第7节</td>
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+                <td class="6"></td>
+                <td class="7"></td>
+            </tr>
+
+            <tr class="8">
+                <td>第8节</td>
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+                <td class="6"></td>
+                <td class="7"></td>
+            </tr>
+
+            <tr class="9">
+                <td>第9节</td>
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+                <td class="6"></td>
+                <td class="7"></td>
+            </tr>
+
+            <tr class="10">
+                <td>第10节</td>
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+                <td class="6"></td>
+                <td class="7"></td>
+            </tr>
+
+            <tr class="11">
+                <td>第11节</td>
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+                <td class="6"></td>
+                <td class="7"></td>
+            </tr>
+
+            <tr class="12">
+                <td>第12节</td>
+                <td class="1"></td>
+                <td class="2"></td>
+                <td class="3"></td>
+                <td class="4"></td>
+                <td class="5"></td>
+                <td class="6"></td>
+                <td class="7"></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <div class="layui-form-item" style="font-size: 12px; color: rgb(135, 154, 172); margin-top: 2px;text-align:center;">备注:点击标记班次（二次点击取消）</div>
+    </div>
 
     <div class="layui-form-item" style="text-align:center">
         <button class="layui-btn layui-bg-blue" lay-submit="" lay-filter="formDemo">提交</button>
-        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        <button type="reset" class="layui-btn layui-btn-primary" onclick="getSchedule()">重置</button>
     </div>
 
 
@@ -53,6 +229,63 @@
 <script src="/js.cookie.js"></script>
 <script src="/my-login-master/js/jquery.min.js"></script>
 
+<script type="text/javascript">
+    /*
+        var tab=document.getElementById('tab') //获取表格元素
+        var rows=tab.rows; //返回包含表格中所有行的一个数组。
+        var rlen=rows.length;
+        alert(rlen)
+        //var cells=tab.cells;
+        //var clen=cells.length //这种写法会出错
+        cells=rows[1].cells //某一行的单元格
+        alert(cells.length)
+        */
+    function tabCell(){
+        var tab=document.getElementById('tab')
+        var rows=tab.rows;
+        var rlen=rows.length;
+        for (var i = 1; i <rlen; i++) { //遍历所有行
+            var cells=rows[i].cells; //得到这一行的所有单元格
+            for (var j = 0; j < cells.length; j++)
+            {
+                if(cells[j].classList.length!=0) {
+                    //给每一个单元格添加click事件
+                    cells[j].onclick = function () {
+                        if (this.style.background == '') {
+                            this.style.background = '#e8f9f7'
+                        } else {
+                            this.style.background = ''
+                        }
+                    }
+                }
+            }
+        }
+    }
+    tabCell()
+</script>
+<script>
+    var getSchedule=function () {
+        var list = [];
+        var schedule;
+        for(var i=1;i<=7;i++){
+            schedule='第';
+            $('td.'+i).each(function(i,item){
+                if(item.style.background == 'rgb(232, 249, 247)'){
+                    schedule+=item.parentNode.className;
+                    schedule+=',';
+                }
+            });
+            schedule=schedule.slice(0,-1);
+            if(schedule!=''){
+                schedule+='节';
+                schedule=$('th.'+i).text()+" "+schedule;
+                list.push(schedule);
+                console.log(schedule);
+                schedule='';
+            }
+        }
+    }
+</script>
 <script>
     layui.use(['form','laydate'], function(){
         var form = layui.form,
