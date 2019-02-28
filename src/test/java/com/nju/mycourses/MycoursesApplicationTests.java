@@ -70,8 +70,8 @@ public class MycoursesApplicationTests {
 
     @Test
     public void test() throws Exception {
-        User user=new User("admin","admin@nju.edu.cn","admin",UserType.Administrator);
-        userRepository.save(user);
+        User user=userRepository.findById((long) 1).get();
+        System.out.println(user.getUserName());
     }
 }
 

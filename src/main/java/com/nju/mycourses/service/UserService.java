@@ -100,4 +100,5 @@ public class UserService {
         User user=userRepository.findByUserName(userName);
         return user.getEmail();
     }
+
 }
