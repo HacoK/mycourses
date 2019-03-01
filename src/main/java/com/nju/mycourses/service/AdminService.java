@@ -39,4 +39,14 @@ public class AdminService {
         result.put("pages",pages);
         return result;
     }
+
+    public void recordCheckResult(Long courseId,String result){
+        Course course=courseRepository.findById(courseId).get();
+        if(result.equals("pass")){
+            course.setApproved(1);
+        }else if(result.equals("reject")){
+            course.setApproved(-1);
+        }
+        courseRepository.save(course);
+    }
 }

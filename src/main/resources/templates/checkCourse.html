@@ -94,13 +94,13 @@
                         lis.push(
                         '<div class="layui-card">\n' +
                         '  <div class="layui-card-header">'+'<strong>课程编号：</strong>'+item.courseId+'</div>\n' +
-                        '  <div class="layui-card-body">\n' +
+                        '  <div class="layui-card-body" id="'+item.courseId+'">\n' +
                         '    <hr class="layui-bg-blue">'+
                         '    <strong>课程名称：</strong>'+item.courseName+'<br>' +
                         '    <strong>教师名称：</strong>'+item.teacherName+'<br>' +
                         '    <strong>课程描述：</strong><br>'+item.description+'<br>' +
                         '    <hr class="layui-bg-blue">'+
-                        '<button class="layui-btn layui-btn-primary layui-bg-blue layui-col-md-offset11" onclick="checkCourseConfirm()">\n' +
+                        '<button class="layui-btn layui-btn-primary layui-bg-blue layui-col-md-offset11" onclick="checkCourseConfirm(this)">\n' +
                         '  <i class="layui-icon">&#xe642;</i>\n' +
                         '</button>'+
                         '  </div>' +
@@ -117,7 +117,8 @@
 </script>
 
 <script>
-var checkCourseConfirm=function(){
+var checkCourseConfirm=function(obj){
+    var courseID=$(obj).parent().attr('id');
     layui.use('layer', function(){
         var layer = layui.layer;
         layer.open({
@@ -125,10 +126,66 @@ var checkCourseConfirm=function(){
             ,content: '该课程创建的审批结果？'
             ,btn: ['通过', '否决']
             ,yes: function(index, layero){
-                layer.close(index);
+                $.ajax({
+                    type: 'post', // 提交方式 get/post
+                    url: '/checkCourse', // 需要提交的 url
+                    dataType: "json",
+                    data: {
+                        'courseID': courseID,
+                        'result': 'pass'
+                    },
+                    success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+                        // 此处可对 data 作相关处理
+                        if(data.msg==="Result of checkCourse has been record!"){
+                            window.location.reload();
+                            layer.msg("审批结果已保存！（通过）", {
+                                icon: 6,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function () {
+                                layer.close(index);
+                            });
+                        }
+                        else{
+                            layer.msg("未知错误，审批结果未保存...", {
+                                icon: 5,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function () {
+                                layer.close(index);
+                            });
+                        }
+                    }
+                });
             }
             ,btn2: function(index, layero){
-                //按钮【按钮二】的回调
+                $.ajax({
+                    type: 'post', // 提交方式 get/post
+                    url: '/checkCourse', // 需要提交的 url
+                    dataType: "json",
+                    data: {
+                        'courseID': courseID,
+                        'result': 'reject'
+                    },
+                    success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+                        // 此处可对 data 作相关处理
+                        if(data.msg==="Result of checkCourse has been record!"){
+                            window.location.reload();
+                            layer.msg("审批结果已保存！（否决）", {
+                                icon: 6,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function () {
+                                layer.close(index);
+                            });
+                        }
+                        else{
+                            layer.msg("未知错误，审批结果未保存...", {
+                                icon: 5,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function () {
+                                layer.close(index);
+                            });
+                        }
+                    }
+                });
             }
         });
     });
