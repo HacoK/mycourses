@@ -137,12 +137,12 @@ var checkCourseConfirm=function(obj){
                     success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
                         // 此处可对 data 作相关处理
                         if(data.msg==="Result of checkCourse has been record!"){
-                            window.location.reload();
                             layer.msg("审批结果已保存！（通过）", {
                                 icon: 6,
                                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
                             }, function () {
                                 layer.close(index);
+                                window.location.reload();
                             });
                         }
                         else{
@@ -168,12 +168,12 @@ var checkCourseConfirm=function(obj){
                     success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
                         // 此处可对 data 作相关处理
                         if(data.msg==="Result of checkCourse has been record!"){
-                            window.location.reload();
                             layer.msg("审批结果已保存！（否决）", {
                                 icon: 6,
                                 time: 2000 //2秒关闭（如果不配置，默认是3秒）
                             }, function () {
                                 layer.close(index);
+                                window.location.reload();
                             });
                         }
                         else{
