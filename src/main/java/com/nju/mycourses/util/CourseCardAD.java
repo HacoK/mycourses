@@ -1,6 +1,6 @@
 package com.nju.mycourses.util;
 
-public class CourseCard {
+public class CourseCardAD {
 
     private Long courseId;
     private String courseName;
@@ -39,7 +39,7 @@ public class CourseCard {
         this.teacherName = teacherName;
     }
 
-    public CourseCard(Long courseId, String courseName, String description, String teacherName) {
+    public CourseCardAD(Long courseId, String courseName, String description, String teacherName) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.description = description;

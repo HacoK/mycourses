@@ -5,8 +5,8 @@ import com.nju.mycourses.DAO.CurriculumRepository;
 import com.nju.mycourses.DAO.UserRepository;
 import com.nju.mycourses.entity.Course;
 import com.nju.mycourses.entity.Curriculum;
-import com.nju.mycourses.util.CourseCard;
-import com.nju.mycourses.util.CurriculumCard;
+import com.nju.mycourses.util.CourseCardAD;
+import com.nju.mycourses.util.CurriculumCardAD;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class AdminService {
     public JSONObject drawCourseUnchecked(Integer page){
         Integer itemNum=8;
         List<Course> courses=courseRepository.findByApprovedEqualsOrderByCourseIdAsc(0);
-        List<CourseCard> resultList=new ArrayList<>();
+        List<CourseCardAD> resultList=new ArrayList<>();
         page-=1;
         Integer pages=courses.size()/itemNum;
         if(courses.size()%itemNum!=0)
@@ -35,8 +35,8 @@ public class AdminService {
         for(int i=page*itemNum;i<(page+1)*itemNum&&i<courses.size();i++){
             Course course=courses.get(i);
             String teacherName=userRepository.findById(course.getTeacherId()).get().getUserName();
-            CourseCard courseCard=new CourseCard(course.getCourseId(),course.getCourseName(),course.getDescription(),teacherName);
-            resultList.add(courseCard);
+            CourseCardAD courseCardAD =new CourseCardAD(course.getCourseId(),course.getCourseName(),course.getDescription(),teacherName);
+            resultList.add(courseCardAD);
         }
         JSONArray data = new JSONArray(resultList);
         JSONObject result=new JSONObject();
@@ -58,7 +58,7 @@ public class AdminService {
     public JSONObject drawCurriculumUnchecked(Integer page){
         Integer itemNum=8;
         List<Curriculum> curricula=curriculumRepository.findByApprovedEqualsOrderByCurriculumIdAsc(0);
-        List<CurriculumCard> resultList=new ArrayList<>();
+        List<CurriculumCardAD> resultList=new ArrayList<>();
 
         Integer pages=curricula.size()/itemNum;
         if(curricula.size()%itemNum!=0)
@@ -75,8 +75,8 @@ public class AdminService {
                 season="春";
             else
                 season="秋";
-            CurriculumCard curriculumCard=new CurriculumCard(curriculum.getCurriculumId(),courseName,teacherName,curriculum.getSemesterYear()+"年 ",season,curriculum.getSchedule().replaceAll("\n","<br>"),curriculum.getRestriction());
-            resultList.add(curriculumCard);
+            CurriculumCardAD curriculumCardAD =new CurriculumCardAD(curriculum.getCurriculumId(),courseName,teacherName,curriculum.getSemesterYear()+"年 ",season,curriculum.getSchedule().replaceAll("\n","<br>"),curriculum.getRestriction());
+            resultList.add(curriculumCardAD);
         }
 
         JSONObject result=new JSONObject();
