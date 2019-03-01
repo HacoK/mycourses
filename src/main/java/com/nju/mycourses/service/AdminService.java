@@ -20,8 +20,8 @@ public class AdminService {
     UserRepository userRepository;
 
     public JSONObject drawCourseUnchecked(Integer page){
-        Integer itemNum=3;
-        List<Course> courses=courseRepository.findByApprovedEqualsOrderByCourseIdDesc(0);
+        Integer itemNum=8;
+        List<Course> courses=courseRepository.findByApprovedEqualsOrderByCourseIdAsc(0);
         List<CourseCard> resultList=new ArrayList<>();
         page-=1;
         Integer pages=courses.size()/itemNum;
