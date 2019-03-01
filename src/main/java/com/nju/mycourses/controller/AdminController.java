@@ -54,11 +54,37 @@ public class AdminController {
 
     @PostMapping("/checkCourse")
     public void checkCourseP(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Long courseID = Long.valueOf(request.getParameter("courseID"));
+        Long courseId = Long.valueOf(request.getParameter("courseId"));
         String result = request.getParameter("result");
-        adminService.recordCheckResult(courseID,result);
+        adminService.recordCourseCheck(courseId,result);
 
-        Prompt prompt=new Prompt("Result of checkCourse has been record!");
+        Prompt prompt=new Prompt("Result of checkCourse has been recorded!");
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(new JSONObject(prompt));
+    }
+
+    @GetMapping("/checkCurriculum")
+    public String checkCurriculum(HttpServletRequest request, Model model) {
+        String userName=CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        return "checkCurriculum";
+    }
+
+    @GetMapping("/getCurriculumUnchecked")
+    public void getCurriculumUnchecked(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Integer page= Integer.valueOf(request.getParameter("page"));
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(adminService.drawCurriculumUnchecked(page));
+    }
+
+    @PostMapping("/checkCurriculum")
+    public void checkCurriculumP(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Long curriculumId = Long.valueOf(request.getParameter("curriculumId"));
+        String result = request.getParameter("result");
+        adminService.recordCurriculumCheck(curriculumId,result);
+
+        Prompt prompt=new Prompt("Result of checkCurriculum has been recorded!");
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(new JSONObject(prompt));
     }

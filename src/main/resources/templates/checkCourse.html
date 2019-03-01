@@ -35,8 +35,8 @@
                 <li class="layui-nav-item layui-nav-itemed">
                     <a href="javascript:;">课程审批</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">审批创建</a></dd>
-                        <dd><a href="javascript:;">审批发布</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.href='checkCourse'">审批创建</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.href='checkCurriculum'">审批发布</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
@@ -118,7 +118,7 @@
 
 <script>
 var checkCourseConfirm=function(obj){
-    var courseID=$(obj).parent().attr('id');
+    var courseId=$(obj).parent().attr('id');
     layui.use('layer', function(){
         var layer = layui.layer;
         layer.open({
@@ -131,15 +131,15 @@ var checkCourseConfirm=function(obj){
                     url: '/checkCourse', // 需要提交的 url
                     dataType: "json",
                     data: {
-                        'courseID': courseID,
+                        'courseId': courseId,
                         'result': 'pass'
                     },
                     success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
                         // 此处可对 data 作相关处理
-                        if(data.msg==="Result of checkCourse has been record!"){
+                        if(data.msg==="Result of checkCourse has been recorded!"){
                             layer.msg("审批结果已保存！（通过）", {
                                 icon: 6,
-                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                time: 1000 //1秒关闭（如果不配置，默认是3秒）
                             }, function () {
                                 layer.close(index);
                                 window.location.reload();
@@ -148,7 +148,7 @@ var checkCourseConfirm=function(obj){
                         else{
                             layer.msg("未知错误，审批结果未保存...", {
                                 icon: 5,
-                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                time: 1000 //1秒关闭（如果不配置，默认是3秒）
                             }, function () {
                                 layer.close(index);
                             });
@@ -162,15 +162,15 @@ var checkCourseConfirm=function(obj){
                     url: '/checkCourse', // 需要提交的 url
                     dataType: "json",
                     data: {
-                        'courseID': courseID,
+                        'courseId': courseId,
                         'result': 'reject'
                     },
                     success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
                         // 此处可对 data 作相关处理
-                        if(data.msg==="Result of checkCourse has been record!"){
+                        if(data.msg==="Result of checkCourse has been recorded!"){
                             layer.msg("审批结果已保存！（否决）", {
                                 icon: 6,
-                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                time: 1000 //1秒关闭（如果不配置，默认是3秒）
                             }, function () {
                                 layer.close(index);
                                 window.location.reload();
@@ -179,7 +179,7 @@ var checkCourseConfirm=function(obj){
                         else{
                             layer.msg("未知错误，审批结果未保存...", {
                                 icon: 5,
-                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                time: 1000 //1秒关闭（如果不配置，默认是3秒）
                             }, function () {
                                 layer.close(index);
                             });
