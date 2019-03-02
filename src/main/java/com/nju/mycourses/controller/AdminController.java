@@ -101,7 +101,15 @@ public class AdminController {
         Integer page= Integer.valueOf(request.getParameter("page"));
 
         response.setContentType("application/json; charset=UTF-8");
-        response.getWriter().print(adminService.drawCurriculumToStart(page));
+        response.getWriter().print(adminService.drawCurriculum(page,"start"));
+    }
+
+    @GetMapping("/getCurriculumToEnd")
+    public void getCurriculumToEnd(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Integer page= Integer.valueOf(request.getParameter("page"));
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(adminService.drawCurriculum(page,"end"));
     }
 
     @PostMapping("/startCurriculum")
@@ -111,6 +119,17 @@ public class AdminController {
         adminService.startCurriculum(curriculumId);
 
         Prompt prompt=new Prompt("Curriculum has started!");
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(new JSONObject(prompt));
+    }
+
+    @PostMapping("/endCurriculum")
+    public void endCurriculum(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Long curriculumId = Long.valueOf(request.getParameter("curriculumId"));
+
+        adminService.endCurriculum(curriculumId);
+
+        Prompt prompt=new Prompt("Curriculum has ended!");
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(new JSONObject(prompt));
     }

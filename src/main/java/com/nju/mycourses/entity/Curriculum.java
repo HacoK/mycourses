@@ -19,6 +19,8 @@ public class Curriculum {
     private String schedule;
     @Column(nullable = false)
     private Integer restriction;
+
+    //-1:已否决,0:待审批,1:已通过,2:已结课,3:已开课
     @Column(nullable = false)
     private Integer approved;
     @Column(nullable = false)

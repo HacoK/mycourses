@@ -106,9 +106,14 @@ public class AdminService {
         curriculumRepository.save(curriculum);
     }
 
-    public JSONObject drawCurriculumToStart(Integer page){
+    public JSONObject drawCurriculum(Integer page,String purpose){
         Integer itemNum=8;
         page--;
+        Integer approved=0;
+        if(purpose.equals("start"))
+            approved=1;
+        else if(purpose.equals("end"))
+            approved=3;
 
         List<Order> orders=new ArrayList<Order>();
         orders.add(new Order(Direction. ASC, "semesterYear"));
@@ -116,7 +121,7 @@ public class AdminService {
         orders.add(new Order(Direction. DESC, "curriculumId"));
         Pageable pageable= new PageRequest(page, itemNum, new Sort(orders));
 
-        Page<Curriculum> curricula=curriculumRepository.findByApprovedEquals(1,pageable);
+        Page<Curriculum> curricula=curriculumRepository.findByApprovedEquals(approved,pageable);
         List<CurriculumCardAD> resultList=new ArrayList<>();
         List<Curriculum> curriculumList=curricula.getContent();
 
@@ -171,5 +176,11 @@ public class AdminService {
             }
         }
         cSelecRecRepository.saveAll(cSelecRecList);
+    }
+
+    public void endCurriculum(Long curriculumId){
+        Curriculum curriculum=curriculumRepository.findById(curriculumId).get();
+        curriculum.setApproved(2);
+        curriculumRepository.save(curriculum);
     }
 }

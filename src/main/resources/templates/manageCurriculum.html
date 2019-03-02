@@ -130,6 +130,39 @@
                 });
             }
         });
+        flow.load({
+            elem: '#demo2' //指定列表容器
+            ,done: function(page, next){ //到达临界点（默认滚动触发），触发下一页
+                var lis = [];
+                //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
+                $.get('/getCurriculumToEnd?page='+page, function(res){
+                    //假设你的列表返回在data集合中
+                    layui.each(res.data, function(index, item){
+                        lis.push(
+                            '<div class="layui-card layui-bg-gray">\n' +
+                            '  <div class="layui-card-header">'+'<strong>发布编号：</strong>'+item.curriculumId+'</div>\n' +
+                            '  <div class="layui-card-body" id="'+item.curriculumId+'">\n' +
+                            '    <hr class="layui-bg-blue">'+
+                            '    <strong>课程名称：</strong>'+item.courseName+'<br>' +
+                            '    <strong>教师名称：</strong>'+item.teacherName+'<br>' +
+                            '    <strong>发布学期：</strong>'+item.semesterYear+item.semesterSeason+'<br>' +
+                            '    <strong>发布班次：</strong><br>'+item.schedule+'<br>' +
+                            '    <strong>限选人数：</strong>'+item.restriction+'<br>' +
+                            '    <strong>已选人数：</strong>'+item.selected+'<br>' +
+                            '    <hr class="layui-bg-blue">'+
+                            '<button class="layui-btn layui-btn-primary layui-bg-blue layui-col-md-offset11" onclick="endCurriculum(this)">\n' +
+                            '  <i class="layui-icon">&#xe651;</i>\n' +
+                            '</button>'+
+                            '  </div>' +
+                            '</div>');
+                    });
+
+                    //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                    //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                    next(lis.join(''), page < res.pages);
+                });
+            }
+        });
     });
 </script>
 
@@ -157,6 +190,38 @@
                     }
                     else{
                         layer.msg("未知错误，开课失败...", {
+                            icon: 5,
+                            time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                        }, function () {
+                        });
+                    }
+                }
+            });
+        });
+    }
+    var endCurriculum=function(obj){
+        var curriculumId=$(obj).parent().attr('id');
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            $.ajax({
+                type: 'post', // 提交方式 get/post
+                url: '/endCurriculum', // 需要提交的 url
+                dataType: "json",
+                data: {
+                    'curriculumId': curriculumId
+                },
+                success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+                    // 此处可对 data 作相关处理
+                    if(data.msg==="Curriculum has ended!"){
+                        layer.msg("结课成功！", {
+                            icon: 6,
+                            time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                        }, function () {
+                            window.location.reload();
+                        });
+                    }
+                    else{
+                        layer.msg("未知错误，结课失败...", {
                             icon: 5,
                             time: 1000 //1秒关闭（如果不配置，默认是3秒）
                         }, function () {
