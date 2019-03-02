@@ -88,4 +88,11 @@ public class AdminController {
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(new JSONObject(prompt));
     }
+
+    @GetMapping("/manageCurriculum")
+    public String manageCurriculum(HttpServletRequest request, Model model) {
+        String userName=CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        return "manageCurriculum";
+    }
 }
