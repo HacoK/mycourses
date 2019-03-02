@@ -3,6 +3,7 @@ package com.nju.mycourses.controller;
 import com.nju.mycourses.DAO.UserRepository;
 import com.nju.mycourses.entity.User;
 import com.nju.mycourses.service.CourseService;
+import com.nju.mycourses.service.CurriculumService;
 import com.nju.mycourses.service.UserService;
 import com.nju.mycourses.util.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class UserControllerTC {
     UserService userService;
     @Autowired
     CourseService courseService;
+    @Autowired
+    CurriculumService curriculumService;
 
     @GetMapping("/homepageTC")
     public String homepageTC(HttpServletRequest request, Model model) {
@@ -60,5 +63,14 @@ public class UserControllerTC {
 
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(courseService.drawCourseTC(teacherName,page));
+    }
+
+    @GetMapping("/getCurriculumTC")
+    public void getCurriculumTC(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String teacherName=CookieUtils.getCookieValue(request,"userName");
+        Integer page= Integer.valueOf(request.getParameter("page"));
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(curriculumService.drawCurriculumTC(teacherName,page));
     }
 }

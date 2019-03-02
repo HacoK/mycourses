@@ -8,4 +8,5 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findByTeacherIdOrderByApprovedDesc(Long teacherId);
     List<Course> findByApprovedEqualsOrderByCourseIdAsc(Integer approved);
+    List<Course> findByTeacherIdAndApproved(Long teacherId,Integer approved);
 }
