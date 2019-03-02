@@ -4,6 +4,7 @@ import com.nju.mycourses.DAO.CSelecRecRepository;
 import com.nju.mycourses.DAO.CourseRepository;
 import com.nju.mycourses.DAO.CurriculumRepository;
 import com.nju.mycourses.DAO.UserRepository;
+import com.nju.mycourses.entity.CSelecRec;
 import com.nju.mycourses.entity.Course;
 import com.nju.mycourses.entity.Curriculum;
 import com.nju.mycourses.POJO.CourseCardAD;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -144,5 +146,30 @@ public class AdminService {
         result.put("data",new JSONArray(resultList));
         result.put("pages",pages);
         return result;
+    }
+
+    public void startCurriculum(Long curriculumId){
+        Curriculum curriculum=curriculumRepository.findById(curriculumId).get();
+        curriculum.setApproved(3);
+        curriculumRepository.save(curriculum);
+
+        List<CSelecRec> cSelecRecList=cSelecRecRepository.findByCurriculumIdAndApprovedOrderByRecordIdAsc(curriculumId,0);
+        Integer selsectedNum=cSelecRecList.size();
+        if(selsectedNum<=curriculum.getRestriction()){
+            for(CSelecRec c:cSelecRecList){
+                c.setApproved(1);
+            }
+        }else{
+            Collections.shuffle(cSelecRecList);
+            for(int i=0;i<curriculum.getRestriction();i++){
+                CSelecRec c=cSelecRecList.get(i);
+                c.setApproved(1);
+            }
+            for(int i=curriculum.getRestriction();i<selsectedNum;i++){
+                CSelecRec c=cSelecRecList.get(i);
+                c.setApproved(-1);
+            }
+        }
+        cSelecRecRepository.saveAll(cSelecRecList);
     }
 }

@@ -138,71 +138,30 @@
         var curriculumId=$(obj).parent().attr('id');
         layui.use('layer', function(){
             var layer = layui.layer;
-            layer.open({
-                title: false
-                ,content: '该课程发布的审批结果？'
-                ,btn: ['通过', '否决']
-                ,yes: function(index, layero){
-                    $.ajax({
-                        type: 'post', // 提交方式 get/post
-                        url: '/checkCurriculum', // 需要提交的 url
-                        dataType: "json",
-                        data: {
-                            'curriculumId': curriculumId,
-                            'result': 'Pass'
-                        },
-                        success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
-                            // 此处可对 data 作相关处理
-                            if(data.msg==="Result of checkCurriculum has been recorded!"){
-                                layer.msg("审批结果已保存！（通过）", {
-                                    icon: 6,
-                                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
-                                }, function () {
-                                    layer.close(index);
-                                    window.location.reload();
-                                });
-                            }
-                            else{
-                                layer.msg("未知错误，审批结果未保存...", {
-                                    icon: 5,
-                                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
-                                }, function () {
-                                    layer.close(index);
-                                });
-                            }
-                        }
-                    });
-                }
-                ,btn2: function(index, layero){
-                    $.ajax({
-                        type: 'post', // 提交方式 get/post
-                        url: '/checkCurriculum', // 需要提交的 url
-                        dataType: "json",
-                        data: {
-                            'curriculumId': curriculumId,
-                            'result': 'Reject'
-                        },
-                        success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
-                            // 此处可对 data 作相关处理
-                            if(data.msg==="Result of checkCurriculum has been recorded!"){
-                                layer.msg("审批结果已保存！（否决）", {
-                                    icon: 6,
-                                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
-                                }, function () {
-                                    layer.close(index);
-                                    window.location.reload();
-                                });
-                            }
-                            else{
-                                layer.msg("未知错误，审批结果未保存...", {
-                                    icon: 5,
-                                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
-                                }, function () {
-                                    layer.close(index);
-                                });
-                            }
-                        }
-                    });
+            $.ajax({
+                type: 'post', // 提交方式 get/post
+                url: '/startCurriculum', // 需要提交的 url
+                dataType: "json",
+                data: {
+                    'curriculumId': curriculumId
+                },
+                success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+                    // 此处可对 data 作相关处理
+                    if(data.msg==="Curriculum has started!"){
+                        layer.msg("开课成功！", {
+                            icon: 6,
+                            time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                        }, function () {
+                            window.location.reload();
+                        });
+                    }
+                    else{
+                        layer.msg("未知错误，开课失败...", {
+                            icon: 5,
+                            time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                        }, function () {
+                        });
+                    }
                 }
             });
         });

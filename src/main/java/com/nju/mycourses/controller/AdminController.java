@@ -103,4 +103,15 @@ public class AdminController {
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(adminService.drawCurriculumToStart(page));
     }
+
+    @PostMapping("/startCurriculum")
+    public void startCurriculum(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Long curriculumId = Long.valueOf(request.getParameter("curriculumId"));
+
+        adminService.startCurriculum(curriculumId);
+
+        Prompt prompt=new Prompt("Curriculum has started!");
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(new JSONObject(prompt));
+    }
 }
