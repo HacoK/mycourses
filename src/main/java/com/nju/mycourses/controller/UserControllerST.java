@@ -2,6 +2,7 @@ package com.nju.mycourses.controller;
 
 import com.nju.mycourses.DAO.UserRepository;
 import com.nju.mycourses.entity.User;
+import com.nju.mycourses.service.CurriculumService;
 import com.nju.mycourses.util.CookieUtils;
 import com.nju.mycourses.POJO.Prompt;
 import org.json.JSONObject;
@@ -19,6 +20,8 @@ import java.io.IOException;
 public class UserControllerST {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    CurriculumService curriculumService;
 
     @GetMapping("/homepageST")
     public String homepageST(HttpServletRequest request, Model model) {
@@ -84,4 +87,21 @@ public class UserControllerST {
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(new JSONObject(prompt));
     }
+
+    @GetMapping("/electiveCurriculum")
+    public String courseViewTC(HttpServletRequest request, Model model) {
+        String userName=CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        return "electiveCurriculum";
+    }
+
+    @GetMapping("/getCurriculumOp")
+    public void getCurriculumOp(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String studentName=CookieUtils.getCookieValue(request,"userName");
+        Integer page= Integer.valueOf(request.getParameter("page"));
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(curriculumService.drawCurriculumOp(studentName,page));
+    }
+
 }

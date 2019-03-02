@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface CSelecRecRepository extends JpaRepository<CSelecRec, Long> {
     List<CSelecRec> findByCurriculumIdAndApprovedOrderByRecordIdAsc(Long curriculumId,Integer approved);
+    List<CSelecRec> findByStudentIdAndApprovedNot(Long studentId,Integer approved);
 }

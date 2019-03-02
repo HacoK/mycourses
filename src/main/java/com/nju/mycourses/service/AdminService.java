@@ -46,7 +46,7 @@ public class AdminService {
         for(int i=page*itemNum;i<(page+1)*itemNum&&i<courses.size();i++){
             Course course=courses.get(i);
             String teacherName=userRepository.findById(course.getTeacherId()).get().getUserName();
-            CourseCardAD courseCardAD =new CourseCardAD(course.getCourseId(),course.getCourseName(),course.getDescription(),teacherName);
+            CourseCardAD courseCardAD =new CourseCardAD(course.getCourseId(),course.getCourseName(),course.getDescription().replaceAll("\n","<br>"),teacherName);
             resultList.add(courseCardAD);
         }
         JSONArray data = new JSONArray(resultList);

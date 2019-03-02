@@ -61,7 +61,7 @@ public class CourseService {
                 state="审批中";
             else
                 state="已否决";
-            CourseCardTC courseCardTC =new CourseCardTC(course.getCourseId(),course.getCourseName(),course.getDescription(),state);
+            CourseCardTC courseCardTC =new CourseCardTC(course.getCourseId(),course.getCourseName(),course.getDescription().replaceAll("\n","<br>"),state);
             resultList.add(courseCardTC);
         }
         JSONObject result=new JSONObject();

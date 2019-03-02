@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>layout 后台大布局 - Layui</title>
+  <title>Detailed Course(ST)</title>
   <link rel="stylesheet" href="layui/css/layui.css">
 </head>
 <body class="layui-layout-body">
@@ -15,13 +17,14 @@
       <li class="layui-nav-item">
         <a href="javascript:;">
           <img src="cute-kitten-wallpaper-18701-wallpaperesque.jpg" class="layui-nav-img">
-          Haco
+          <span th:text="${userName}"></span>
         </a>
         <dl class="layui-nav-child">
-          <dd><a href="">个人信息</a></dd>
-		  <dd><a href="">统计详情</a></dd>
-          <dd><a href="">修改密码</a></dd>
-		  <dd><a href="">退出登录</a></dd>
+          <dd><a href="/profileST#profile=1">个人信息</a></dd>
+          <dd><a href="/profileST#profile=2">统计详情</a></dd>
+          <dd><a href="/profileST#profile=3">修改密码</a></dd>
+          <dd><a href="javascript:void(0)" onclick="cancel()">注销账号</a></dd>
+          <dd><a href="javascript:void(0)" onclick="logout()">退出登录</a></dd>
         </dl>
       </li>
     </ul>
@@ -59,12 +62,40 @@
   </div>
 </div>
 <script src="layui/layui.js"></script>
+<script src="/js.cookie.js"></script>
+<script src="/my-login-master/js/jquery.min.js"></script>
+
 <script>
 //JavaScript代码区域
 layui.use('element', function(){
   var element = layui.element;
-  
 });
 </script>
+<script>
+  var cancel=function(){
+    var userName=Cookies.get('userName');
+
+    $.ajax({
+      type: 'post', // 提交方式 get/post
+      url: '/cancelST', // 需要提交的 url
+      dataType: "json",
+      data: {
+        'userName': userName
+      },
+      success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+        // 此处可对 data 作相关处理
+        if(data.msg==="Cancel successfully!"){
+          Cookies.remove('userName');
+          window.location.href='login';
+        }
+      }
+    });
+  }
+  var logout=function () {
+    Cookies.remove('userName');
+    window.location.href='login';
+  }
+</script>
+
 </body>
 </html>
