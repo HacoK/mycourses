@@ -95,4 +95,12 @@ public class AdminController {
         model.addAttribute("userName",userName);
         return "manageCurriculum";
     }
+
+    @GetMapping("/getCurriculumToStart")
+    public void getCurriculumToStart(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Integer page= Integer.valueOf(request.getParameter("page"));
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(adminService.drawCurriculumToStart(page));
+    }
 }

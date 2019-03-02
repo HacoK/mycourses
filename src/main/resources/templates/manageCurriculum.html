@@ -52,13 +52,26 @@
         </div>
     </div>
 
-    <div class="layui-body  layui-bg-gray">
+    <div class="layui-body">
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
                 <legend>管理 - 开课结课</legend>
             </fieldset>
-            <ul class="flow-default" id="demo"></ul>
+            <div class="layui-tab layui-tab-card">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">开课管理</li>
+                    <li>结课管理</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <ul class="flow-default" id="demo"></ul>
+                    </div>
+                    <div class="layui-tab-item">
+                        <ul class="flow-default" id="demo2"></ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -89,11 +102,11 @@
             ,done: function(page, next){ //到达临界点（默认滚动触发），触发下一页
                 var lis = [];
                 //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
-                $.get('/getCurriculumUnchecked?page='+page, function(res){
+                $.get('/getCurriculumToStart?page='+page, function(res){
                     //假设你的列表返回在data集合中
                     layui.each(res.data, function(index, item){
                         lis.push(
-                            '<div class="layui-card">\n' +
+                            '<div class="layui-card layui-bg-gray">\n' +
                             '  <div class="layui-card-header">'+'<strong>发布编号：</strong>'+item.curriculumId+'</div>\n' +
                             '  <div class="layui-card-body" id="'+item.curriculumId+'">\n' +
                             '    <hr class="layui-bg-blue">'+
@@ -102,9 +115,10 @@
                             '    <strong>发布学期：</strong>'+item.semesterYear+item.semesterSeason+'<br>' +
                             '    <strong>发布班次：</strong><br>'+item.schedule+'<br>' +
                             '    <strong>限选人数：</strong>'+item.restriction+'<br>' +
+                            '    <strong>已选人数：</strong>'+item.selected+'<br>' +
                             '    <hr class="layui-bg-blue">'+
-                            '<button class="layui-btn layui-btn-primary layui-bg-blue layui-col-md-offset11" onclick="checkCurriculumConfirm(this)">\n' +
-                            '  <i class="layui-icon">&#xe642;</i>\n' +
+                            '<button class="layui-btn layui-btn-primary layui-bg-blue layui-col-md-offset11" onclick="startCurriculum(this)">\n' +
+                            '  <i class="layui-icon">&#xe652;</i>\n' +
                             '</button>'+
                             '  </div>' +
                             '</div>');
@@ -120,7 +134,7 @@
 </script>
 
 <script>
-    var checkCurriculumConfirm=function(obj){
+    var startCurriculum=function(obj){
         var curriculumId=$(obj).parent().attr('id');
         layui.use('layer', function(){
             var layer = layui.layer;

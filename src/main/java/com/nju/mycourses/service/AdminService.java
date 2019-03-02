@@ -1,5 +1,6 @@
 package com.nju.mycourses.service;
 
+import com.nju.mycourses.DAO.CSelecRecRepository;
 import com.nju.mycourses.DAO.CourseRepository;
 import com.nju.mycourses.DAO.CurriculumRepository;
 import com.nju.mycourses.DAO.UserRepository;
@@ -10,6 +11,12 @@ import com.nju.mycourses.POJO.CurriculumCardAD;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +30,8 @@ public class AdminService {
     UserRepository userRepository;
     @Autowired
     CurriculumRepository curriculumRepository;
+    @Autowired
+    CSelecRecRepository cSelecRecRepository;
 
     public JSONObject drawCourseUnchecked(Integer page){
         Integer itemNum=8;
@@ -93,5 +102,47 @@ public class AdminService {
             curriculum.setApproved(-1);
         }
         curriculumRepository.save(curriculum);
+    }
+
+    public JSONObject drawCurriculumToStart(Integer page){
+        Integer itemNum=8;
+        page--;
+
+        List<Order> orders=new ArrayList<Order>();
+        orders.add(new Order(Direction. ASC, "semesterYear"));
+        orders.add(new Order(Direction. DESC, "semesterSeason"));
+        orders.add(new Order(Direction. DESC, "curriculumId"));
+        Pageable pageable= new PageRequest(page, itemNum, new Sort(orders));
+
+        Page<Curriculum> curricula=curriculumRepository.findByApprovedEquals(1,pageable);
+        List<CurriculumCardAD> resultList=new ArrayList<>();
+        List<Curriculum> curriculumList=curricula.getContent();
+
+        Integer pages=curricula.getTotalPages();
+
+        for(int i=0;i<curriculumList.size();i++){
+            Curriculum curriculum=curriculumList.get(i);
+            Long cid=curriculum.getCourseId();
+            Course course=courseRepository.findById(cid).get();
+            String courseName=course.getCourseName();
+            String teacherName=userRepository.findById(course.getTeacherId()).get().getUserName();
+
+            Integer selected=cSelecRecRepository.findByCurriculumIdAndApprovedOrderByRecordIdAsc(cid,1).size();
+            selected+=cSelecRecRepository.findByCurriculumIdAndApprovedOrderByRecordIdAsc(cid,0).size();
+
+            String season;
+            if(curriculum.getSemesterSeason().equals("spring"))
+                season="春";
+            else
+                season="秋";
+
+            CurriculumCardAD curriculumCardAD =new CurriculumCardAD(cid,courseName,teacherName,curriculum.getSemesterYear()+"年 ",season,curriculum.getSchedule().replaceAll("\n","<br>"),curriculum.getRestriction(),selected);
+            resultList.add(curriculumCardAD);
+        }
+
+        JSONObject result=new JSONObject();
+        result.put("data",new JSONArray(resultList));
+        result.put("pages",pages);
+        return result;
     }
 }

@@ -8,11 +8,11 @@ public class CSelecRec {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long recordId;
     @Column(nullable = false)
-    private String student_id;
+    private Long studentId;
     @Column(nullable = false)
-    private String curriculum_id;
+    private Long curriculumId;
     @Column(nullable = false)
-    private Boolean state;
+    private Integer approved;
 
     public CSelecRec() {
     }
@@ -25,27 +25,27 @@ public class CSelecRec {
         this.recordId = recordId;
     }
 
-    public String getStudent_id() {
-        return student_id;
+    public Long getStudentId() {
+        return studentId;
     }
 
-    public void setStudent_id(String student_id) {
-        this.student_id = student_id;
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
     }
 
-    public String getCurriculum_id() {
-        return curriculum_id;
+    public Long getCurriculumId() {
+        return curriculumId;
     }
 
-    public void setCurriculum_id(String curriculum_id) {
-        this.curriculum_id = curriculum_id;
+    public void setCurriculumId(Long curriculumId) {
+        this.curriculumId = curriculumId;
     }
 
-    public Boolean getState() {
-        return state;
+    public Integer getApproved() {
+        return approved;
     }
 
-    public void setState(Boolean state) {
-        this.state = state;
+    public void setApproved(Integer approved) {
+        this.approved = approved;
     }
 }
