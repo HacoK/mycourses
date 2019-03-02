@@ -1,7 +1,7 @@
 package com.nju.mycourses.controller;
 
 import com.nju.mycourses.service.CourseService;
-import com.nju.mycourses.util.Prompt;
+import com.nju.mycourses.POJO.Prompt;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

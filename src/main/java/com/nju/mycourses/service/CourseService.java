@@ -5,7 +5,7 @@ import com.nju.mycourses.DAO.UserRepository;
 import com.nju.mycourses.config.PathConfig;
 import com.nju.mycourses.entity.Course;
 import com.nju.mycourses.entity.User;
-import com.nju.mycourses.util.CourseCardTC;
+import com.nju.mycourses.POJO.CourseCardTC;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

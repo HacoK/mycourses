@@ -3,7 +3,7 @@ package com.nju.mycourses.controller;
 import com.nju.mycourses.service.AdminService;
 import com.nju.mycourses.service.UserService;
 import com.nju.mycourses.util.CookieUtils;
-import com.nju.mycourses.util.Prompt;
+import com.nju.mycourses.POJO.Prompt;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package com.nju.mycourses.util;
+package com.nju.mycourses.POJO;
 
 public class CourseCardTC {
     private Long courseId;

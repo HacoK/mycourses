@@ -4,7 +4,7 @@ import com.nju.mycourses.config.PathConfig;
 import com.nju.mycourses.entity.Curriculum;
 import com.nju.mycourses.enums.ScoreType;
 import com.nju.mycourses.service.CurriculumService;
-import com.nju.mycourses.util.Prompt;
+import com.nju.mycourses.POJO.Prompt;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -3,7 +3,7 @@ package com.nju.mycourses.controller;
 import com.nju.mycourses.DAO.UserRepository;
 import com.nju.mycourses.entity.User;
 import com.nju.mycourses.util.CookieUtils;
-import com.nju.mycourses.util.Prompt;
+import com.nju.mycourses.POJO.Prompt;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

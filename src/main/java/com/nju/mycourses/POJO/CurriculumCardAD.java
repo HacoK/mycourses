@@ -1,4 +1,4 @@
-package com.nju.mycourses.util;
+package com.nju.mycourses.POJO;
 
 public class CurriculumCardAD {
     private Long curriculumId;
@@ -8,6 +8,8 @@ public class CurriculumCardAD {
     private String semesterSeason;
     private String schedule;
     private Integer restriction;
+    private Integer selected;
+    private String state;
 
     public CurriculumCardAD(Long curriculumId, String courseName, String teacherName, String semesterYear, String semesterSeason, String schedule, Integer restriction) {
         this.curriculumId = curriculumId;
@@ -17,6 +19,20 @@ public class CurriculumCardAD {
         this.semesterSeason = semesterSeason;
         this.schedule = schedule;
         this.restriction = restriction;
+        this.selected=0;
+        this.state="审批中";
+    }
+
+    public CurriculumCardAD(Long curriculumId, String courseName, String teacherName, String semesterYear, String semesterSeason, String schedule, Integer restriction, Integer selected, String state) {
+        this.curriculumId = curriculumId;
+        this.courseName = courseName;
+        this.teacherName = teacherName;
+        this.semesterYear = semesterYear;
+        this.semesterSeason = semesterSeason;
+        this.schedule = schedule;
+        this.restriction = restriction;
+        this.selected = selected;
+        this.state = state;
     }
 
     public Long getCurriculumId() {
@@ -73,5 +89,21 @@ public class CurriculumCardAD {
 
     public void setRestriction(Integer restriction) {
         this.restriction = restriction;
+    }
+
+    public Integer getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Integer selected) {
+        this.selected = selected;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }
