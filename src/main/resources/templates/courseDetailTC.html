@@ -88,14 +88,14 @@
                 // 此处可对 data 作相关处理
                 if(data.msg==="Cancel successfully!"){
                     Cookies.remove('userName');
-                    window.location.href='login';
+                    window.location.href='/login';
                 }
             }
         });
     };
     var logout=function () {
         Cookies.remove('userName');
-        window.location.href='login';
+        window.location.href='/login';
     }
 </script>
 </body>
