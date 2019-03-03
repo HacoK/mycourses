@@ -5,6 +5,7 @@ import com.nju.mycourses.entity.Curriculum;
 import com.nju.mycourses.enums.ScoreType;
 import com.nju.mycourses.service.CurriculumService;
 import com.nju.mycourses.POJO.Prompt;
+import com.nju.mycourses.util.CookieUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import java.io.IOException;
 public class CurriculumContorller {
     @Autowired
     CurriculumService curriculumService;
+
     @PostMapping("/releaseCourse")
     public void releaseCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long courseId= Long.valueOf(request.getParameter("courseId"));
@@ -30,6 +32,19 @@ public class CurriculumContorller {
         curriculumService.releaseCourse(c);
 
         Prompt prompt=new Prompt("Release course successfully!");
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(new JSONObject(prompt));
+    }
+
+    @PostMapping("/electiveCurriculum")
+    public void electiveCurriculum(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Long curriculumId= Long.valueOf(request.getParameter("curriculumId"));
+        String studentName= CookieUtils.getCookieValue(request,"userName");
+        Prompt prompt;
+        if(curriculumService.selectCurriculum(studentName,curriculumId))
+            prompt=new Prompt("Selection has been recorded!");
+        else
+            prompt=new Prompt("SelectedNum has reached restriction...");
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(new JSONObject(prompt));
     }

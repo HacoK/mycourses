@@ -12,6 +12,7 @@ import com.nju.mycourses.entity.Curriculum;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -191,5 +192,25 @@ public class CurriculumService {
         result.put("pages",pages);
         return result;
 
+    }
+    @Transient
+    public boolean selectCurriculum(String studentName,Long curriculumId){
+        Long studentId=userRepository.findByUserName(studentName).getUserId();
+        Curriculum curriculum=curriculumRepository.findById(curriculumId).get();
+        if(curriculum.getApproved()==1){
+            CSelecRec cSelecRec=new CSelecRec(studentId,curriculumId,0);
+            cSelecRecRepository.save(cSelecRec);
+            return true;
+        }
+        else{
+            Integer selected=cSelecRecRepository.findByCurriculumIdAndApprovedOrderByRecordIdAsc(curriculum.getCurriculumId(),1).size();
+            if(!(selected<curriculum.getRestriction()))
+                return false;
+            else{
+                CSelecRec cSelecRec=new CSelecRec(studentId,curriculumId,1);
+                cSelecRecRepository.save(cSelecRec);
+                return true;
+            }
+        }
     }
 }

@@ -171,10 +171,11 @@
                         });
                     }
                     else{
-                        layer.msg("未知错误，选课失败...", {
+                        layer.msg("出错啦！选课失败...", {
                             icon: 5,
                             time: 1000 //1秒关闭（如果不配置，默认是3秒）
                         }, function () {
+                            window.location.reload();
                         });
                     }
                 }

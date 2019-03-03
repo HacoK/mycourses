@@ -17,6 +17,12 @@ public class CSelecRec {
     public CSelecRec() {
     }
 
+    public CSelecRec(Long studentId, Long curriculumId, Integer approved) {
+        this.studentId = studentId;
+        this.curriculumId = curriculumId;
+        this.approved = approved;
+    }
+
     public Long getRecordId() {
         return recordId;
     }
