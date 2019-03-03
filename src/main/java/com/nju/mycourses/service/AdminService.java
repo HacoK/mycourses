@@ -118,7 +118,7 @@ public class AdminService {
         List<Order> orders=new ArrayList<Order>();
         orders.add(new Order(Direction. ASC, "semesterYear"));
         orders.add(new Order(Direction. DESC, "semesterSeason"));
-        orders.add(new Order(Direction. DESC, "curriculumId"));
+
         Pageable pageable= PageRequest.of(page, itemNum, Sort.by(orders));
 
         Page<Curriculum> curricula=curriculumRepository.findByApprovedEquals(approved,pageable);

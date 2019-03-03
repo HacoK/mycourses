@@ -104,4 +104,12 @@ public class UserControllerST {
         response.getWriter().print(curriculumService.drawCurriculumOp(studentName,page));
     }
 
+    @GetMapping("/getCurriculumST")
+    public void getCurriculumST(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String studentName=CookieUtils.getCookieValue(request,"userName");
+        Integer page= Integer.valueOf(request.getParameter("page"));
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(curriculumService.drawCurriculumST(studentName,--page));
+    }
 }
