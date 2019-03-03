@@ -63,9 +63,10 @@ public class CurriculumService {
         for(int i=0;i<curriculumList.size();i++){
             Curriculum curriculum=curriculumList.get(i);
 
-            Long cid=curriculum.getCourseId();
             Course course=courseRepository.findById(curriculum.getCourseId()).get();
             String courseName=course.getCourseName();
+
+            Long cid=curriculum.getCurriculumId();
 
             Integer selected=cSelecRecRepository.findByCurriculumIdAndApprovedOrderByRecordIdAsc(cid,0).size();
             selected+=cSelecRecRepository.findByCurriculumIdAndApprovedOrderByRecordIdAsc(cid,1).size();
@@ -133,7 +134,6 @@ public class CurriculumService {
             String teacherName=userRepository.findById(course.getTeacherId()).get().getUserName();
 
             Integer selected=cSelecRecRepository.findByCurriculumIdAndApprovedOrderByRecordIdAsc(cid,0).size();
-            selected+=cSelecRecRepository.findByCurriculumIdAndApprovedOrderByRecordIdAsc(cid,1).size();
 
             String state="未开课";
 
@@ -155,7 +155,7 @@ public class CurriculumService {
             Curriculum curriculum=curriculumList.get(i);
             if(curriculumIds.contains(curriculum.getCurriculumId()))
                 continue;
-            Long cid=curriculum.getCourseId();
+            Long cid=curriculum.getCurriculumId();
             Integer selected=cSelecRecRepository.findByCurriculumIdAndApprovedOrderByRecordIdAsc(cid,1).size();
             if(!(selected<curriculum.getRestriction()))
                 continue;

@@ -134,6 +134,7 @@ public class AdminService {
             String courseName=course.getCourseName();
             String teacherName=userRepository.findById(course.getTeacherId()).get().getUserName();
 
+            cid=curriculum.getCurriculumId();
             Integer selected=cSelecRecRepository.findByCurriculumIdAndApprovedOrderByRecordIdAsc(cid,1).size();
             selected+=cSelecRecRepository.findByCurriculumIdAndApprovedOrderByRecordIdAsc(cid,0).size();
 
