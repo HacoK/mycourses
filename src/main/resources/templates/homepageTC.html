@@ -40,7 +40,7 @@
   </div>
 
   <div class="layui-side">
-     <img src="/photos/camera.jpg"  alt="" width="100%" height="100%">
+     <img src="/photos/GD.jpg"  alt="" width="100%" height="100%">
   </div>
   
   <div class="layui-body layui-bg-gray">
@@ -168,9 +168,9 @@ var releaseCourse=function(){
                             '    <strong>发布班次：</strong><br>'+item.schedule+'<br>' +
                             '    <strong>限选人数：</strong>'+item.restriction+'<br>' +
                             '    <strong>已选人数：</strong>'+item.selected+'<br>' +
-                            '    <strong>课程状态：</strong>'+item.state+'<br>' +
+                            '    <strong>课程状态：</strong>'+'<span>'+item.state+'</span>'+'<br>' +
                             '    <hr class="layui-bg-blue">'+
-                            '<button class="layui-btn layui-btn-primary layui-bg-blue layui-col-md-offset11">\n' +
+                            '<button class="layui-btn layui-btn-primary layui-bg-blue layui-col-md-offset11" onclick="enter(this)">\n' +
                             '  <i class="layui-icon">&#xe609;</i>\n' +
                             '</button>'+
                             '  </div>' +
@@ -185,6 +185,24 @@ var releaseCourse=function(){
         });
     });
 </script>
-
+<script>
+    var enter=function (obj) {
+        var curriculumId=$(obj).parent().attr('id');
+        var state=$(obj).siblings('span').text();
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            if(state==="审批中"||state==="已否决"){
+                layer.msg("该课程发布"+state+",无法进入！", {
+                    icon: 5,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                }, function () {
+                });
+            }
+            else{
+                window.location.href='/courseDetailTC/'+curriculumId;
+            }
+        });
+    }
+</script>
 </body>
 </html>

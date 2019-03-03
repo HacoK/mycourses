@@ -9,6 +9,9 @@ import com.nju.mycourses.util.CookieUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,5 +50,14 @@ public class CurriculumContorller {
             prompt=new Prompt("SelectedNum has reached restriction...");
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(new JSONObject(prompt));
+    }
+
+    @GetMapping("/courseDetailTC/{curriculumId}")
+    public String courseDetailTC(@PathVariable Long curriculumId,HttpServletRequest request, Model model) throws IOException {
+        System.out.println(curriculumId);
+
+        String userName=CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        return "courseDetailTC";
     }
 }
