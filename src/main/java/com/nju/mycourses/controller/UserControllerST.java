@@ -27,7 +27,7 @@ public class UserControllerST {
     public String homepageST(HttpServletRequest request, Model model) {
         String userName=CookieUtils.getCookieValue(request,"userName");
         model.addAttribute("userName",userName);
-        return "homepageST";
+        return "studentPages/homepageST";
     }
 
     @GetMapping("/profileST")
@@ -38,7 +38,7 @@ public class UserControllerST {
         model.addAttribute("grade",user.getStudentGrade());
         model.addAttribute("studentID",user.getStudentID());
         model.addAttribute("email",user.getEmail());
-        return "profileST";
+        return "studentPages/profileST";
     }
 
     @PostMapping("/cancelST")
@@ -92,7 +92,7 @@ public class UserControllerST {
     public String courseViewTC(HttpServletRequest request, Model model) {
         String userName=CookieUtils.getCookieValue(request,"userName");
         model.addAttribute("userName",userName);
-        return "electiveCurriculum";
+        return "studentPages/electiveCurriculum";
     }
 
     @GetMapping("/getCurriculumOp")

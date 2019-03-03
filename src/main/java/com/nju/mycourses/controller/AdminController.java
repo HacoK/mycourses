@@ -26,7 +26,7 @@ public class AdminController {
     public String homepageAD(HttpServletRequest request, Model model) {
         String userName= CookieUtils.getCookieValue(request,"userName");
         model.addAttribute("userName",userName);
-        return "homepageAD";
+        return "adminPages/homepageAD";
     }
 
     @GetMapping("/profileAD")
@@ -34,14 +34,14 @@ public class AdminController {
         String userName=CookieUtils.getCookieValue(request,"userName");
         model.addAttribute("userName",userName);
         model.addAttribute("email",userService.getEmail(userName));
-        return "profileAD";
+        return "adminPages/profileAD";
     }
 
     @GetMapping("/checkCourse")
     public String checkCourse(HttpServletRequest request, Model model) {
         String userName=CookieUtils.getCookieValue(request,"userName");
         model.addAttribute("userName",userName);
-        return "checkCourse";
+        return "adminPages/checkCourse";
     }
 
     @GetMapping("/getCourseUnchecked")
@@ -67,7 +67,7 @@ public class AdminController {
     public String checkCurriculum(HttpServletRequest request, Model model) {
         String userName=CookieUtils.getCookieValue(request,"userName");
         model.addAttribute("userName",userName);
-        return "checkCurriculum";
+        return "adminPages/checkCurriculum";
     }
 
     @GetMapping("/getCurriculumUnchecked")
@@ -93,7 +93,7 @@ public class AdminController {
     public String manageCurriculum(HttpServletRequest request, Model model) {
         String userName=CookieUtils.getCookieValue(request,"userName");
         model.addAttribute("userName",userName);
-        return "manageCurriculum";
+        return "adminPages/manageCurriculum";
     }
 
     @GetMapping("/getCurriculumToStart")

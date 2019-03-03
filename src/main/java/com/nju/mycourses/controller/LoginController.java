@@ -28,12 +28,12 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
-        return "login";
+        return "loginPages/login";
     }
 
     @GetMapping("/register")
     public String register() {
-        return "register";
+        return "loginPages/register";
     }
 
     @PostMapping("/register")
@@ -102,7 +102,7 @@ public class LoginController {
 
     @GetMapping("/forgot")
     public String forgot() {
-        return "forgot";
+        return "loginPages/forgot";
     }
 
 }

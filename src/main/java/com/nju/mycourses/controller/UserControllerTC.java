@@ -1,7 +1,5 @@
 package com.nju.mycourses.controller;
 
-import com.nju.mycourses.DAO.UserRepository;
-import com.nju.mycourses.entity.User;
 import com.nju.mycourses.service.CourseService;
 import com.nju.mycourses.service.CurriculumService;
 import com.nju.mycourses.service.UserService;
@@ -28,17 +26,17 @@ public class UserControllerTC {
     public String homepageTC(HttpServletRequest request, Model model) {
         String userName= CookieUtils.getCookieValue(request,"userName");
         model.addAttribute("userName",userName);
-        return "homepageTC";
+        return "teacherPages/homepageTC";
     }
 
     @GetMapping("/createCourse")
     public String createCourse() {
-        return "createCourse";
+        return "teacherPages/createCourse";
     }
 
     @GetMapping("/releaseCourse")
     public String releaseCourse() {
-        return "releaseCourse";
+        return "teacherPages/releaseCourse";
     }
 
     @GetMapping("/profileTC")
@@ -46,14 +44,14 @@ public class UserControllerTC {
         String userName=CookieUtils.getCookieValue(request,"userName");
         model.addAttribute("userName",userName);
         model.addAttribute("email",userService.getEmail(userName));
-        return "profileTC";
+        return "teacherPages/profileTC";
     }
 
     @GetMapping("/courseViewTC")
     public String courseViewTC(HttpServletRequest request, Model model) {
         String userName=CookieUtils.getCookieValue(request,"userName");
         model.addAttribute("userName",userName);
-        return "courseViewTC";
+        return "teacherPages/courseViewTC";
     }
 
     @GetMapping("/getCourseTC")
