@@ -296,4 +296,12 @@ public class CurriculumService {
         return result;
 
     }
+
+    public boolean withdrawal(String studentName,Long curriculumId){
+        Long studentId=userRepository.findByUserName(studentName).getUserId();
+        CSelecRec cSelecRec=cSelecRecRepository.findByStudentIdAndAndCurriculumId(studentId,curriculumId);
+        cSelecRec.setApproved(-1);
+        cSelecRecRepository.save(cSelecRec);
+        return true;
+    }
 }

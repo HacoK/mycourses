@@ -100,7 +100,7 @@
                 }
             }
         });
-    }
+    };
     var logout=function () {
         Cookies.remove('userName');
         window.location.href='login';
@@ -136,7 +136,7 @@
                             '  <button class="layui-btn layui-bg-blue" onclick="enter(this)">\n' +
                             '    <i class="layui-icon">&#xe609;</i>\n' +
                             '  </button>\n' +
-                            '  <button class="layui-btn layui-btn-danger">\n' +
+                            '  <button class="layui-btn layui-btn-danger" onclick="withdrawal(this)">\n' +
                             '    <i class="layui-icon">&#xe640;</i>\n' +
                             '  </button>\n' +
                             '  </div>' +
@@ -167,6 +167,49 @@
             }
             else{
                 window.location.href='/courseDetailST/overview/'+curriculumId;
+            }
+        });
+    };
+
+    var withdrawal=function(obj){
+        var curriculumId=$(obj).parent().attr('id');
+        var state=$(obj).siblings('span').text();
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            if(state==="已结课"){
+                layer.msg("已经结课，无法进行退课！", {
+                    icon: 5,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                }, function () {
+                });
+            }
+            else{
+                $.ajax({
+                    type: 'post', // 提交方式 get/post
+                    url: '/withdrawalCurriculum', // 需要提交的 url
+                    dataType: "json",
+                    data: {
+                        'curriculumId': curriculumId
+                    },
+                    success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+                        // 此处可对 data 作相关处理
+                        if(data.msg==="Withdrawal successfully!"){
+                            layer.msg("退课成功！", {
+                                icon: 6,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function () {
+                                window.location.reload();
+                            });
+                        }
+                        else{
+                            layer.msg("未知错误，退课失败...", {
+                                icon: 5,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function () {
+                            });
+                        }
+                    }
+                });
             }
         });
     }

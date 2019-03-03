@@ -65,4 +65,19 @@ public class CurriculumContorller {
         model.addAttribute("userName",userName);
         return "courseDetailST";
     }
+
+    @PostMapping("/withdrawalCurriculum")
+    public void withdrawalCurriculum(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String studentName=CookieUtils.getCookieValue(request,"userName");
+        Long curriculumId= Long.valueOf(request.getParameter("curriculumId"));
+        Prompt prompt;
+        if(curriculumService.withdrawal(studentName,curriculumId)){
+            prompt=new Prompt("Withdrawal successfully!");
+        }else{
+            prompt=new Prompt("Error!Withdrawal failed...");
+        }
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(new JSONObject(prompt));
+    }
+
 }
