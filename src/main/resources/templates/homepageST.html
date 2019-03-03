@@ -128,12 +128,12 @@
                             '    <strong>教师名称：</strong>'+item.teacherName+'<br>' +
                             '    <strong>发布学期：</strong>'+item.semesterYear+item.semesterSeason+'<br>' +
                             '    <strong>发布班次：</strong><br>'+item.schedule+'<br>' +
-                            '    <strong>课程状态：</strong>'+item.state+'<br>' +
+                            '    <strong>课程状态：</strong>'+'<span>'+item.state+'</span>'+'<br>' +
                             '    <hr class="layui-bg-blue">'+
                             '  <button class="layui-btn layui-col-md-offset10" style="background:white">\n' +
                             '    <i class="layui-icon">&#xe64b;</i>\n' +
                             '  </button>\n' +
-                            '  <button class="layui-btn layui-bg-blue">\n' +
+                            '  <button class="layui-btn layui-bg-blue" onclick="enter(this)">\n' +
                             '    <i class="layui-icon">&#xe609;</i>\n' +
                             '  </button>\n' +
                             '  <button class="layui-btn layui-btn-danger">\n' +
@@ -150,6 +150,26 @@
             }
         });
     });
+</script>
+
+<script>
+    var enter=function (obj) {
+        var curriculumId=$(obj).parent().attr('id');
+        var state=$(obj).siblings('span').text();
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            if(state==="未开课"){
+                layer.msg("尚未开课，暂时无法进入！", {
+                    icon: 5,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                }, function () {
+                });
+            }
+            else{
+                window.location.href='/courseDetailST/overview/'+curriculumId;
+            }
+        });
+    }
 </script>
 </body>
 </html>

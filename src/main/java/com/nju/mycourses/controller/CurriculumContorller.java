@@ -52,12 +52,17 @@ public class CurriculumContorller {
         response.getWriter().print(new JSONObject(prompt));
     }
 
-    @GetMapping("/courseDetailTC/{curriculumId}")
-    public String courseDetailTC(@PathVariable Long curriculumId,HttpServletRequest request, Model model) throws IOException {
-        System.out.println(curriculumId);
-
+    @GetMapping("/courseDetailTC/overview/*")
+    public String courseDetailTC(HttpServletRequest request, Model model) throws IOException {
         String userName=CookieUtils.getCookieValue(request,"userName");
         model.addAttribute("userName",userName);
         return "courseDetailTC";
+    }
+
+    @GetMapping("/courseDetailST/overview/*")
+    public String courseDetailST(HttpServletRequest request, Model model) throws IOException {
+        String userName=CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        return "courseDetailST";
     }
 }
