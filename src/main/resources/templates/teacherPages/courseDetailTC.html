@@ -35,8 +35,12 @@
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a href="">课件</a>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">课件</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('overview','coursewareUpload')">课件上传</a></dd>
+                        <dd><a href="javascript:;">课件下载</a></dd>
+                    </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="">作业</a>

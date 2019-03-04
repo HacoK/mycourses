@@ -304,4 +304,14 @@ public class CurriculumService {
         cSelecRecRepository.save(cSelecRec);
         return true;
     }
+
+    public String getCourseName(Long curriculumId){
+        Long courseId=curriculumRepository.findById(curriculumId).get().getCourseId();
+        return courseRepository.findById(courseId).get().getCourseName();
+    }
+
+    public String getCoursewarePath(Long curriculumId){
+        Long courseId=curriculumRepository.findById(curriculumId).get().getCourseId();
+        return courseRepository.findById(courseId).get().getCourseware();
+    }
 }
