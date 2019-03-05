@@ -161,4 +161,13 @@ public class DetailedController {
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(topicService.replyPost(topicId,userName,content,releaseTime));
     }
+
+    @GetMapping("/getPostReplies")
+    public void getPostReplies(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Long topicId= Long.valueOf(CookieUtils.getCookieValue(request,"topicId"));
+        Integer page = Integer.valueOf(request.getParameter("page"));
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(topicService.getPostReplies(page,topicId));
+    }
 }
