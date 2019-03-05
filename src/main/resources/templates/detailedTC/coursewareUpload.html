@@ -98,7 +98,25 @@
         var element = layui.element;
     });
 </script>
-
+<script>
+    layui.use('util', function(){
+        var util = layui.util
+        //固定块
+        util.fixbar({
+            bar1: '&#xe656;'
+            ,bar2: '&#xe663;'
+            ,css: {right: 50, bottom: 100}
+            ,bgcolor: '#393D49'
+            ,click: function(type){
+                if(type === 'bar1'){
+                    window.location.href='/homepageTC';
+                } else if(type === 'bar2') {
+                    window.location.href='/courseViewTC';
+                }
+            }
+        });
+    });
+</script>
 <script>
     var cancel=function(){
         var userName=Cookies.get('userName');

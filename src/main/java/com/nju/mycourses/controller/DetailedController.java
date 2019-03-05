@@ -64,6 +64,14 @@ public class DetailedController {
         return "detailedTC/coursewareDownload";
     }
 
+    @GetMapping("/courseDetailST/coursewareDownload/{curriculumId}")
+    public String coursewareDownloadST(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
+        String userName= CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        model.addAttribute("courseName",curriculumService.getCourseName(curriculumId));
+        return "detailedST/coursewareDownload";
+    }
+
     @GetMapping("getCoursewares")
     public void getCoursewares(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long curriculumId = Long.valueOf(request.getParameter("curriculumId"));

@@ -38,7 +38,7 @@
         <li class="layui-nav-item">
           <a href="javascript:;">课件</a>
           <dl class="layui-nav-child">
-            <dd><a href="javascript:;">课件下载</a></dd>
+            <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('overview','coursewareDownload')">课件下载</a></dd>
           </dl>
         </li>
         <li class="layui-nav-item">
@@ -73,6 +73,25 @@
 layui.use('element', function(){
   var element = layui.element;
 });
+</script>
+<script>
+  layui.use('util', function(){
+    var util = layui.util
+    //固定块
+    util.fixbar({
+      bar1: '&#xe68e;'
+      ,bar2: '&#xe705;'
+      ,css: {right: 50, bottom: 100}
+      ,bgcolor: '#393D49'
+      ,click: function(type){
+        if(type === 'bar1'){
+          window.location.href='/homepageST';
+        } else if(type === 'bar2') {
+          window.location.href='/electiveCurriculum';
+        }
+      }
+    });
+  });
 </script>
 <script>
   var cancel=function(){

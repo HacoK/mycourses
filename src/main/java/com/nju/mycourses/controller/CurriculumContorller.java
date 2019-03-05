@@ -55,14 +55,14 @@ public class CurriculumContorller {
     public String courseDetailTC(HttpServletRequest request, Model model) throws IOException {
         String userName=CookieUtils.getCookieValue(request,"userName");
         model.addAttribute("userName",userName);
-        return "teacherPages/courseDetailTC";
+        return "detailedTC/courseDetailTC";
     }
 
     @GetMapping("/courseDetailST/overview/*")
     public String courseDetailST(HttpServletRequest request, Model model) throws IOException {
         String userName=CookieUtils.getCookieValue(request,"userName");
         model.addAttribute("userName",userName);
-        return "studentPages/courseDetailST";
+        return "detailedST/courseDetailST";
     }
 
     @PostMapping("/withdrawalCurriculum")

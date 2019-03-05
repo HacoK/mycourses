@@ -22,6 +22,12 @@ public class FileService {
         String rootHref="/getCourseware/"+curriculumId+"/";
         String[] fileNames=dir.list();
         List<FileCard> fileCardList=new ArrayList<>();
+        if(fileNames==null){
+            JSONObject result=new JSONObject();
+            result.put("data",new JSONArray());
+            result.put("pages",0);
+            return result;
+        }
         for(String s:fileNames){
             String href=rootHref+s;
             FileCard fileCard=new FileCard(href,s);
