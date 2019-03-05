@@ -24,6 +24,14 @@ public class ForumReply {
     public ForumReply() {
     }
 
+    public ForumReply(Long topicId, Long userId, Integer replyNum, String content, LocalDateTime releaseTime) {
+        this.topicId = topicId;
+        this.userId = userId;
+        this.replyNum = replyNum;
+        this.content = content;
+        this.releaseTime = releaseTime;
+    }
+
     public Long getReplyId() {
         return replyId;
     }

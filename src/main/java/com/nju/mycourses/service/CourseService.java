@@ -88,7 +88,7 @@ public class CourseService {
     public JSONObject getForumTopics(Long curriculumId,Integer page,Integer limit){
         Long courseId=curriculumRepository.findById(curriculumId).get().getCourseId();
         Pageable pageable= PageRequest.of(page, limit);
-        Page<ForumTopic> forumTopicPage=forumTopicRepository.findByCourseId(courseId,pageable);
+        Page<ForumTopic> forumTopicPage=forumTopicRepository.findByCourseIdOrderByReleaseTimeDesc(courseId,pageable);
         Integer count= Math.toIntExact(forumTopicPage.getTotalElements());
         List<ForumTopic> forumTopics=forumTopicPage.getContent();
 
