@@ -2,25 +2,34 @@ package com.nju.mycourses.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-public class Forum_topic {
+public class ForumTopic {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long topicId;
     @Column(nullable = false)
-    private String course_id;
+    private Long courseId;
     @Column(nullable = false)
-    private String user_id;
+    private Long userId;
     @Column(nullable = false)
     private String topic;
     @Lob
     @Column(nullable = false)
     private String description;
     @Column(nullable = false)
-    private LocalDate releaseTime;
+    private LocalDateTime releaseTime;
 
-    public Forum_topic() {
+    public ForumTopic() {
+    }
+
+    public ForumTopic(Long courseId, Long userId, String topic, String description, LocalDateTime releaseTime) {
+        this.courseId = courseId;
+        this.userId = userId;
+        this.topic = topic;
+        this.description = description;
+        this.releaseTime = releaseTime;
     }
 
     public Long getTopicId() {
@@ -31,20 +40,20 @@ public class Forum_topic {
         this.topicId = topicId;
     }
 
-    public String getCourse_id() {
-        return course_id;
+    public Long getCourseId() {
+        return courseId;
     }
 
-    public void setCourse_id(String course_id) {
-        this.course_id = course_id;
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getTopic() {
@@ -63,11 +72,11 @@ public class Forum_topic {
         this.description = description;
     }
 
-    public LocalDate getReleaseTime() {
+    public LocalDateTime getReleaseTime() {
         return releaseTime;
     }
 
-    public void setReleaseTime(LocalDate releaseTime) {
+    public void setReleaseTime(LocalDateTime releaseTime) {
         this.releaseTime = releaseTime;
     }
 }

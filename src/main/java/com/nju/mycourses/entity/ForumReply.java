@@ -2,25 +2,26 @@ package com.nju.mycourses.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-public class Forum_reply {
+public class ForumReply {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long replyId;
     @Column(nullable = false)
-    private String topic_id;
+    private Long topicId;
     @Column(nullable = false)
-    private String user_id;
+    private Long userId;
     @Column(nullable = false)
     private Integer replyNum;
     @Lob
     @Column(nullable = false)
     private String content;
     @Column(nullable = false)
-    private LocalDate releaseTime;
+    private LocalDateTime releaseTime;
 
-    public Forum_reply() {
+    public ForumReply() {
     }
 
     public Long getReplyId() {
@@ -31,20 +32,20 @@ public class Forum_reply {
         this.replyId = replyId;
     }
 
-    public String getTopic_id() {
-        return topic_id;
+    public Long getTopicId() {
+        return topicId;
     }
 
-    public void setTopic_id(String topic_id) {
-        this.topic_id = topic_id;
+    public void setTopicId(Long topicId) {
+        this.topicId = topicId;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Integer getReplyNum() {
@@ -63,11 +64,11 @@ public class Forum_reply {
         this.content = content;
     }
 
-    public LocalDate getReleaseTime() {
+    public LocalDateTime getReleaseTime() {
         return releaseTime;
     }
 
-    public void setReleaseTime(LocalDate releaseTime) {
+    public void setReleaseTime(LocalDateTime releaseTime) {
         this.releaseTime = releaseTime;
     }
 }

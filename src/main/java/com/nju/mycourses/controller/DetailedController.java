@@ -1,6 +1,7 @@
 package com.nju.mycourses.controller;
 
 import com.nju.mycourses.POJO.Prompt;
+import com.nju.mycourses.service.CourseService;
 import com.nju.mycourses.service.CurriculumService;
 import com.nju.mycourses.service.FileService;
 import com.nju.mycourses.util.CookieUtils;
@@ -26,6 +27,8 @@ public class DetailedController {
     CurriculumService curriculumService;
     @Autowired
     FileService fileService;
+    @Autowired
+    CourseService courseService;
 
     @GetMapping("/courseDetailTC/coursewareUpload/{curriculumId}")
     public String coursewareUpload(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
@@ -92,5 +95,38 @@ public class DetailedController {
             IOUtils.copy(inputStream, outputStream);
             outputStream.flush();
         }
+    }
+
+    @GetMapping("/courseDetailTC/forumOverview/{curriculumId}")
+    public String forumOverview(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
+        String userName= CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        model.addAttribute("courseName",curriculumService.getCourseName(curriculumId));
+        return "detailedTC/forumOverview";
+    }
+
+    @GetMapping("/getForumTopics/{curriculumId}")
+    public void getForumTopics(@PathVariable Long curriculumId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Integer page = Integer.valueOf(request.getParameter("page"))-1;
+        Integer limit = Integer.valueOf(request.getParameter("limit"));
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(courseService.getForumTopics(curriculumId,page,limit));
+    }
+
+    @GetMapping("/newPost")
+    public String newPost() throws IOException {
+        return "newPost";
+    }
+
+    @PostMapping("/newPost/{curriculumId}")
+    public void postForumTopic(@PathVariable Long curriculumId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userName = request.getParameter("userName");
+        String topic = request.getParameter("topic");
+        String description = request.getParameter("description");
+        String releaseTime = request.getParameter("releaseTime");
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(courseService.postForumTopic(curriculumId,userName,topic,description,releaseTime));
     }
 }
