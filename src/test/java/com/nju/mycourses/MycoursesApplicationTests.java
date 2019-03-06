@@ -1,6 +1,7 @@
 package com.nju.mycourses;
 
 import com.nju.mycourses.DAO.CurriculumRepository;
+import com.nju.mycourses.DAO.ForumReplyRepository;
 import com.nju.mycourses.DAO.UserRepository;
 import com.nju.mycourses.entity.Curriculum;
 import com.nju.mycourses.entity.User;
@@ -66,12 +67,11 @@ public class MycoursesApplicationTests {
 //    }
 
     @Autowired
-    private UserRepository userRepository;
+    private ForumReplyRepository forumReplyRepository;
 
     @Test
     public void test() throws Exception {
-        User user=userRepository.findById((long) 1).get();
-        System.out.println(user.getUserName());
+        System.out.println(forumReplyRepository.findFirstByTopicIdOrderByReplyNumDesc((long) 9).getUserId());
     }
 }
 

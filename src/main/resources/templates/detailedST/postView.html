@@ -7,27 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Detailed Course(TC)</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
-    <style>
-        a.courseware {
-            font: 20px/1.5 arial, helvetica, sans-serif;
-            color: #0070a8;
-            transition: .5s;
-            cursor:pointer;
-            text-decoration: none;
-        }
-        a.courseware:visited {
-            color: #CCF;
-        }
-        a.courseware:hover {
-            color: lime;
-            background: #CFF;
-            text-decoration: underline;
-        }
-        a.courseware:active {
-            color: red;
-            text-decoration: underline;
-        }
-    </style>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -41,9 +20,9 @@
                     <span th:text="${userName}"></span>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="/profileTC#profile=1">个人信息</a></dd>
-                    <dd><a href="/profileTC#profile=2">统计详情</a></dd>
-                    <dd><a href="/profileTC#profile=3">修改密码</a></dd>
+                    <dd><a href="/profileST#profile=1">个人信息</a></dd>
+                    <dd><a href="/profileST#profile=2">统计详情</a></dd>
+                    <dd><a href="/profileST#profile=3">修改密码</a></dd>
                     <dd><a href="javascript:void(0)" onclick="cancel()">注销账号</a></dd>
                     <dd><a href="javascript:void(0)" onclick="logout()">退出登录</a></dd>
                 </dl>
@@ -59,7 +38,7 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">课件</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" onclick="window.location.reload()">课件下载</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('postView','coursewareDownload')">课件下载</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
@@ -69,7 +48,7 @@
                     <a href="">成绩</a>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;" onclick="window.location.href=window.location.href.replace('coursewareDownload','forumOverview')">论坛</a>
+                    <a href="javascript:;" onclick="window.location.href=window.location.href.replace('postView','forumOverview')">论坛</a>
                 </li>
             </ul>
         </div>
@@ -82,12 +61,29 @@
         </fieldset>
         <hr class="layui-bg-cyan">
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-            <legend>课件下载</legend>
+            <legend>帖子详情</legend>
         </fieldset>
-        <div class="layui-progress layui-progress-big">
-            <div class="layui-progress-bar" lay-percent="100%"></div>
+        <div style="padding: 15px;">
+            <ul class="flow-default" id="demo">
+                <div class="layui-card layui-bg-gray">
+                    <div class="layui-card-header">
+                        <strong th:text="${topic}"></strong>
+                    </div>
+                    <div class="layui-card-body">
+                        <span th:utext="'由 <span style=\'color:#00F\'>'+${postUser}+'</span> 发表于 <span style=\'color:#060\'>'+${postTime}+'</span>'"></span><br>
+                        <span th:utext="${description}"></span>
+                    </div>
+                    <button class="layui-btn layui-bg-gray layui-col-md-offset11" onclick="replyPost()">
+                        <i class="layui-icon" style="font-size: 30px; color: #1E9FFF;">&#xe6b2;</i>
+                    </button>
+                </div>
+                <hr style="background-color:#FF00FF">
+                <div class="layui-progress layui-progress-big">
+                    <div class="layui-progress-bar" lay-percent="100%"  style="background-color:#afb4db"></div>
+                </div>
+                <hr style="background-color:#FF00FF">
+            </ul>
         </div>
-        <ul class="flow-default" id="demo"></ul>
     </div>
 
     <div class="layui-footer">
@@ -108,7 +104,7 @@
 </script>
 <script>
     layui.use('util', function(){
-        var util = layui.util
+        var util = layui.util;
         //固定块
         util.fixbar({
             bar1: '&#xe68e;'
@@ -150,6 +146,27 @@
         window.location.href='/login';
     }
 </script>
+
+
+<script>
+    var replyPost=function(){
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.open({
+                title: false,
+                type: 2,
+                area: ['650px', '320px'],
+                fixed: false, //不固定
+                maxmin: true,
+                scrollbar: false,
+                content: '/replyPost',
+                end : function(){
+                    location.reload();
+                }
+            });
+        });
+    }
+</script>
 <script>
     layui.use('flow', function(){
         var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
@@ -158,17 +175,20 @@
             elem: '#demo' //指定列表容器
             ,done: function(page, next){ //到达临界点（默认滚动触发），触发下一页
                 var lis = [];
-                var url=window.location.href;
                 //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
-                $.get('/getCoursewares?page='+page+'&curriculumId='+url.substr(url.lastIndexOf('/')+1), function(res){
+                $.get('/getPostReplies?page='+page, function(res){
                     //假设你的列表返回在data集合中
                     layui.each(res.data, function(index, item){
                         lis.push(
-                            '<li>'+
-                            '<i class="layui-icon" style="font-size: 30px; color: #7700FF ;">&#xe621;</i> '+
-                            '<a class="courseware" href="'+item.hrefPath+'" download="'+item.fileName+'">'+item.fileName+'</a>'+
-                            '<hr class="layui-bg-cyan">'
-                        );
+                            '<div class="layui-card layui-bg-gray">\n' +
+                            '    <div class="layui-card-header">\n' +
+                            '        <strong>'+item.replyNum+' 楼</strong>\n' +
+                            '    </div>\n' +
+                            '    <div class="layui-card-body">\n' +
+                            '        由 <span style="color:#00F">'+item.replyUser+'</span> 回复于 <span style="color:#060">'+item.replyTime+'</span><br>\n' +
+                            '        <span>'+item.content+'</span>\n' +
+                            '    </div>\n' +
+                            '</div>');
                     });
 
                     //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页

@@ -115,7 +115,6 @@ public class CourseService {
                 replyUserLS = "";
                 replyTimeLS = "";
             }
-
             ForumTopicCard forumTopicCard=new ForumTopicCard(topicId,forumTopic.getTopic(),postUser,postTime,replyNum,replyUserLS,replyTimeLS);
             resultList.add(forumTopicCard);
         }

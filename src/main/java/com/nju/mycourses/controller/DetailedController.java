@@ -108,6 +108,14 @@ public class DetailedController {
         return "detailedTC/forumOverview";
     }
 
+    @GetMapping("/courseDetailST/forumOverview/{curriculumId}")
+    public String forumOverviewST(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
+        String userName= CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        model.addAttribute("courseName",curriculumService.getCourseName(curriculumId));
+        return "detailedST/forumOverview";
+    }
+
     @GetMapping("/getForumTopics/{curriculumId}")
     public void getForumTopics(@PathVariable Long curriculumId, HttpServletRequest request, HttpServletResponse response) throws IOException {
         Integer page = Integer.valueOf(request.getParameter("page"))-1;
@@ -144,6 +152,19 @@ public class DetailedController {
         model.addAttribute("postTime",topicService.getPostTime(topicId));
         model.addAttribute("description",topicService.getDescription(topicId));
         return "detailedTC/postView";
+    }
+
+    @GetMapping("/courseDetailST/postView/{curriculumId}")
+    public String postViewST(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
+        Long topicId= Long.valueOf(CookieUtils.getCookieValue(request,"topicId"));
+        model.addAttribute("topic",topicService.getTopic(topicId));
+        model.addAttribute("postUser",topicService.getPostUser(topicId));
+        String userName= CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        model.addAttribute("courseName",curriculumService.getCourseName(curriculumId));
+        model.addAttribute("postTime",topicService.getPostTime(topicId));
+        model.addAttribute("description",topicService.getDescription(topicId));
+        return "detailedST/postView";
     }
 
     @GetMapping("/replyPost")
