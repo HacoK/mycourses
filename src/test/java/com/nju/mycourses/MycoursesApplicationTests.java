@@ -9,6 +9,11 @@ import com.nju.mycourses.enums.UserType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +33,7 @@ import org.thymeleaf.context.Context;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -39,9 +45,9 @@ public class MycoursesApplicationTests {
     }
 
 
-    /**
-     * 发送模板邮件
-     */
+//    /**
+//     * 发送模板邮件
+//     */
 
 //    @Autowired
 //    private JavaMailSender javaMailSender;
@@ -53,12 +59,12 @@ public class MycoursesApplicationTests {
 //        try {
 //            MimeMessageHelper helper = new MimeMessageHelper(message, true);
 //            helper.setFrom("877728156@qq.com");
-//            helper.setTo("877728156@qq.com");
+//            helper.setTo("1269897230@qq.com");
 //            helper.setSubject("Verify Your Account in My Courses");
 //
 //            Context context = new Context();
-//            context.setVariable("id", "test");
-//            String emailContent = templateEngine.process("emailTemplate", context);
+//            context.setVariable("userName", "Haco");
+//            String emailContent = templateEngine.process("registerMail", context);
 //            helper.setText(emailContent, true);
 //        } catch (MessagingException e) {
 //            throw new RuntimeException("Messaging  Exception !", e);
@@ -66,12 +72,41 @@ public class MycoursesApplicationTests {
 //        javaMailSender.send(message);
 //    }
 
-    @Autowired
-    private ForumReplyRepository forumReplyRepository;
 
-    @Test
-    public void test() throws Exception {
-        System.out.println(forumReplyRepository.findFirstByTopicIdOrderByReplyNumDesc((long) 9).getUserId());
-    }
+//    @Test
+//    public void test() throws Exception {
+//        Thread.sleep(3000);
+//        System.setProperty("webdriver.chrome.driver", "D:/Python3.7.0/Scripts/chromedriver.exe");
+//        WebDriver webDriver = new ChromeDriver();
+//        webDriver.manage().window().maximize();
+//        webDriver.manage().deleteAllCookies();
+//        // 与浏览器同步非常重要，必须等待浏览器加载完毕
+//        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//
+//        Actions action = new Actions(webDriver);//-------------------------------------------声明一个动作
+//
+//
+//        //打开目标地址
+//        webDriver.get("http://localhost:8080/login");
+//        webDriver.findElement(By.id("email")).sendKeys("hacok");
+//        Thread.sleep(2000);
+//        webDriver.findElement(By.id("password")).sendKeys("hacok");
+//        Thread.sleep(2000);
+//        webDriver.findElement(By.xpath("//html/body/section/div/div/div/div[2]/div/form/div[4]/button")).click();
+//        Thread.sleep(2000);
+//        webDriver.findElement(By.xpath("//*[@id=\"4\"]/button")).click();
+//        Thread.sleep(2000);
+//        webDriver.findElement(By.xpath("/html/body/div/div[2]/div/ul/li[5]/a")).click();
+//        Thread.sleep(2000);
+//        webDriver.findElement(By.xpath("//*[@id=\"9\"]")).click();
+//        Thread.sleep(2000);
+//        webDriver.findElement(By.xpath("/html/body/div/div[2]/div/ul/li[2]/a")).click();
+//        Thread.sleep(2000);
+//        webDriver.findElement(By.xpath("/html/body/div/div[2]/div/ul/li[2]/dl/dd[2]/a")).click();
+//
+//        //暂停5秒钟后关闭
+//        Thread.sleep(5000);
+//        webDriver.quit();
+//    }
 }
 

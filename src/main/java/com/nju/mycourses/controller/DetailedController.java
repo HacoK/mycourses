@@ -191,4 +191,19 @@ public class DetailedController {
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(topicService.getPostReplies(page,topicId));
     }
+
+    @GetMapping("/groupMail")
+    public String groupMail(){
+        return "detailedTC/groupMail";
+    }
+
+    @PostMapping("/groupMail")
+    public void sendGroupMail(HttpServletRequest request, HttpServletResponse response){
+        Long curriculumId = Long.valueOf(request.getParameter("curriculumId"));
+        String userName = request.getParameter("userName");
+        String title = request.getParameter("title");
+        String mailContent = request.getParameter("mailContent").replaceAll("\n","<br>");
+
+
+    }
 }
