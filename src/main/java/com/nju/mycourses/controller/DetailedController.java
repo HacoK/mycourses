@@ -119,7 +119,7 @@ public class DetailedController {
 
     @GetMapping("/newPost")
     public String newPost() throws IOException {
-        return "newPost";
+        return "commonPages/newPost";
     }
 
     @PostMapping("/newPost/{curriculumId}")
@@ -148,7 +148,7 @@ public class DetailedController {
 
     @GetMapping("/replyPost")
     public String replyPost() throws IOException {
-        return "replyPost";
+        return "commonPages/replyPost";
     }
 
     @PostMapping("/replyPost")

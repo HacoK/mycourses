@@ -7,6 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Detailed Course(TC)</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
+    <style>
+        a.layui-table-link {
+            color: #0070a8;
+            transition: .5s;
+            cursor:pointer;
+            text-decoration: none;
+        }
+        a.layui-table-link:visited {
+            color: #CCF;
+        }
+        a.layui-table-link:hover {
+            color: lime;
+            background: #CFF;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -61,6 +77,9 @@
             <legend><span th:text="${courseName}"></span></legend>
         </fieldset>
         <hr class="layui-bg-cyan">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>论坛一览</legend>
+        </fieldset>
         <button class="layui-btn layui-btn-radius layui-btn-normal" onclick="newPost()">
             <i class="layui-icon">&#xe654;</i> 新建帖子
         </button>
@@ -138,7 +157,7 @@
             ,url:'/getForumTopics/'+url.substr(url.lastIndexOf('/')+1)
             ,cols: [[
                 {field:'topicId', title:'ID', width:80, unresize: true, sort: true, hide:true}
-                ,{field:'topic', title:'话题', width:200, unresize: true}
+                ,{field:'topic', title:'话题', width:200, unresize: true, templet: '#topicTpl'}
                 ,{field:'postUser', title:'发帖用户', width:120, unresize: true, sort: true}
                 ,{field:'postTime', title:'发帖时间', width:180, unresize: true, sort: true}
                 ,{field:'replyNum', title:'回帖数', width:100, unresize: true, sort: true}
@@ -157,15 +176,11 @@
             }
         });
 
-        //监听行单击事件（单击事件为：rowDouble）
-        table.on('row(test)', function(obj){
-            var data = obj.data;
-            Cookies.set('topicId', data.topicId);
-            var url=window.location.href;
-            window.location.href=url.replace('forumOverview','postView');
-        });
 
     });
+</script>
+<script type="text/html" id="topicTpl">
+    <a href="javascript:;" class="layui-table-link" onclick="viewPost(this)" id="{{d.topicId}}">{{d.topic}}</a>
 </script>
 
 <script>
@@ -182,6 +197,11 @@
                 content: '/newPost'
             });
         });
+    };
+    var viewPost=function (obj) {
+        Cookies.set('topicId', $(obj).attr("id"));
+        var url=window.location.href;
+        window.location.href=url.replace('forumOverview','postView');
     }
 </script>
 </body>
