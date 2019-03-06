@@ -314,4 +314,14 @@ public class CurriculumService {
         Long courseId=curriculumRepository.findById(curriculumId).get().getCourseId();
         return courseRepository.findById(courseId).get().getCourseware();
     }
+
+    public List<String> getRecipients(Long curriculumId){
+        List<CSelecRec> cSelecRecList=cSelecRecRepository.findByCurriculumIdAndApprovedOrderByRecordIdAsc(curriculumId,1);
+        List<String> recipients=new ArrayList<>();
+        for(CSelecRec rec:cSelecRecList){
+            String email=userRepository.findById(rec.getStudentId()).get().getEmail();
+            recipients.add(email);
+        }
+        return recipients;
+    }
 }

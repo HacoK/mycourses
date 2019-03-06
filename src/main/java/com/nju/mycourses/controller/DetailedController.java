@@ -7,6 +7,7 @@ import com.nju.mycourses.service.FileService;
 import com.nju.mycourses.service.TopicService;
 import com.nju.mycourses.util.CookieUtils;
 import com.nju.mycourses.util.FileUtil;
+import com.nju.mycourses.util.MailUtil;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.List;
 
 @Controller
 public class DetailedController {
@@ -32,6 +34,8 @@ public class DetailedController {
     CourseService courseService;
     @Autowired
     TopicService topicService;
+    @Autowired
+    private MailUtil mailUtil;
 
     @GetMapping("/courseDetailTC/coursewareUpload/{curriculumId}")
     public String coursewareUpload(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
@@ -198,12 +202,18 @@ public class DetailedController {
     }
 
     @PostMapping("/groupMail")
-    public void sendGroupMail(HttpServletRequest request, HttpServletResponse response){
+    public void sendGroupMail(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long curriculumId = Long.valueOf(request.getParameter("curriculumId"));
-        String userName = request.getParameter("userName");
+        String teacherName = request.getParameter("userName");
         String title = request.getParameter("title");
         String mailContent = request.getParameter("mailContent").replaceAll("\n","<br>");
 
+        String courseName=curriculumService.getCourseName(curriculumId);
+        List<String> recipients=curriculumService.getRecipients(curriculumId);
 
+        mailUtil.sendMailAll(courseName,teacherName,title,mailContent,recipients);
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(new JSONObject(new Prompt("Group mail sent successfully!")));
     }
 }
