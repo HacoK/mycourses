@@ -2,6 +2,7 @@ package com.nju.mycourses.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Assignment {
@@ -11,9 +12,9 @@ public class Assignment {
     @Column(nullable = false)
     private String curriculum_id;
     @Column(nullable = false)
-    private LocalDate startline;
+    private LocalDateTime startline;
     @Column(nullable = false)
-    private LocalDate deadline;
+    private LocalDateTime deadline;
     @Column
     private Integer size;
     @Column
@@ -44,19 +45,19 @@ public class Assignment {
         this.curriculum_id = curriculum_id;
     }
 
-    public LocalDate getStartline() {
+    public LocalDateTime getStartline() {
         return startline;
     }
 
-    public void setStartline(LocalDate startline) {
+    public void setStartline(LocalDateTime startline) {
         this.startline = startline;
     }
 
-    public LocalDate getDeadline() {
+    public LocalDateTime getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDate deadline) {
+    public void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
     }
 
