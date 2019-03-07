@@ -1,10 +1,9 @@
 package com.nju.mycourses.controller;
 
 import com.nju.mycourses.POJO.Prompt;
-import com.nju.mycourses.service.CourseService;
-import com.nju.mycourses.service.CurriculumService;
-import com.nju.mycourses.service.FileService;
-import com.nju.mycourses.service.TopicService;
+import com.nju.mycourses.config.PathConfig;
+import com.nju.mycourses.entity.Assignment;
+import com.nju.mycourses.service.*;
 import com.nju.mycourses.util.CookieUtils;
 import com.nju.mycourses.util.FileUtil;
 import com.nju.mycourses.util.MailUtil;
@@ -22,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -36,6 +37,8 @@ public class DetailedController {
     TopicService topicService;
     @Autowired
     private MailUtil mailUtil;
+    @Autowired
+    AssignmentService assignmentService;
 
     @GetMapping("/courseDetailTC/coursewareUpload/{curriculumId}")
     public String coursewareUpload(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
@@ -226,8 +229,59 @@ public class DetailedController {
     }
 
     @PostMapping("/courseDetailTC/assignmentRelease/{curriculumId}")
-    public void releaseAssignment(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
-        String userName= CookieUtils.getCookieValue(request,"userName");
+    public void releaseAssignment(@PathVariable Long curriculumId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String startline=request.getParameter("startline");
+        String deadline=request.getParameter("deadline");
+        Integer size= Integer.valueOf(request.getParameter("size"));
+        String unit=request.getParameter("unit");
+        if(unit.equals("MB"))
+            size=size*1024;
+        String type=request.getParameter("type");
+        String title=request.getParameter("title");
+        String content=request.getParameter("content");
+
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        Assignment assignment=new Assignment(curriculumId,LocalDateTime.parse(startline,df),LocalDateTime.parse(deadline,df),size,type,title,content,false, PathConfig.getAssignmentRootPath());
+        assignmentService.releaseAssignment(assignment);
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(new JSONObject(new Prompt("Assignment release successfully!")));
+    }
+
+    @PostMapping("/courseDetailTC/assignmentRelease/{curriculumId}/attachment")
+    public void attachAssignment(@PathVariable Long curriculumId, @RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
+        Integer size= Integer.valueOf(request.getParameter("size"));
+        String unit=request.getParameter("unit");
+        if(unit.equals("MB"))
+            size=size*1024;
+        String startline=request.getParameter("startline");
+        String deadline=request.getParameter("deadline");
+        String title=request.getParameter("title");
+        String content=request.getParameter("content");
+        String type=request.getParameter("type");
+
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        Assignment assignment=new Assignment(curriculumId,LocalDateTime.parse(startline,df),LocalDateTime.parse(deadline,df),size,type,title,content,true, PathConfig.getAssignmentRootPath());
+        assignmentService.releaseAssignment(assignment);
+
+        String path=assignment.getRootDir();
+        Prompt prompt;
+        try {
+            FileUtil.uploadFile(file,path);
+            prompt=new Prompt("Assignment release successfully!");
+            response.setContentType("application/json; charset=UTF-8");
+            response.getWriter().print(new JSONObject(prompt));
+        } catch (IOException e) {
+            prompt=new Prompt("Attachment upload Failed...");
+            response.setContentType("application/json; charset=UTF-8");
+            try {
+                JSONObject jsonObject=new JSONObject(prompt);
+                response.getWriter().print(jsonObject);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        }
 
     }
 }

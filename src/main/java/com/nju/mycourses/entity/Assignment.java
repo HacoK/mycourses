@@ -10,7 +10,7 @@ public class Assignment {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long assignmentId;
     @Column(nullable = false)
-    private String curriculum_id;
+    private Long curriculumId;
     @Column(nullable = false)
     private LocalDateTime startline;
     @Column(nullable = false)
@@ -24,11 +24,23 @@ public class Assignment {
     @Column
     private String content;
     @Column
-    private String tc_path;
+    private Boolean attachment;
     @Column
-    private String st_dir;
+    private String rootDir;
 
     public Assignment() {
+    }
+
+    public Assignment(Long curriculumId, LocalDateTime startline, LocalDateTime deadline, Integer size, String type, String title, String content, Boolean attachment, String rootDir) {
+        this.curriculumId = curriculumId;
+        this.startline = startline;
+        this.deadline = deadline;
+        this.size = size;
+        this.type = type;
+        this.title = title;
+        this.content = content;
+        this.attachment = attachment;
+        this.rootDir = rootDir;
     }
 
     public Long getAssignmentId() {
@@ -39,12 +51,12 @@ public class Assignment {
         this.assignmentId = assignmentId;
     }
 
-    public String getCurriculum_id() {
-        return curriculum_id;
+    public Long getCurriculumId() {
+        return curriculumId;
     }
 
-    public void setCurriculum_id(String curriculum_id) {
-        this.curriculum_id = curriculum_id;
+    public void setCurriculumId(Long curriculumId) {
+        this.curriculumId = curriculumId;
     }
 
     public LocalDateTime getStartline() {
@@ -95,19 +107,19 @@ public class Assignment {
         this.content = content;
     }
 
-    public String getTc_path() {
-        return tc_path;
+    public Boolean getAttachment() {
+        return attachment;
     }
 
-    public void setTc_path(String tc_path) {
-        this.tc_path = tc_path;
+    public void setAttachment(Boolean attachment) {
+        this.attachment = attachment;
     }
 
-    public String getSt_dir() {
-        return st_dir;
+    public String getRootDir() {
+        return rootDir;
     }
 
-    public void setSt_dir(String st_dir) {
-        this.st_dir = st_dir;
+    public void setRootDir(String rootDir) {
+        this.rootDir = rootDir;
     }
 }

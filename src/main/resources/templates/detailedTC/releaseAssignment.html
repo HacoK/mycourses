@@ -130,7 +130,7 @@
             <div class="layui-form-item">
                 <div class="layui-input-block" style="text-align:center">
                     <button class="layui-btn" lay-submit lay-filter="demo" id="release">发布</button>
-                    <button type="reset" class="layui-btn layui-btn-primary" onclick="resetF()">重置</button>
+                    <button class="layui-btn layui-btn-primary" onclick="resetF()">重置</button>
                 </div>
             </div>
         </form>
@@ -215,14 +215,66 @@
 </script>
 <script>
     var resetF=function () {
-        $("input[type=file]").val("");
-        $(".layui-upload-choose").text("");
+        window.location.reload();
+    };
+    var getType=function () {
+        var typeSpecify=$('input[name=typeSpecify]').val();
+        var type="";
+        if(typeSpecify=="0"){
+            return type;
+        }
+        else{
+            var word=$(':checkbox[name=word]').prop('checked');
+            var pdf=$(':checkbox[name=pdf]').prop('checked');
+            var ppt=$(':checkbox[name=ppt]').prop('checked');
+            var md=$(':checkbox[name=md]').prop('checked');
+            var excel=$(':checkbox[name=excel]').prop('checked');
+            var zip=$(':checkbox[name=zip]').prop('checked');
+            if(word){
+                if(type=="")
+                    type=type+'word';
+                else
+                    type=type+'|word';
+            }
+            if(pdf){
+                if(type=="")
+                    type=type+'pdf';
+                else
+                    type=type+'|pdf';
+            }
+            if(ppt){
+                if(type=="")
+                    type=type+'ppt';
+                else
+                    type=type+'|ppt';
+            }
+            if(md){
+                if(type=="")
+                    type=type+'md';
+                else
+                    type=type+'|md';
+            }
+            if(excel){
+                if(type=="")
+                    type=type+'excel';
+                else
+                    type=type+'|excel';
+            }
+            if(zip){
+                if(type=="")
+                    type=type+'zip';
+                else
+                    type=type+'|zip';
+            }
+            return type;
+        }
     }
 </script>
 <script>
     layui.use(['form','laydate'], function(){
         var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
         var laydate = layui.laydate;
+        var layer = layui.layer;
 
         $("#type").toggle();
         $('input[name=typeSpecify]').val('0');
@@ -242,15 +294,57 @@
         });
 
         form.on('submit(demo)', function(data){
-            //$(':file').prop('files')[0]
+            if($(':file').prop('files').length==0){
+                var url=parent.window.location.href;
+                var curriculumId=url.substr(url.lastIndexOf('/')+1);
+                var time=data.field.time;
+                var startline = time.substring(0,time.indexOf('~')-1);
+                var deadline =time.substring(time.indexOf('~')+2);
+                var size=data.field.size;
+                var unit=data.field.unit;
+                var type=getType();
+                var title=data.field.title;
+                var content=data.field.content;
+
+                $.ajax({
+                    type: 'post', // 提交方式 get/post
+                    url: url, // 需要提交的 url
+                    dataType: "json",
+                    data: {
+                        'curriculumId':curriculumId,
+                        'startline':startline,
+                        'deadline':deadline,
+                        'size':size,
+                        'unit':unit,
+                        'type':type,
+                        'title': title,
+                        'content': content
+                    },
+                    success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+                        // 此处可对 data 作相关处理
+                        if(data.msg==="Assignment release successfully!"){
+                            layer.msg("作业已发布（无附件）", {
+                                icon: 6,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function () {
+                                location.reload();
+                            });
+                        }
+                    }
+                });
+                return false;
+            }else{
+                $('#attachment').click();
+            }
         });
     });
     layui.use('upload', function(){
         var upload = layui.upload;
+        var layer=layui.layer;
         //拖拽上传
         upload.render({
             elem: '#test10'
-            ,url: window.location.href
+            ,url: window.location.href+'/attachment'
             ,data: {
                 curriculumId: function(){
                     var url= window.location.href;
@@ -269,71 +363,30 @@
                     return $('input[name=size]').val();
                 },
                 unit: function(){
-                    return $('input[name=unit]').val();
+                    return $("input[type='radio']:checked").val();
                 },
                 type: function(){
-                    var typeSpecify=$('input[name=typeSpecify]').val();
-                    var type="";
-                    if(typeSpecify=="0"){
-                        return type;
-                    }
-                    else{
-                        var word=$(':checkbox[name=word]').prop('checked');
-                        var pdf=$(':checkbox[name=pdf]').prop('checked');
-                        var ppt=$(':checkbox[name=ppt]').prop('checked');
-                        var md=$(':checkbox[name=md]').prop('checked');
-                        var excel=$(':checkbox[name=excel]').prop('checked');
-                        var zip=$(':checkbox[name=zip]').prop('checked');
-                        if(word){
-                            if(type=="")
-                                type=type+'word';
-                            else
-                                type=type+'|word';
-                        }
-                        if(pdf){
-                            if(type=="")
-                                type=type+'pdf';
-                            else
-                                type=type+'|pdf';
-                        }
-                        if(ppt){
-                            if(type=="")
-                                type=type+'ppt';
-                            else
-                                type=type+'|ppt';
-                        }
-                        if(md){
-                            if(type=="")
-                                type=type+'md';
-                            else
-                                type=type+'|md';
-                        }
-                        if(excel){
-                            if(type=="")
-                                type=type+'excel';
-                            else
-                                type=type+'|excel';
-                        }
-                        if(zip){
-                            if(type=="")
-                                type=type+'zip';
-                            else
-                                type=type+'|zip';
-                        }
-                        return type;
-                    }
+                    return getType();
                 },
                 title: function(){
                     return $('input[name=title]').val();
                 },
                 content: function(){
-                    return $('input[name=content]').val();
+                    return $('textarea').val();
                 }
             }
             ,accept: 'file'
             ,auto: false
             ,bindAction: '#release'
             ,done: function(res, index, upload){
+                if(res.msg==="Assignment release successfully!"){
+                    layer.msg("作业已发布（带附件）", {
+                        icon: 6,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        location.reload();
+                    });
+                }
             }
         });
 
