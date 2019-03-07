@@ -44,18 +44,22 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">课件</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" onclick="window.location.reload()">课件上传</a></dd>
-                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('coursewareUpload','coursewareDownload')">课件下载</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('assignmentRelease','coursewareUpload')">课件上传</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('assignmentRelease','coursewareDownload')">课件下载</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="">作业</a>
+                    <a href="javascript:;">作业</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="window.location.reload()">作业发布</a></dd>
+                        <dd><a href="javascript:;">作业下载</a></dd>
+                    </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="">成绩</a>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;" onclick="window.location.href=window.location.href.replace('coursewareUpload','forumOverview')">论坛</a>
+                    <a href="javascript:;" onclick="window.location.href=window.location.href.replace('assignmentRelease','forumOverview')">论坛</a>
                 </li>
             </ul>
         </div>
@@ -70,17 +74,17 @@
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
             <legend>作业发布</legend>
         </fieldset>
-        <form class="layui-form layui-form-pane" action="">
+        <form class="layui-form layui-form-pane" onsubmit="return false;" id="testForm">
             <div class="layui-form-item">
                 <label class="layui-form-label">标题</label>
                 <div class="layui-input-block">
-                    <input type="text" name="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                    <input type="text" name="title" autocomplete="off" placeholder="请输入标题" class="layui-input" lay-verify="required">
                 </div>
             </div>
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">内容</label>
                 <div class="layui-input-block">
-                    <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+                    <textarea placeholder="请输入内容" class="layui-textarea" name="content" lay-verify="required"></textarea>
                 </div>
             </div>
             <div class="layui-form-item" pane="">
@@ -92,12 +96,12 @@
             <div class="layui-form-item" id="type">
                 <label class="layui-form-label">提交类型</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" name="type[word]" title="Word">
-                    <input type="checkbox" name="type[pdf]" title="PDF">
-                    <input type="checkbox" name="type[ppt]" title="PPT">
-                    <input type="checkbox" name="type[md]" title="Markdown">
-                    <input type="checkbox" name="type[excel]" title="Excel">
-                    <input type="checkbox" name="type[zip]" title="Zip">
+                    <input type="checkbox" name="word" title="Word">
+                    <input type="checkbox" name="pdf" title="PDF">
+                    <input type="checkbox" name="ppt" title="PPT">
+                    <input type="checkbox" name="md" title="Markdown">
+                    <input type="checkbox" name="excel" title="Excel">
+                    <input type="checkbox" name="zip" title="Zip">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -113,7 +117,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">提交时间</label>
                 <div class="layui-input-block">
-                    <input type="text" class="layui-input" id="test" placeholder="起始时间 ~ 截止时间">
+                    <input type="text" class="layui-input" name="time" id="test" placeholder="起始时间 ~ 截止时间" lay-verify="required">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -125,8 +129,8 @@
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block" style="text-align:center">
-                    <button class="layui-btn" lay-submit="" lay-filter="demo" id="release">发布</button>
-                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <button class="layui-btn" lay-submit lay-filter="demo" id="release">发布</button>
+                    <button type="reset" class="layui-btn layui-btn-primary" onclick="resetF()">重置</button>
                 </div>
             </div>
         </form>
@@ -150,7 +154,7 @@
 </script>
 <script>
     layui.use('util', function(){
-        var util = layui.util
+        var util = layui.util;
         //固定块
         util.fixbar({
             bar1: '&#xe656;'
@@ -209,16 +213,26 @@
         });
     }
 </script>
-
+<script>
+    var resetF=function () {
+        $("input[type=file]").val("");
+        $(".layui-upload-choose").text("");
+    }
+</script>
 <script>
     layui.use(['form','laydate'], function(){
         var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
         var laydate = layui.laydate;
-        var $ = layui.$;
+
         $("#type").toggle();
+        $('input[name=typeSpecify]').val('0');
         //监听指定开关
         form.on('switch(switchTest)', function(data){
             $("#type").toggle();
+            if(data.value=='0')
+                $('input[name=typeSpecify]').val('1');
+            else
+                $('input[name=typeSpecify]').val('0');
         });
 
         laydate.render({
@@ -226,20 +240,100 @@
             ,type: 'datetime'
             ,range: '~'
         });
+
+        form.on('submit(demo)', function(data){
+            //$(':file').prop('files')[0]
+        });
     });
     layui.use('upload', function(){
         var upload = layui.upload;
-
-
         //拖拽上传
         upload.render({
             elem: '#test10'
+            ,url: window.location.href
+            ,data: {
+                curriculumId: function(){
+                    var url= window.location.href;
+                    var curriculumId=url.substr(url.lastIndexOf('/')+1);
+                    return curriculumId;
+                },
+                startline: function(){
+                    var time=$('input[name=time]').val();
+                    return time.substring(0,time.indexOf('~')-1);
+                },
+                deadline: function(){
+                    var time=$('input[name=time]').val();
+                    return time.substring(time.indexOf('~')+2);
+                },
+                size: function(){
+                    return $('input[name=size]').val();
+                },
+                unit: function(){
+                    return $('input[name=unit]').val();
+                },
+                type: function(){
+                    var typeSpecify=$('input[name=typeSpecify]').val();
+                    var type="";
+                    if(typeSpecify=="0"){
+                        return type;
+                    }
+                    else{
+                        var word=$(':checkbox[name=word]').prop('checked');
+                        var pdf=$(':checkbox[name=pdf]').prop('checked');
+                        var ppt=$(':checkbox[name=ppt]').prop('checked');
+                        var md=$(':checkbox[name=md]').prop('checked');
+                        var excel=$(':checkbox[name=excel]').prop('checked');
+                        var zip=$(':checkbox[name=zip]').prop('checked');
+                        if(word){
+                            if(type=="")
+                                type=type+'word';
+                            else
+                                type=type+'|word';
+                        }
+                        if(pdf){
+                            if(type=="")
+                                type=type+'pdf';
+                            else
+                                type=type+'|pdf';
+                        }
+                        if(ppt){
+                            if(type=="")
+                                type=type+'ppt';
+                            else
+                                type=type+'|ppt';
+                        }
+                        if(md){
+                            if(type=="")
+                                type=type+'md';
+                            else
+                                type=type+'|md';
+                        }
+                        if(excel){
+                            if(type=="")
+                                type=type+'excel';
+                            else
+                                type=type+'|excel';
+                        }
+                        if(zip){
+                            if(type=="")
+                                type=type+'zip';
+                            else
+                                type=type+'|zip';
+                        }
+                        return type;
+                    }
+                },
+                title: function(){
+                    return $('input[name=title]').val();
+                },
+                content: function(){
+                    return $('input[name=content]').val();
+                }
+            }
             ,accept: 'file'
             ,auto: false
             ,bindAction: '#release'
-            ,url: '/upload/'
-            ,done: function(res){
-                console.log(res)
+            ,done: function(res, index, upload){
             }
         });
 

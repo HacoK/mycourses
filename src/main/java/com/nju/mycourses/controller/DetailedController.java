@@ -216,4 +216,18 @@ public class DetailedController {
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(new JSONObject(new Prompt("Group mail sent successfully!")));
     }
+
+    @GetMapping("/courseDetailTC/assignmentRelease/{curriculumId}")
+    public String assignmentRelease(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
+        String userName= CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        model.addAttribute("courseName",curriculumService.getCourseName(curriculumId));
+        return "detailedTC/releaseAssignment";
+    }
+
+    @PostMapping("/courseDetailTC/assignmentRelease/{curriculumId}")
+    public void releaseAssignment(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
+        String userName= CookieUtils.getCookieValue(request,"userName");
+
+    }
 }

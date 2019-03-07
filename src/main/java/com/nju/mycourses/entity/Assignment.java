@@ -20,7 +20,9 @@ public class Assignment {
     @Column
     private String type;
     @Column
-    private String description;
+    private String title;
+    @Column
+    private String content;
     @Column
     private String tc_path;
     @Column
@@ -77,12 +79,20 @@ public class Assignment {
         this.type = type;
     }
 
-    public String getDescription() {
-        return description;
+    public String getTitle() {
+        return title;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getTc_path() {
