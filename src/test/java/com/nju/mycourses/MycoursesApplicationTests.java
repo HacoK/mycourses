@@ -8,6 +8,8 @@ import com.nju.mycourses.entity.Assignment;
 import com.nju.mycourses.entity.Curriculum;
 import com.nju.mycourses.entity.User;
 import com.nju.mycourses.enums.UserType;
+import com.nju.mycourses.util.FileUtil;
+import com.nju.mycourses.util.ZipCompress;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -112,12 +114,10 @@ public class MycoursesApplicationTests {
 //        webDriver.quit();
 //    }
 
-//    @Autowired
-//    AssignmentRepository assignmentRepository;
-//    @Test
-//    public void test() throws Exception {
-//        List<Assignment> assignments = assignmentRepository.findByCurriculumIdOrderByAssignmentId((long) 4);
-//        System.out.println("Assignments"+assignments.get(0).getTitle());
-//    }
+
+    @Test
+    public void test() throws Exception {
+
+    }
 }
 

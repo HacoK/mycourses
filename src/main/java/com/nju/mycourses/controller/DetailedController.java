@@ -1,5 +1,6 @@
 package com.nju.mycourses.controller;
 
+import com.nju.mycourses.DAO.StInfoRepository;
 import com.nju.mycourses.POJO.Prompt;
 import com.nju.mycourses.config.PathConfig;
 import com.nju.mycourses.entity.Assignment;
@@ -42,6 +43,8 @@ public class DetailedController {
     AssignmentService assignmentService;
     @Autowired
     UserService userService;
+    @Autowired
+    StInfoRepository stInfoRepository;
 
     @GetMapping("/courseDetailTC/coursewareUpload/{curriculumId}")
     public String coursewareUpload(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
@@ -325,7 +328,8 @@ public class DetailedController {
     @PostMapping("/viewAssignment/{assignmentId}")
     public void submitAssignment(@PathVariable Long assignmentId, @RequestParam("file")MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String userName=CookieUtils.getCookieValue(request,"userName");
-        Long studentId=userService.getUserId(userName);
+        Long userId=userService.getUserId(userName);
+        String studentId=stInfoRepository.findById(userId).get().getStudentId();
         String path=assignmentService.getRootDir(assignmentId)+"dirST/"+studentId+'/';
         Prompt prompt;
         try {

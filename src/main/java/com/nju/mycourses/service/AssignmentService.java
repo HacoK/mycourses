@@ -1,6 +1,7 @@
 package com.nju.mycourses.service;
 
 import com.nju.mycourses.DAO.AssignmentRepository;
+import com.nju.mycourses.DAO.StInfoRepository;
 import com.nju.mycourses.POJO.AssignmentCard;
 import com.nju.mycourses.entity.Assignment;
 import org.json.JSONArray;
@@ -19,6 +20,8 @@ import java.util.Map;
 public class AssignmentService {
     @Autowired
     AssignmentRepository assignmentRepository;
+    @Autowired
+    StInfoRepository stInfoRepository;
 
     public void releaseAssignment(Assignment assignment){
         assignmentRepository.save(assignment);
@@ -69,8 +72,8 @@ public class AssignmentService {
             }
             map.put("attachmentName",fileName);
         }
-
-        File dirST=new File(assignment.getRootDir()+"dirST/"+userId);
+        String studentId=stInfoRepository.findById(userId).get().getStudentId();
+        File dirST=new File(assignment.getRootDir()+"dirST/"+studentId);
         String submitState=(dirST.list()==null)?"未提交":"已提交";
         map.put("submitState",submitState);
 
