@@ -24,6 +24,7 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class DetailedController {
@@ -39,6 +40,8 @@ public class DetailedController {
     private MailUtil mailUtil;
     @Autowired
     AssignmentService assignmentService;
+    @Autowired
+    UserService userService;
 
     @GetMapping("/courseDetailTC/coursewareUpload/{curriculumId}")
     public String coursewareUpload(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
@@ -234,14 +237,12 @@ public class DetailedController {
         String deadline=request.getParameter("deadline");
         Integer size= Integer.valueOf(request.getParameter("size"));
         String unit=request.getParameter("unit");
-        if(unit.equals("MB"))
-            size=size*1024;
         String type=request.getParameter("type");
         String title=request.getParameter("title");
         String content=request.getParameter("content");
 
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        Assignment assignment=new Assignment(curriculumId,LocalDateTime.parse(startline,df),LocalDateTime.parse(deadline,df),size,type,title,content,false, PathConfig.getAssignmentRootPath());
+        Assignment assignment=new Assignment(curriculumId,LocalDateTime.parse(startline,df),LocalDateTime.parse(deadline,df),size,unit,type,title,content,false, PathConfig.getAssignmentRootPath());
         assignmentService.releaseAssignment(assignment);
 
         response.setContentType("application/json; charset=UTF-8");
@@ -252,8 +253,6 @@ public class DetailedController {
     public void attachAssignment(@PathVariable Long curriculumId, @RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
         Integer size= Integer.valueOf(request.getParameter("size"));
         String unit=request.getParameter("unit");
-        if(unit.equals("MB"))
-            size=size*1024;
         String startline=request.getParameter("startline");
         String deadline=request.getParameter("deadline");
         String title=request.getParameter("title");
@@ -261,7 +260,7 @@ public class DetailedController {
         String type=request.getParameter("type");
 
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        Assignment assignment=new Assignment(curriculumId,LocalDateTime.parse(startline,df),LocalDateTime.parse(deadline,df),size,type,title,content,true, PathConfig.getAssignmentRootPath());
+        Assignment assignment=new Assignment(curriculumId,LocalDateTime.parse(startline,df),LocalDateTime.parse(deadline,df),size,unit,type,title,content,true, PathConfig.getAssignmentRootPath());
         assignmentService.releaseAssignment(assignment);
 
         String path=assignment.getRootDir();
@@ -300,5 +299,27 @@ public class DetailedController {
 
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(assignmentService.getAssignments(curriculumId,page));
+    }
+
+    @GetMapping("/viewAssignment/{assignmentId}")
+    public String viewAssignment(@PathVariable Long assignmentId, Model model, HttpServletRequest request) throws IOException {
+        String userName= CookieUtils.getCookieValue(request,"userName");
+        Map<String, Object> map=assignmentService.getAssignmentAttributes(assignmentId,userService.getUserId(userName));
+        model.addAllAttributes(map);
+        return "detailedST/submitAssignment";
+    }
+
+    @GetMapping("/attachment/{assignmentId}/{attachmentName}")
+    public void getAttachment(@PathVariable Long assignmentId,@PathVariable String attachmentName, HttpServletResponse response) throws IOException {
+        try (InputStream inputStream = new FileInputStream(new File(assignmentService.getAttachmentPath(assignmentId,attachmentName)));
+             OutputStream outputStream = response.getOutputStream()) {
+
+            response.setHeader("Content-Disposition", "attachment; filename=" + java.net.URLEncoder.encode(attachmentName, "UTF-8"));
+            response.setContentType("application/x-download");
+
+            IOUtils.copy(inputStream, outputStream);
+            outputStream.flush();
+        }
+
     }
 }

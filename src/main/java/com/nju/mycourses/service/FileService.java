@@ -40,8 +40,7 @@ public class FileService {
 
         Integer count=fileNames.length;
         Integer pages=count/itemNum;
-        if(count%itemNum!=0)
-            pages++;
+        pages=(count%itemNum!=0)?(pages+1):pages;
 
         JSONObject result=new JSONObject();
         result.put("data",new JSONArray(resultCards));

@@ -101,4 +101,8 @@ public class UserService {
         return user.getEmail();
     }
 
+    public Long getUserId(String userName){
+        User user=userRepository.findByUserName(userName);
+        return user.getUserId();
+    }
 }

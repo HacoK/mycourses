@@ -168,7 +168,7 @@
                     layui.each(res.data, function(index, item){
                         lis.push(
                             '<i class="layui-icon" style="font-size: 30px; color: #7700FF ;">&#xe66e;</i> '+
-                            '<a class="assignment" href="javascript:void(0)" id="'+item.id+'">'+item.title+'</a>'+
+                            '<a class="assignment" href="javascript:void(0)" id="'+item.id+'" onclick="viewAssignment(this)">'+item.title+'</a>'+
                             '<hr class="layui-bg-cyan">'
                         );
                     });
@@ -180,6 +180,22 @@
             }
         });
     });
+</script>
+<script>
+    var viewAssignment=function (obj) {
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.open({
+                title: false,
+                type: 2,
+                area: ['650px', '400px'],
+                fixed: false, //不固定
+                maxmin: true,
+                scrollbar: false,
+                content: '/viewAssignment/'+$(obj).attr('id')
+            });
+        });
+    }
 </script>
 </body>
 </html>

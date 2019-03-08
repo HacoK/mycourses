@@ -8,8 +8,12 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AssignmentService {
@@ -45,5 +49,55 @@ public class AssignmentService {
         result.put("data",new JSONArray(resultCards));
         result.put("pages",pages);
         return result;
+    }
+
+    public Map<String,Object> getAssignmentAttributes(Long assignmentId,Long userId){
+        Map<String, Object> map = new HashMap<>();
+        Assignment assignment=assignmentRepository.findById(assignmentId).get();
+        map.put("title",assignment.getTitle());
+        map.put("content",assignment.getTitle());
+        map.put("attachment",assignment.getAttachment());
+        if(assignment.getAttachment()){
+            map.put("assignmentId",assignmentId);
+            File dir=new File(assignment.getRootDir());
+            String[] fileNames=dir.list();
+            String fileName="";
+            for(String s:fileNames){
+                if((!s.equals("dirST"))){
+                    fileName=s;
+                }
+            }
+            map.put("attachmentName",fileName);
+        }
+
+        File dirST=new File(assignment.getRootDir()+"dirST/"+userId);
+        String submitState=(dirST.list()==null)?"未提交":"已提交";
+        map.put("submitState",submitState);
+
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        map.put("startline",df.format(assignment.getStartline()));
+        map.put("deadline",df.format(assignment.getDeadline()));
+
+        if(assignment.getSize()==0){
+            map.put("size","/");
+        }else{
+            map.put("size",assignment.getSize()+" "+assignment.getUnit());
+        }
+        if(assignment.getType().equals("")){
+            map.put("type","/");
+        }else{
+            map.put("type",assignment.getType());
+        }
+        if(submitState.equals("未提交")){
+            map.put("file","");
+        }else{
+            map.put("file",dirST.list()[0]);
+        }
+        return map;
+    }
+
+    public String getAttachmentPath(Long assignmentId,String attachmentName){
+        Assignment assignment=assignmentRepository.findById(assignmentId).get();
+        return (assignment.getRootDir()+attachmentName);
     }
 }

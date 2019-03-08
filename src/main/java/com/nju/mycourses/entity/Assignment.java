@@ -18,6 +18,8 @@ public class Assignment {
     @Column
     private Integer size;
     @Column
+    private String unit;
+    @Column
     private String type;
     @Column
     private String title;
@@ -31,11 +33,12 @@ public class Assignment {
     public Assignment() {
     }
 
-    public Assignment(Long curriculumId, LocalDateTime startline, LocalDateTime deadline, Integer size, String type, String title, String content, Boolean attachment, String rootDir) {
+    public Assignment(Long curriculumId, LocalDateTime startline, LocalDateTime deadline, Integer size, String unit, String type, String title, String content, Boolean attachment, String rootDir) {
         this.curriculumId = curriculumId;
         this.startline = startline;
         this.deadline = deadline;
         this.size = size;
+        this.unit = unit;
         this.type = type;
         this.title = title;
         this.content = content;
@@ -81,6 +84,14 @@ public class Assignment {
 
     public void setSize(Integer size) {
         this.size = size;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public String getType() {
