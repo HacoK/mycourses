@@ -78,12 +78,4 @@ public class User {
         this.active = false;
         this.type = type;
     }
-
-    public String getStudentID(){
-        return email.substring(0,email.indexOf('@'));
-    }
-
-    public String getStudentGrade(){
-        return email.substring(0,2);
-    }
 }

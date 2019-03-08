@@ -195,7 +195,7 @@
             });
         });
 
-    }
+    };
     var releaseCourse=function(){
         layui.use('layer', function(){
             var layer = layui.layer;
@@ -220,7 +220,7 @@
         }, function () {
             $('#resetP')[0].reset();
         });
-    }
+    };
     var cancel=function(){
         var userName=Cookies.get('userName');
         $.ajax({
@@ -238,11 +238,11 @@
                 }
             }
         });
-    }
+    };
     var logout=function () {
         Cookies.remove('userName');
         window.location.href='login';
-    }
+    };
     var resetPassword=function () {
         var passwordO=$('input[name=passwordO]').val(),
             passwordN=$('input[name=passwordN]').val(),
@@ -270,13 +270,13 @@
                 }
             });
         }
-    }
+    };
     var changeName=function () {
         var userName=Cookies.get('userName');
         var newName=$('input[name=userName]').val();
         $.ajax({
             type: 'post', // 提交方式 get/post
-            url: '/changeNameST', // 需要提交的 url
+            url: '/changeNameTC', // 需要提交的 url
             dataType: "json",
             data: {
                 'userName': userName,

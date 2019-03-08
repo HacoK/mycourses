@@ -1,7 +1,10 @@
 package com.nju.mycourses.controller;
 
 
+import com.nju.mycourses.DAO.StInfoRepository;
+import com.nju.mycourses.entity.StInfo;
 import com.nju.mycourses.entity.User;
+import com.nju.mycourses.enums.StType;
 import com.nju.mycourses.enums.UserType;
 import com.nju.mycourses.service.UserService;
 import com.nju.mycourses.POJO.Prompt;
@@ -20,6 +23,8 @@ public class LoginController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    StInfoRepository stInfoRepository;
 
     @RequestMapping("/")
     public String index() {
@@ -63,6 +68,8 @@ public class LoginController {
             if(isMatch){
                 user=new User(userName,email,password, UserType.Student);
                 userService.registerUser(user);
+                StInfo stInfo=new StInfo(user.getUserId(),user.getEmail().substring(0,user.getEmail().indexOf('@')), StType.Undergraduate);
+                stInfoRepository.save(stInfo);
                 prompt=new Prompt("Register successfully(Student)! Activate now!!!");
             }else{
                 isMatch = Pattern.matches(patternTC, email);

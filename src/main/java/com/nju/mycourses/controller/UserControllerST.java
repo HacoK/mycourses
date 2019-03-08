@@ -1,7 +1,10 @@
 package com.nju.mycourses.controller;
 
+import com.nju.mycourses.DAO.StInfoRepository;
 import com.nju.mycourses.DAO.UserRepository;
+import com.nju.mycourses.entity.StInfo;
 import com.nju.mycourses.entity.User;
+import com.nju.mycourses.enums.StType;
 import com.nju.mycourses.service.CurriculumService;
 import com.nju.mycourses.util.CookieUtils;
 import com.nju.mycourses.POJO.Prompt;
@@ -21,6 +24,8 @@ public class UserControllerST {
     @Autowired
     UserRepository userRepository;
     @Autowired
+    StInfoRepository stInfoRepository;
+    @Autowired
     CurriculumService curriculumService;
 
     @GetMapping("/homepageST")
@@ -35,8 +40,10 @@ public class UserControllerST {
         String userName=CookieUtils.getCookieValue(request,"userName");
         User user=userRepository.findByUserName(userName);
         model.addAttribute("userName",userName);
-        model.addAttribute("grade",user.getStudentGrade());
-        model.addAttribute("studentID",user.getStudentID());
+        StInfo stInfo=stInfoRepository.findById(user.getUserId()).get();
+
+        model.addAttribute("studentType",stInfo.getTypeST());
+        model.addAttribute("studentId",stInfo.getStudentId());
         model.addAttribute("email",user.getEmail());
         return "studentPages/profileST";
     }
@@ -70,8 +77,8 @@ public class UserControllerST {
         response.getWriter().print(new JSONObject(prompt));
     }
 
-    @PostMapping("/changeNameST")
-    public void changeNameST(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @PostMapping("/changeNameTC")
+    public void changeNameTC(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String userName=request.getParameter("userName");
         String newName=request.getParameter("newName");
         User user=userRepository.findByUserName(newName);
@@ -111,5 +118,34 @@ public class UserControllerST {
 
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(curriculumService.drawCurriculumST(studentName,--page));
+    }
+
+    @PostMapping("/changeInfoST")
+    public void changeInfoST(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userName=request.getParameter("userName");
+        String newName=request.getParameter("newName");
+        String studentType=request.getParameter("studentType");
+        StType stType=StType.valueOf(studentType);
+        String studentId=request.getParameter("studentId");
+        String email=request.getParameter("email");
+        User user=userRepository.findByUserName(newName);
+        StInfo stInfo=stInfoRepository.findByStudentId(studentId);
+        Prompt prompt;
+        if(user!=null&&!(user.getEmail().equals(email))){
+            prompt=new Prompt("UserName Exist...");
+        }else if(stInfo!=null&&stInfo.getUserId()!=user.getUserId()){
+            prompt=new Prompt("StudentId Exist...");
+        }else{
+            user=userRepository.findByUserName(userName);
+            user.setUserName(newName);
+            userRepository.save(user);
+            stInfo=stInfoRepository.findById(user.getUserId()).get();
+            stInfo.setTypeST(stType);
+            stInfo.setStudentId(studentId);
+            stInfoRepository.save(stInfo);
+            prompt=new Prompt("Change successfully!");
+        }
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(new JSONObject(prompt));
     }
 }
