@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Detailed Course(TC)</title>
+    <title>Detailed Course(ST)</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
     <style>
         a.courseware {
@@ -63,7 +63,10 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="">作业</a>
+                    <a href="javascript:;">作业</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('coursewareDownload','assignmentOverview')">作业提交</a></dd>
+                    </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="">成绩</a>
@@ -164,7 +167,6 @@
                     //假设你的列表返回在data集合中
                     layui.each(res.data, function(index, item){
                         lis.push(
-                            '<li>'+
                             '<i class="layui-icon" style="font-size: 30px; color: #7700FF ;">&#xe621;</i> '+
                             '<a class="courseware" href="'+item.hrefPath+'" download="'+item.fileName+'">'+item.fileName+'</a>'+
                             '<hr class="layui-bg-cyan">'

@@ -1,8 +1,10 @@
 package com.nju.mycourses;
 
+import com.nju.mycourses.DAO.AssignmentRepository;
 import com.nju.mycourses.DAO.CurriculumRepository;
 import com.nju.mycourses.DAO.ForumReplyRepository;
 import com.nju.mycourses.DAO.UserRepository;
+import com.nju.mycourses.entity.Assignment;
 import com.nju.mycourses.entity.Curriculum;
 import com.nju.mycourses.entity.User;
 import com.nju.mycourses.enums.UserType;
@@ -32,6 +34,7 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -107,6 +110,14 @@ public class MycoursesApplicationTests {
 //        //暂停5秒钟后关闭
 //        Thread.sleep(5000);
 //        webDriver.quit();
+//    }
+
+//    @Autowired
+//    AssignmentRepository assignmentRepository;
+//    @Test
+//    public void test() throws Exception {
+//        List<Assignment> assignments = assignmentRepository.findByCurriculumIdOrderByAssignmentId((long) 4);
+//        System.out.println("Assignments"+assignments.get(0).getTitle());
 //    }
 }
 

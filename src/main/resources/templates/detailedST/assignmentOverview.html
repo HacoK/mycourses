@@ -5,21 +5,26 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Detailed Course(TC)</title>
+    <title>Detailed Course(ST)</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
     <style>
-        a.layui-table-link {
+        a.assignment {
+            font: 20px/1.5 arial, helvetica, sans-serif;
             color: #0070a8;
             transition: .5s;
             cursor:pointer;
             text-decoration: none;
         }
-        a.layui-table-link:visited {
+        a.assignment:visited {
             color: #CCF;
         }
-        a.layui-table-link:hover {
+        a.assignment:hover {
             color: lime;
             background: #CFF;
+            text-decoration: underline;
+        }
+        a.assignment:active {
+            color: red;
             text-decoration: underline;
         }
     </style>
@@ -36,9 +41,9 @@
                     <span th:text="${userName}"></span>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="/profileST#profile=1">个人信息</a></dd>
-                    <dd><a href="/profileST#profile=2">统计详情</a></dd>
-                    <dd><a href="/profileST#profile=3">修改密码</a></dd>
+                    <dd><a href="/profileTC#profile=1">个人信息</a></dd>
+                    <dd><a href="/profileTC#profile=2">统计详情</a></dd>
+                    <dd><a href="/profileTC#profile=3">修改密码</a></dd>
                     <dd><a href="javascript:void(0)" onclick="cancel()">注销账号</a></dd>
                     <dd><a href="javascript:void(0)" onclick="logout()">退出登录</a></dd>
                 </dl>
@@ -54,20 +59,20 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">课件</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('forumOverview','coursewareDownload')">课件下载</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.reload()">课件下载</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">作业</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('forumOverview','assignmentOverview')">作业提交</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.reload()">作业提交</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="">成绩</a>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;" onclick="window.location.reload()">论坛</a>
+                    <a href="javascript:;" onclick="window.location.href=window.location.href.replace('coursewareDownload','forumOverview')">论坛</a>
                 </li>
             </ul>
         </div>
@@ -80,14 +85,12 @@
         </fieldset>
         <hr class="layui-bg-cyan">
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-            <legend>论坛一览</legend>
+            <legend>作业一览</legend>
         </fieldset>
-        <button class="layui-btn layui-btn-radius layui-btn-normal" onclick="newPost()">
-            <i class="layui-icon">&#xe654;</i> 新建帖子
-        </button>
-        <div style="text-align:center;margin:0 auto;width: 906px;">
-            <table class="layui-hide" id="test" lay-filter="test"></table>
+        <div class="layui-progress layui-progress-big">
+            <div class="layui-progress-bar" lay-percent="100%"></div>
         </div>
+        <ul class="flow-default" id="demo"></ul>
     </div>
 
     <div class="layui-footer">
@@ -108,7 +111,7 @@
 </script>
 <script>
     layui.use('util', function(){
-        var util = layui.util;
+        var util = layui.util
         //固定块
         util.fixbar({
             bar1: '&#xe68e;'
@@ -150,61 +153,33 @@
         window.location.href='/login';
     }
 </script>
-<script type="text/javascript" th:inline="none">
-    layui.use('table', function(){
-        var table = layui.table;
-        var url=window.location.href;
-        table.render({
-            elem: '#test'
-            ,url:'/getForumTopics/'+url.substr(url.lastIndexOf('/')+1)
-            ,cols: [[
-                {field:'topicId', title:'ID', width:80, unresize: true, sort: true, hide:true}
-                ,{field:'topic', title:'话题', width:200, unresize: true, templet: '#topicTpl'}
-                ,{field:'postUser', title:'发帖用户', width:120, unresize: true, sort: true}
-                ,{field:'postTime', title:'发帖时间', width:180, unresize: true, sort: true}
-                ,{field:'replyNum', title:'回帖数', width:100, unresize: true, sort: true}
-                ,{field:'replyUserLS', title:'最后回帖', width:120, unresize: true, sort: true}
-                ,{field:'replyTimeLS', title:'回帖时间', width:180, unresize: true, sort: true}
-            ]]
-            ,initSort: {
-                field: 'postTime' //排序字段，对应 cols 设定的各字段名
-                ,type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
-            }
-            ,limit:8
-            ,page: true
-            ,limits:[8,16,24,32,40]
-            ,text: {
-                none: '论坛暂无帖子' //默认：无数据。注：该属性为 layui 2.2.5 开始新增
-            }
-        });
-
-
-    });
-</script>
-<script type="text/html" id="topicTpl">
-    <a href="javascript:;" class="layui-table-link" onclick="viewPost(this)" id="{{d.topicId}}">{{d.topic}}</a>
-</script>
-
 <script>
-    var newPost=function(){
-        layui.use('layer', function(){
-            var layer = layui.layer;
-            layer.open({
-                title: false,
-                type: 2,
-                area: ['650px', '400px'],
-                fixed: false, //不固定
-                maxmin: true,
-                scrollbar: false,
-                content: '/newPost'
-            });
+    layui.use('flow', function(){
+        var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
+        var flow = layui.flow;
+        flow.load({
+            elem: '#demo' //指定列表容器
+            ,done: function(page, next){ //到达临界点（默认滚动触发），触发下一页
+                var lis = [];
+                var url=window.location.href;
+                //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
+                $.get('/getAssignments?page='+page+'&curriculumId='+url.substr(url.lastIndexOf('/')+1), function(res){
+                    //假设你的列表返回在data集合中
+                    layui.each(res.data, function(index, item){
+                        lis.push(
+                            '<i class="layui-icon" style="font-size: 30px; color: #7700FF ;">&#xe66e;</i> '+
+                            '<a class="assignment" href="javascript:void(0)" id="'+item.id+'">'+item.title+'</a>'+
+                            '<hr class="layui-bg-cyan">'
+                        );
+                    });
+
+                    //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                    //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                    next(lis.join(''), page < res.pages);
+                });
+            }
         });
-    };
-    var viewPost=function (obj) {
-        Cookies.set('topicId', $(obj).attr("id"));
-        var url=window.location.href;
-        window.location.href=url.replace('forumOverview','postView');
-    }
+    });
 </script>
 </body>
 </html>

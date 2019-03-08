@@ -284,4 +284,21 @@ public class DetailedController {
         }
 
     }
+
+    @GetMapping("/courseDetailST/assignmentOverview/{curriculumId}")
+    public String assignmentOverview(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
+        String userName= CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        model.addAttribute("courseName",curriculumService.getCourseName(curriculumId));
+        return "detailedST/assignmentOverview";
+    }
+
+    @GetMapping("getAssignments")
+    public void getAssignments(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Long curriculumId = Long.valueOf(request.getParameter("curriculumId"));
+        Integer page= Integer.valueOf(request.getParameter("page"));
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(assignmentService.getAssignments(curriculumId,page));
+    }
 }
