@@ -55,7 +55,7 @@ public class AssignmentService {
         Map<String, Object> map = new HashMap<>();
         Assignment assignment=assignmentRepository.findById(assignmentId).get();
         map.put("title",assignment.getTitle());
-        map.put("content",assignment.getTitle());
+        map.put("content",assignment.getContent().replaceAll("\n","<br>"));
         map.put("attachment",assignment.getAttachment());
         if(assignment.getAttachment()){
             map.put("assignmentId",assignmentId);
@@ -89,9 +89,9 @@ public class AssignmentService {
             map.put("type",assignment.getType());
         }
         if(submitState.equals("未提交")){
-            map.put("file","");
+            map.put("fileName","");
         }else{
-            map.put("file",dirST.list()[0]);
+            map.put("fileName",dirST.list()[0]);
         }
         return map;
     }
@@ -99,5 +99,10 @@ public class AssignmentService {
     public String getAttachmentPath(Long assignmentId,String attachmentName){
         Assignment assignment=assignmentRepository.findById(assignmentId).get();
         return (assignment.getRootDir()+attachmentName);
+    }
+
+    public String getRootDir(Long assignmentId){
+        Assignment assignment=assignmentRepository.findById(assignmentId).get();
+        return assignment.getRootDir();
     }
 }

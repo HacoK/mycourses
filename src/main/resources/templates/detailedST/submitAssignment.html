@@ -40,7 +40,7 @@
     <fieldset class="layui-elem-field" style="border:1px #9b95c9 solid;">
         <legend th:text="${title}"></legend>
         <div class="layui-field-box">
-            <span th:text="${content}"></span>
+            <span th:utext="${content}"></span>
             <div id="attachment" th:if="${attachment}">
                 <span><br>附件：</span>
                 <i class="layui-icon" style="color: #7700FF ;">&#xe60b;</i>
@@ -71,7 +71,7 @@
     </tr>
     <tr>
         <td>开始时间</td>
-        <td th:text="${startline}"></td>
+        <td th:text="${startline}" id="startline"></td>
     </tr>
     <tr>
         <td>截止时间</td>
@@ -83,11 +83,11 @@
     </tr>
     <tr>
         <td>大小限制</td>
-        <td th:text="${size}"></td>
+        <td th:text="${size}" id="size"></td>
     </tr>
     <tr>
         <td>类型限制</td>
-        <td th:text="${type}"></td>
+        <td th:text="${type}" id="type"></td>
     </tr>
     <tr>
         <td>提交文件</td>
@@ -103,8 +103,8 @@
 <br>
 
 <div class="layui-upload" style="text-align:center">
-    <button type="button" class="layui-btn" id="test8" style="background:#c77eb5;">选择文件</button>
-    <button type="button" class="layui-btn" id="test9" style="background:#1d953f;">开始上传</button>
+    <button type="button" class="layui-btn" id="select" style="background:#c77eb5;">选择文件</button>
+    <button type="button" class="layui-btn" id="upload" style="background:#1d953f;">开始上传</button>
 </div>
 
 <br>
@@ -122,37 +122,95 @@
     });
 </script>
 
-    <script>
-
-        function tow(n) {
-            return n >= 0 && n < 10 ? '0' + n : '' + n;
+<script>
+    layui.use('upload', function(){
+        var $ = layui.jquery
+            ,upload = layui.upload
+            ,layer = layui.layer;
+        var type=$('#type').text();
+        var exts="";
+        if(type!='/'){
+            exts=type;
+            exts=exts.replace('word','doc|docx');
+            exts=exts.replace('ppt','ppt|pptx');
+            exts=exts.replace('excel','xls|xlsx');
         }
-        function getDate() {
-            var oDate = new Date();//获取日期对象
-            var oldTime = oDate.getTime();//现在距离1970年的毫秒数
-            var newDate = new Date($('#deadline').text());
-            var newTime = newDate.getTime();//ddl距离1970年的毫秒数
-            if(newTime<oldTime){
-                var str='/';
-            }else{
-                var second = Math.floor((newTime - oldTime) / 1000);//未来时间距离现在的秒数
-                var day = Math.floor(second / 86400);//整数部分代表的是天；一天有24*60*60=86400秒 ；
-                second = second % 86400;//余数代表剩下的秒数；
-                var hour = Math.floor(second / 3600);//整数部分代表小时；
-                second %= 3600; //余数代表 剩下的秒数；
-                var minute = Math.floor(second / 60);
-                second %= 60;
-                var str = tow(day) + '天'
-                    + tow(hour) + '小时'
-                    + tow(minute) + '分钟'
-                    + tow(second) + '秒';
+        var size=$('#size').text();
+        if(size!='/'){
+            var unit=size.substring(size.indexOf(' ')+1);
+            size=size.substring(0,size.indexOf(' '));
+            if(unit=="MB")
+                size=size*1024;
+        }else{
+            size=0;
+        }
+        //选完文件后不自动上传
+        upload.render({
+            elem: '#select'
+            ,url: window.location.pathname
+            ,auto: false
+            ,accept: 'file'
+            //,multiple: true
+            ,size:size
+            ,exts:exts
+            ,bindAction: '#upload'
+            ,done: function(res){
+                if(res.msg=="Upload assignment successfully!"){
+                    layer.msg("作业上传成功！", {
+                        icon: 6,
+                        time: 2000 //1秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        window.location.reload();
+                    });
+                }else{
+                    layer.msg("作业上传失败！", {
+                        icon: 5,
+                        time: 2000 //1秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        window.location.reload();
+                    });
+                }
+            }
+        });
+    });
+</script>
+
+<script>
+    function tow(n) {
+        return n >= 0 && n < 10 ? '0' + n : '' + n;
+    }
+
+    function getDate() {
+        var oDate = new Date();//获取日期对象
+        var oldTime = oDate.getTime();//现在距离1970年的毫秒数
+        var newDate = new Date($('#deadline').text());
+        var newTime = newDate.getTime();//ddl距离1970年的毫秒数
+        var startDate = new Date($('#startline').text());
+        var startTime = startDate.getTime();
+        if (newTime < oldTime||startTime > oldTime) {
+            var str = '/';
+            $('#select').hide();
+            $('#upload').hide();
+        } else {
+            var second = Math.floor((newTime - oldTime) / 1000);//未来时间距离现在的秒数
+            var day = Math.floor(second / 86400);//整数部分代表的是天；一天有24*60*60=86400秒 ；
+            second = second % 86400;//余数代表剩下的秒数；
+            var hour = Math.floor(second / 3600);//整数部分代表小时；
+            second %= 3600; //余数代表 剩下的秒数；
+            var minute = Math.floor(second / 60);
+            second %= 60;
+            var str = tow(day) + '天'
+                + tow(hour) + '小时'
+                + tow(minute) + '分钟'
+                + tow(second) + '秒';
             }
 
             $('#lefttime').text(str);
-        }
-        getDate();
-        setInterval(getDate, 1000);
-    </script>
+    }
+
+    getDate();
+    setInterval(getDate, 1000);
+</script>
 
 </body>
 

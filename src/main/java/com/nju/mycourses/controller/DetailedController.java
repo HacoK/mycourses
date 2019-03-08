@@ -320,6 +320,35 @@ public class DetailedController {
             IOUtils.copy(inputStream, outputStream);
             outputStream.flush();
         }
+    }
+
+    @PostMapping("/viewAssignment/{assignmentId}")
+    public void submitAssignment(@PathVariable Long assignmentId, @RequestParam("file")MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userName=CookieUtils.getCookieValue(request,"userName");
+        Long studentId=userService.getUserId(userName);
+        String path=assignmentService.getRootDir(assignmentId)+"dirST/"+studentId+'/';
+        Prompt prompt;
+        try {
+            File dir=new File(path);
+            if(dir.list()!=null){
+                for(File f:dir.listFiles()){
+                    f.delete();
+                }
+            }
+            FileUtil.uploadFile(file,path);
+            prompt=new Prompt("Upload assignment successfully!");
+            response.setContentType("application/json; charset=UTF-8");
+            response.getWriter().print(new JSONObject(prompt));
+        } catch (IOException e) {
+            response.setContentType("application/json; charset=UTF-8");
+            try {
+                response.getWriter().print(new JSONObject(new Prompt("Upload assignment Failed...")));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        }
 
     }
+
 }
