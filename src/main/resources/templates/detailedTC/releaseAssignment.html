@@ -120,7 +120,13 @@
                     <input type="text" class="layui-input" name="time" id="test" placeholder="起始时间 ~ 截止时间" lay-verify="required">
                 </div>
             </div>
-            <div class="layui-form-item">
+            <div class="layui-form-item" pane="">
+                <label class="layui-form-label">添加附件</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="typeSpecify" lay-skin="switch" lay-filter="attach">
+                </div>
+            </div>
+            <div class="layui-form-item" id="attachment">
                 <label class="layui-form-label">附件</label>
                 <div class="layui-upload-drag" id="test10">
                     <i class="layui-icon">&#xe67c;</i>
@@ -277,6 +283,7 @@
         var layer = layui.layer;
 
         $("#type").toggle();
+        $("#attachment").toggle();
         $('input[name=typeSpecify]').val('0');
         //监听指定开关
         form.on('switch(switchTest)', function(data){
@@ -285,6 +292,9 @@
                 $('input[name=typeSpecify]').val('1');
             else
                 $('input[name=typeSpecify]').val('0');
+        });
+        form.on('switch(attach)', function(data){
+            $("#attachment").toggle();
         });
 
         laydate.render({
