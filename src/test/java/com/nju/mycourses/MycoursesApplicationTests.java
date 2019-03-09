@@ -8,9 +8,9 @@ import com.nju.mycourses.entity.Assignment;
 import com.nju.mycourses.entity.Curriculum;
 import com.nju.mycourses.entity.User;
 import com.nju.mycourses.enums.UserType;
+import com.nju.mycourses.util.ExcelUtil;
 import com.nju.mycourses.util.FileUtil;
 import com.nju.mycourses.util.ZipCompress;
-import com.nju.mycourses.util.ZipUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,8 +38,11 @@ import org.thymeleaf.context.Context;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -48,9 +51,9 @@ import java.util.concurrent.TimeUnit;
 @AutoConfigureMockMvc
 public class MycoursesApplicationTests {
 
-    @Test
-    public void contextLoads() {
-    }
+//    @Test
+//    public void contextLoads() {
+//    }
 
 
 //    /**
@@ -120,7 +123,9 @@ public class MycoursesApplicationTests {
 
     @Test
     public void test() throws Exception {
-
+        InputStream is = new FileInputStream("C:\\Users\\Kevin\\Desktop\\test.xlsx");;
+        Map<String,Double> map=ExcelUtil.getInstance().readScoreExcel(is,"test.xlsx");
+        System.out.println(map);
     }
 }
 
