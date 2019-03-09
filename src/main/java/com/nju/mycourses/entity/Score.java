@@ -12,8 +12,57 @@ public class Score {
     @Column(nullable = false)
     private Long curriculumId;
     @Column(nullable = false)
-    private String scoreExcel;
+    private String title;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ScoreType scoreType;
+    @Column(nullable = false)
+    private String excelPath;
+
+    public Score(Long curriculumId, String title, ScoreType scoreType, String excelPath) {
+        this.curriculumId = curriculumId;
+        this.title = title;
+        this.scoreType = scoreType;
+        this.excelPath=excelPath;
+    }
+
+    public Long getScoreId() {
+        return scoreId;
+    }
+
+    public void setScoreId(Long scoreId) {
+        this.scoreId = scoreId;
+    }
+
+    public Long getCurriculumId() {
+        return curriculumId;
+    }
+
+    public void setCurriculumId(Long curriculumId) {
+        this.curriculumId = curriculumId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public ScoreType getScoreType() {
+        return scoreType;
+    }
+
+    public void setScoreType(ScoreType scoreType) {
+        this.scoreType = scoreType;
+    }
+
+    public String getScorePath() {
+        return excelPath;
+    }
+
+    public void setScorePath(String excelPath) {
+        this.excelPath = excelPath;
+    }
 }

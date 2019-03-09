@@ -56,7 +56,10 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="">成绩</a>
+                    <a href="javascript:;">成绩</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="publishScore()">发布成绩</a></dd>
+                    </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;" onclick="window.location.href=window.location.href.replace('assignmentRelease','forumOverview')">论坛</a>
@@ -215,6 +218,20 @@
                 maxmin: true,
                 scrollbar: false,
                 content: '/groupMail'
+            });
+        });
+    };
+    var publishScore=function () {
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.open({
+                title: false,
+                type: 2,
+                area: ['650px', '408px'],
+                fixed: false, //不固定
+                maxmin: true,
+                scrollbar: false,
+                content: '/publishScore'
             });
         });
     }

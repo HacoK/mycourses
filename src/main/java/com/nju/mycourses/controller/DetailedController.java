@@ -391,4 +391,25 @@ public class DetailedController {
             outputStream.flush();
         }
     }
+
+    @GetMapping("/publishScore")
+    public String publishScore(){
+        return "detailedTC/publishScore";
+    }
+
+//    @PostMapping("/groupMail")
+//    public void sendGroupMail(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        Long curriculumId = Long.valueOf(request.getParameter("curriculumId"));
+//        String teacherName = request.getParameter("userName");
+//        String title = request.getParameter("title");
+//        String mailContent = request.getParameter("mailContent").replaceAll("\n","<br>");
+//
+//        String courseName=curriculumService.getCourseName(curriculumId);
+//        List<String> recipients=curriculumService.getRecipients(curriculumId);
+//
+//        mailUtil.sendMailAll(courseName,teacherName,title,mailContent,recipients);
+//
+//        response.setContentType("application/json; charset=UTF-8");
+//        response.getWriter().print(new JSONObject(new Prompt("Group mail sent successfully!")));
+//    }
 }
