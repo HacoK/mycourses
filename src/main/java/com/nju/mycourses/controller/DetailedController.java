@@ -334,7 +334,7 @@ public class DetailedController {
              OutputStream outputStream = response.getOutputStream()) {
             response.setContentType("application/x-download");
             response.setHeader("Content-Disposition", "attachment; filename=" + java.net.URLEncoder.encode(fileName, "UTF-8"));
-            System.out.println("Downloading "+fileName);
+            System.out.println("Downloading submitted assignment:"+fileName);
             IOUtils.copy(inputStream, outputStream);
             outputStream.flush();
         }
@@ -370,4 +370,25 @@ public class DetailedController {
 
     }
 
+    @GetMapping("/courseDetailTC/assignmentDownload/{curriculumId}")
+    public String assignmentDownload(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
+        String userName= CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        model.addAttribute("courseName",curriculumService.getCourseName(curriculumId));
+        return "detailedTC/downloadAssignment";
+    }
+
+    @GetMapping("/getAssignmentsZip/{assignmentId}")
+    public void getAttachmentsZip(@PathVariable Long assignmentId, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        try (InputStream inputStream = new FileInputStream(new File(assignmentService.getAssignmentsZip(assignmentId)));
+             OutputStream outputStream = response.getOutputStream()) {
+            response.setContentType("application/x-download");
+            String fileName=assignmentService.getZipName(assignmentId);
+            response.setHeader("Content-Disposition", "attachment; filename=" + java.net.URLEncoder.encode(fileName, "UTF-8"));
+            System.out.println("Downloading zip of assignments:"+fileName);
+            IOUtils.copy(inputStream, outputStream);
+            outputStream.flush();
+        }
+    }
 }

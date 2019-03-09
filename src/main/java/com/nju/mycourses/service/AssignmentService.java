@@ -4,6 +4,7 @@ import com.nju.mycourses.DAO.AssignmentRepository;
 import com.nju.mycourses.DAO.StInfoRepository;
 import com.nju.mycourses.POJO.AssignmentCard;
 import com.nju.mycourses.entity.Assignment;
+import com.nju.mycourses.util.ZipCompress;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,5 +113,23 @@ public class AssignmentService {
     public String getAssignmentPath(Long assignmentId,String studentId,String fileName){
         Assignment assignment=assignmentRepository.findById(assignmentId).get();
         return (assignment.getRootDir()+"dirST/"+studentId+'/'+fileName);
+    }
+
+    public String getZipName(Long assignmentId){
+        Assignment assignment=assignmentRepository.findById(assignmentId).get();
+        return (assignment.getTitle()+".zip");
+    }
+
+    public String getAssignmentsZip(Long assignmentId) throws Exception {
+        Assignment assignment=assignmentRepository.findById(assignmentId).get();
+        String zipFileName=assignment.getRootDir()+assignment.getTitle()+".zip";
+        String sourceFileName=assignment.getRootDir()+"dirST";
+        ZipCompress zipCompress=new ZipCompress(zipFileName,sourceFileName,assignment.getTitle());
+        File dir=new File(sourceFileName);
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+        zipCompress.zip();
+        return zipFileName;
     }
 }

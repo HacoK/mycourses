@@ -65,22 +65,22 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">课件</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('overview','coursewareUpload')">课件上传</a></dd>
-                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('overview','coursewareDownload')">课件下载</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('assignmentDownload','coursewareUpload')">课件上传</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('assignmentDownload','coursewareDownload')">课件下载</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">作业</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('overview','assignmentRelease')">作业发布</a></dd>
-                        <dd><a href="javascript:;">作业下载</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('assignmentDownload','assignmentRelease')">作业发布</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.reload()">作业下载</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="">成绩</a>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;" onclick="window.location.href=window.location.href.replace('overview','forumOverview')">论坛</a>
+                    <a href="javascript:;" onclick="window.location.href=window.location.href.replace('assignmentDownload','forumOverview')">论坛</a>
                 </li>
             </ul>
         </div>
@@ -192,7 +192,7 @@
                     layui.each(res.data, function(index, item){
                         lis.push(
                             '<i class="layui-icon" style="font-size: 30px; color: #7700FF ;">&#xe66e;</i> '+
-                            '<a class="assignment" href="/assignment/download/'+item.id+'">'+item.title+'</a>'+
+                            '<a class="assignment" href="/getAssignmentsZip/'+item.id+'">'+item.title+'</a>'+
                             '<hr class="layui-bg-cyan">'
                         );
                     });
