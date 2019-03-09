@@ -36,7 +36,6 @@ public class CurriculumService {
 
     public void releaseCourse(Curriculum curriculum){
         curriculumRepository.save(curriculum);
-        curriculum.setScoreExcel(curriculum.getScoreExcel()+curriculum.getCurriculumId()+'/');
         curriculumRepository.save(curriculum);
     }
 

@@ -30,7 +30,7 @@ public class CurriculumContorller {
         String schedule=request.getParameter("schedule");
         Integer restriction= Integer.valueOf(request.getParameter("restriction"));
 
-        Curriculum c=new Curriculum(courseId,year,season,schedule,restriction,0, PathConfig.getScoreExcelPath(), ScoreType.Private);
+        Curriculum c=new Curriculum(courseId,year,season,schedule,restriction,0);
         curriculumService.releaseCourse(c);
 
         Prompt prompt=new Prompt("Release course successfully!");

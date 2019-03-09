@@ -22,24 +22,18 @@ public class Curriculum {
     //-1:已否决,0:待审批,1:已通过,2:已结课,3:已开课
     @Column(nullable = false)
     private Integer approved;
-    @Column(nullable = false)
-    private String scoreExcel;
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ScoreType scoreType;
+
 
     public Curriculum() {
     }
 
-    public Curriculum(Long courseId, String semesterYear, String semesterSeason, String schedule, Integer restriction, Integer approved, String scoreExcel, ScoreType scoreType) {
+    public Curriculum(Long courseId, String semesterYear, String semesterSeason, String schedule, Integer restriction, Integer approved) {
         this.courseId = courseId;
         this.semesterYear = semesterYear;
         this.semesterSeason = semesterSeason;
         this.schedule = schedule;
         this.restriction = restriction;
         this.approved = approved;
-        this.scoreExcel = scoreExcel;
-        this.scoreType = scoreType;
     }
 
     public Long getCurriculumId() {
@@ -98,19 +92,4 @@ public class Curriculum {
         this.approved = approved;
     }
 
-    public String getScoreExcel() {
-        return scoreExcel;
-    }
-
-    public void setScoreExcel(String scoreExcel) {
-        this.scoreExcel = scoreExcel;
-    }
-
-    public ScoreType getScoreType() {
-        return scoreType;
-    }
-
-    public void setScoreType(ScoreType scoreType) {
-        this.scoreType = scoreType;
-    }
 }
