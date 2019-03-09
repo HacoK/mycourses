@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Detailed Course(ST)</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <style>
+        a.assignment {
+            font: 20px/1.5 arial, helvetica, sans-serif;
+            color: #0070a8;
+            transition: .5s;
+            cursor:pointer;
+            text-decoration: none;
+        }
+        a.assignment:visited {
+            color: #CCF;
+        }
+        a.assignment:hover {
+            color: lime;
+            background: #CFF;
+            text-decoration: underline;
+        }
+        a.assignment:active {
+            color: red;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">My Course</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="/cute-kitten-wallpaper-18701-wallpaperesque.jpg" class="layui-nav-img">
+                    <span th:text="${userName}"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/profileTC#profile=1">个人信息</a></dd>
+                    <dd><a href="/profileTC#profile=2">统计详情</a></dd>
+                    <dd><a href="/profileTC#profile=3">修改密码</a></dd>
+                    <dd><a href="javascript:void(0)" onclick="cancel()">注销账号</a></dd>
+                    <dd><a href="javascript:void(0)" onclick="logout()">退出登录</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">公告</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="groupMail()">群发邮件</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">课件</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('overview','coursewareUpload')">课件上传</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('overview','coursewareDownload')">课件下载</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">作业</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('overview','assignmentRelease')">作业发布</a></dd>
+                        <dd><a href="javascript:;">作业下载</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">成绩</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;" onclick="window.location.href=window.location.href.replace('overview','forumOverview')">论坛</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend><span th:text="${courseName}"></span></legend>
+        </fieldset>
+        <hr class="layui-bg-cyan">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>作业下载</legend>
+        </fieldset>
+        <div class="layui-progress layui-progress-big">
+            <div class="layui-progress-bar" lay-percent="100%"></div>
+        </div>
+        <ul class="flow-default" id="demo"></ul>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © My Course
+    </div>
+</div>
+
+<script src="/layui/layui.js"></script>
+<script src="/js.cookie.js"></script>
+<script src="/my-login-master/js/jquery.min.js"></script>
+
+<script>
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+    });
+</script>
+<script>
+    layui.use('util', function(){
+        var util = layui.util
+        //固定块
+        util.fixbar({
+            bar1: '&#xe656;'
+            ,bar2: '&#xe663;'
+            ,css: {right: 50, bottom: 100}
+            ,bgcolor: '#393D49'
+            ,click: function(type){
+                if(type === 'bar1'){
+                    window.location.href='/homepageTC';
+                } else if(type === 'bar2') {
+                    window.location.href='/courseViewTC';
+                }
+            }
+        });
+    });
+</script>
+<script>
+    var cancel=function(){
+        var userName=Cookies.get('userName');
+
+        $.ajax({
+            type: 'post', // 提交方式 get/post
+            url: '/cancelST', // 需要提交的 url
+            dataType: "json",
+            data: {
+                'userName': userName
+            },
+            success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
+                // 此处可对 data 作相关处理
+                if(data.msg==="Cancel successfully!"){
+                    Cookies.remove('userName');
+                    window.location.href='/login';
+                }
+            }
+        });
+    };
+    var logout=function () {
+        Cookies.remove('userName');
+        window.location.href='/login';
+    }
+</script>
+<script>
+    var groupMail=function () {
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.open({
+                title: false,
+                type: 2,
+                area: ['650px', '400px'],
+                fixed: false, //不固定
+                maxmin: true,
+                scrollbar: false,
+                content: '/groupMail'
+            });
+        });
+    }
+</script>
+<script>
+    layui.use('flow', function(){
+        var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
+        var flow = layui.flow;
+        flow.load({
+            elem: '#demo' //指定列表容器
+            ,done: function(page, next){ //到达临界点（默认滚动触发），触发下一页
+                var lis = [];
+                var url=window.location.href;
+                //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
+                $.get('/getAssignments?page='+page+'&curriculumId='+url.substr(url.lastIndexOf('/')+1), function(res){
+                    //假设你的列表返回在data集合中
+                    layui.each(res.data, function(index, item){
+                        lis.push(
+                            '<i class="layui-icon" style="font-size: 30px; color: #7700FF ;">&#xe66e;</i> '+
+                            '<a class="assignment" href="/assignment/download/'+item.id+'">'+item.title+'</a>'+
+                            '<hr class="layui-bg-cyan">'
+                        );
+                    });
+
+                    //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                    //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                    next(lis.join(''), page < res.pages);
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

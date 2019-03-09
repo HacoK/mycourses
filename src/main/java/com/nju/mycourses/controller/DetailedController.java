@@ -325,6 +325,21 @@ public class DetailedController {
         }
     }
 
+    @GetMapping("/assignment/{assignmentId}/{fileName}")
+    public void getAttachment(@PathVariable Long assignmentId,@PathVariable String fileName, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userName=CookieUtils.getCookieValue(request,"userName");
+        Long userId=userService.getUserId(userName);
+        String studentId=stInfoRepository.findById(userId).get().getStudentId();
+        try (InputStream inputStream = new FileInputStream(new File(assignmentService.getAssignmentPath(assignmentId,studentId,fileName)));
+             OutputStream outputStream = response.getOutputStream()) {
+            response.setContentType("application/x-download");
+            response.setHeader("Content-Disposition", "attachment; filename=" + java.net.URLEncoder.encode(fileName, "UTF-8"));
+            System.out.println("Downloading "+fileName);
+            IOUtils.copy(inputStream, outputStream);
+            outputStream.flush();
+        }
+    }
+
     @PostMapping("/viewAssignment/{assignmentId}")
     public void submitAssignment(@PathVariable Long assignmentId, @RequestParam("file")MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String userName=CookieUtils.getCookieValue(request,"userName");

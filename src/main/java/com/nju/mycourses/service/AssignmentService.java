@@ -108,4 +108,9 @@ public class AssignmentService {
         Assignment assignment=assignmentRepository.findById(assignmentId).get();
         return assignment.getRootDir();
     }
+
+    public String getAssignmentPath(Long assignmentId,String studentId,String fileName){
+        Assignment assignment=assignmentRepository.findById(assignmentId).get();
+        return (assignment.getRootDir()+"dirST/"+studentId+'/'+fileName);
+    }
 }

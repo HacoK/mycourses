@@ -91,7 +91,7 @@
     </tr>
     <tr>
         <td>提交文件</td>
-        <td th:text="${fileName}"></td>
+        <td><a class="link" th:href="@{ http://localhost:8080/assignment/{assignmentId}/{fileName}(assignmentId=${assignmentId},fileName=${fileName})}" th:text="${fileName}"></a></td>
     </tr>
     </tbody>
 </table>

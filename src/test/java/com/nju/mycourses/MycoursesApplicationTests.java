@@ -10,6 +10,7 @@ import com.nju.mycourses.entity.User;
 import com.nju.mycourses.enums.UserType;
 import com.nju.mycourses.util.FileUtil;
 import com.nju.mycourses.util.ZipCompress;
+import com.nju.mycourses.util.ZipUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +37,8 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
