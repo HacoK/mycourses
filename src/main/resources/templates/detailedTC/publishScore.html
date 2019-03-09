@@ -20,8 +20,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">方式</label>
         <div class="layui-input-block">
-            <input type="radio" name="method" value="public" title="公开" checked="">
-            <input type="radio" name="method" value="private" title="私密">
+            <input type="radio" name="method" value="Publish" title="公开" checked="">
+            <input type="radio" name="method" value="Private" title="私密">
         </div>
     </div>
     <div class="layui-form-item">
@@ -80,8 +80,21 @@
             ,auto: false
             ,bindAction: '#publish'
             ,done: function(res){
-                console.log(res)
-                parent.layer.close(index);
+                if(res.msg==="Publish scoreExcel successfully!"){
+                    layer.msg("成绩发布成功！", {
+                        icon: 6,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        parent.layer.close(index);
+                    });
+                }else{
+                    layer.msg("出错啦！成绩发布失败...", {
+                        icon: 5,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        parent.layer.close(index);
+                    });
+                }
             }
         });
 

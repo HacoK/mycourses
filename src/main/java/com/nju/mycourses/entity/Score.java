@@ -19,6 +19,9 @@ public class Score {
     @Column(nullable = false)
     private String excelPath;
 
+    public Score() {
+    }
+
     public Score(Long curriculumId, String title, ScoreType scoreType, String excelPath) {
         this.curriculumId = curriculumId;
         this.title = title;
@@ -58,11 +61,11 @@ public class Score {
         this.scoreType = scoreType;
     }
 
-    public String getScorePath() {
+    public String getExcelPath() {
         return excelPath;
     }
 
-    public void setScorePath(String excelPath) {
+    public void setExcelPath(String excelPath) {
         this.excelPath = excelPath;
     }
 }

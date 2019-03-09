@@ -4,6 +4,7 @@ import com.nju.mycourses.DAO.StInfoRepository;
 import com.nju.mycourses.POJO.Prompt;
 import com.nju.mycourses.config.PathConfig;
 import com.nju.mycourses.entity.Assignment;
+import com.nju.mycourses.enums.ScoreType;
 import com.nju.mycourses.service.*;
 import com.nju.mycourses.util.CookieUtils;
 import com.nju.mycourses.util.FileUtil;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.beans.Transient;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -45,6 +47,8 @@ public class DetailedController {
     UserService userService;
     @Autowired
     StInfoRepository stInfoRepository;
+    @Autowired
+    ScoreService scoreService;
 
     @GetMapping("/courseDetailTC/coursewareUpload/{curriculumId}")
     public String coursewareUpload(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
@@ -397,19 +401,28 @@ public class DetailedController {
         return "detailedTC/publishScore";
     }
 
-//    @PostMapping("/groupMail")
-//    public void sendGroupMail(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        Long curriculumId = Long.valueOf(request.getParameter("curriculumId"));
-//        String teacherName = request.getParameter("userName");
-//        String title = request.getParameter("title");
-//        String mailContent = request.getParameter("mailContent").replaceAll("\n","<br>");
-//
-//        String courseName=curriculumService.getCourseName(curriculumId);
-//        List<String> recipients=curriculumService.getRecipients(curriculumId);
-//
-//        mailUtil.sendMailAll(courseName,teacherName,title,mailContent,recipients);
-//
-//        response.setContentType("application/json; charset=UTF-8");
-//        response.getWriter().print(new JSONObject(new Prompt("Group mail sent successfully!")));
-//    }
+    @PostMapping("/publishScore/{curriculumId}")
+    @Transient
+    public void publishScore(@PathVariable Long curriculumId, @RequestParam("file")MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String title = request.getParameter("title");
+        ScoreType scoreType=ScoreType.valueOf(request.getParameter("method"));
+        String fileName=file.getOriginalFilename();
+
+        String path=scoreService.publishScore(curriculumId,title,scoreType,fileName);
+
+        try {
+            FileUtil.uploadFile(file,path);
+            Prompt prompt=new Prompt("Publish scoreExcel successfully!");
+            response.setContentType("application/json; charset=UTF-8");
+            response.getWriter().print(new JSONObject(prompt));
+        } catch (IOException e) {
+            response.setContentType("application/json; charset=UTF-8");
+            try {
+                response.getWriter().print(new JSONObject(new Prompt("Publish scoreExcel Failed...")));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        }
+    }
 }
