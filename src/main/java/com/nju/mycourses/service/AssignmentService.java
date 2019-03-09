@@ -1,6 +1,7 @@
 package com.nju.mycourses.service;
 
 import com.nju.mycourses.DAO.AssignmentRepository;
+import com.nju.mycourses.DAO.CSelecRecRepository;
 import com.nju.mycourses.DAO.StInfoRepository;
 import com.nju.mycourses.POJO.AssignmentCard;
 import com.nju.mycourses.entity.Assignment;
@@ -23,6 +24,8 @@ public class AssignmentService {
     AssignmentRepository assignmentRepository;
     @Autowired
     StInfoRepository stInfoRepository;
+    @Autowired
+    CSelecRecRepository cSelecRecRepository;
 
     public void releaseAssignment(Assignment assignment){
         assignmentRepository.save(assignment);
@@ -36,8 +39,14 @@ public class AssignmentService {
         List<Assignment> assignments=assignmentRepository.findByCurriculumIdOrderByAssignmentId(curriculumId);
         List<AssignmentCard> assignmentCards=new ArrayList<>();
         List<AssignmentCard> resultCards=new ArrayList<>();
+        Integer total= Math.toIntExact(cSelecRecRepository.countByCurriculumIdAndApproved(curriculumId, 1));
         for(Assignment a:assignments){
-            AssignmentCard assignmentCard=new AssignmentCard(a.getAssignmentId(),a.getTitle());
+            File dirST=new File(a.getRootDir()+"dirST");
+            String[] list=dirST.list();
+            Integer submitNum=0;
+            if(list!=null)
+                submitNum=list.length;
+            AssignmentCard assignmentCard=new AssignmentCard(a.getAssignmentId(),a.getTitle(),submitNum,total);
             assignmentCards.add(assignmentCard);
         }
 

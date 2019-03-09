@@ -59,7 +59,7 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">课件</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" onclick="window.location.reload()">课件下载</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('assignmentOverview','coursewareDownload')">课件下载</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
@@ -72,7 +72,7 @@
                     <a href="">成绩</a>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;" onclick="window.location.href=window.location.href.replace('coursewareDownload','forumOverview')">论坛</a>
+                    <a href="javascript:;" onclick="window.location.href=window.location.href.replace('assignmentOverview','forumOverview')">论坛</a>
                 </li>
             </ul>
         </div>
@@ -90,7 +90,9 @@
         <div class="layui-progress layui-progress-big">
             <div class="layui-progress-bar" lay-percent="100%"></div>
         </div>
-        <ul class="flow-default" id="demo"></ul>
+        <ul class="flow-default" id="demo">
+            <hr class="layui-bg-cyan">
+        </ul>
     </div>
 
     <div class="layui-footer">
@@ -167,7 +169,7 @@
                     //假设你的列表返回在data集合中
                     layui.each(res.data, function(index, item){
                         lis.push(
-                            '<i class="layui-icon" style="font-size: 30px; color: #7700FF ;">&#xe66e;</i> '+
+                            '<i class="layui-icon" style="font-size: 20px; color: #7700FF ;">&#xe66e;</i> '+
                             '<a class="assignment" href="javascript:void(0)" id="'+item.id+'" onclick="viewAssignment(this)">'+item.title+'</a>'+
                             '<hr class="layui-bg-cyan">'
                         );
