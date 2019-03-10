@@ -8,22 +8,22 @@
     <title>Detailed Course(ST)</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
     <style>
-        a.courseware {
+        a.score {
             font: 20px/1.5 arial, helvetica, sans-serif;
             color: #0070a8;
             transition: .5s;
             cursor:pointer;
             text-decoration: none;
         }
-        a.courseware:visited {
+        a.score:visited {
             color: #CCF;
         }
-        a.courseware:hover {
+        a.score:hover {
             color: lime;
             background: #CFF;
             text-decoration: underline;
         }
-        a.courseware:active {
+        a.score:active {
             color: red;
             text-decoration: underline;
         }
@@ -59,23 +59,23 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">课件</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" onclick="window.location.reload()">课件下载</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('scoreOverview','coursewareDownload')">课件下载</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">作业</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('coursewareDownload','assignmentOverview')">作业提交</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('scoreOverview','assignmentOverview')">作业提交</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">成绩</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" onclick="window.location.href=window.location.href.replace('coursewareDownload','scoreOverview')">成绩查看</a></dd>
+                        <dd><a href="javascript:;" onclick="window.location.reload()">成绩查看</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;" onclick="window.location.href=window.location.href.replace('coursewareDownload','forumOverview')">论坛</a>
+                    <a href="javascript:;" onclick="window.location.href=window.location.href.replace('scoreOverview','forumOverview')">论坛</a>
                 </li>
             </ul>
         </div>
@@ -88,12 +88,14 @@
         </fieldset>
         <hr class="layui-bg-cyan">
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-            <legend>课件下载</legend>
+            <legend>成绩一览</legend>
         </fieldset>
         <div class="layui-progress layui-progress-big">
             <div class="layui-progress-bar" lay-percent="100%"></div>
         </div>
-        <ul class="flow-default" id="demo"></ul>
+        <ul class="flow-default" id="demo">
+            <hr class="layui-bg-cyan">
+        </ul>
     </div>
 
     <div class="layui-footer">
@@ -166,12 +168,12 @@
                 var lis = [];
                 var url=window.location.href;
                 //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
-                $.get('/getCoursewares?page='+page+'&curriculumId='+url.substr(url.lastIndexOf('/')+1), function(res){
+                $.get('/getScores?page='+page+'&curriculumId='+url.substr(url.lastIndexOf('/')+1), function(res){
                     //假设你的列表返回在data集合中
                     layui.each(res.data, function(index, item){
                         lis.push(
-                            '<i class="layui-icon" style="font-size: 30px; color: #7700FF ;">&#xe621;</i> '+
-                            '<a class="courseware" href="'+item.hrefPath+'" download="'+item.fileName+'">'+item.fileName+'</a>'+
+                            '<i class="layui-icon" style="font-size: 20px; color: #7700FF ;">&#xe63c;</i> '+
+                            '<a class="score" href="javascript:void(0)" id="'+item.id+'" onclick="viewScore(this)">'+item.title+'</a>'+
                             '<hr class="layui-bg-cyan">'
                         );
                     });
@@ -183,6 +185,22 @@
             }
         });
     });
+</script>
+<script>
+    var viewScore=function (obj) {
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.open({
+                title: false,
+                type: 2,
+                area: ['650px', '400px'],
+                fixed: false, //不固定
+                maxmin: true,
+                scrollbar: false,
+                content: '/viewScore/'+$(obj).attr('id')
+            });
+        });
+    }
 </script>
 </body>
 </html>

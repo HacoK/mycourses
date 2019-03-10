@@ -425,4 +425,21 @@ public class DetailedController {
             e.printStackTrace();
         }
     }
+
+    @GetMapping("/courseDetailST/scoreOverview/{curriculumId}")
+    public String scoreOverview(@PathVariable Long curriculumId, HttpServletRequest request, Model model) throws IOException {
+        String userName= CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        model.addAttribute("courseName",curriculumService.getCourseName(curriculumId));
+        return "detailedST/scoreOverview";
+    }
+
+    @GetMapping("getScores")
+    public void getScores(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Long curriculumId = Long.valueOf(request.getParameter("curriculumId"));
+        Integer page= Integer.valueOf(request.getParameter("page"));
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(scoreService.getScores(curriculumId,page));
+    }
 }
