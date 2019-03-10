@@ -5,13 +5,19 @@ import com.nju.mycourses.POJO.ScoreCard;
 import com.nju.mycourses.config.PathConfig;
 import com.nju.mycourses.entity.Score;
 import com.nju.mycourses.enums.ScoreType;
+import com.nju.mycourses.util.ExcelUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ScoreService {
@@ -58,5 +64,27 @@ public class ScoreService {
         result.put("pages",pages);
 
         return result;
+    }
+
+    public Map<String,Object> getScoreAttributes(Long scoreId, String studentId) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        Score score=scoreRepository.findById(scoreId).get();
+        String excel=score.getExcelPath();
+        String fileName=excel.substring(excel.lastIndexOf('/')+1);
+
+        InputStream is = new FileInputStream(excel);
+        Map<String,Double> scoreMap=ExcelUtil.getInstance().readScoreExcel(is,fileName);
+        Double scoreNum=scoreMap.get(studentId);
+        if(scoreNum==null) scoreNum=(double)0;
+
+        Boolean pub=(score.getScoreType()==ScoreType.Publish)?true:false;
+
+        map.put("title",score.getTitle());
+        map.put("score",scoreNum);
+        map.put("public",pub);
+        map.put("scoreId",scoreId);
+        map.put("fileName",fileName);
+
+        return map;
     }
 }

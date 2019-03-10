@@ -123,7 +123,7 @@ public class MycoursesApplicationTests {
 
     @Test
     public void test() throws Exception {
-//        InputStream is = new FileInputStream("C:\\Users\\Kevin\\Desktop\\test.xlsx");;
+//        InputStream is = new FileInputStream("C:\\Users\\Kevin\\Desktop\\test.xlsx");
 //        Map<String,Double> map=ExcelUtil.getInstance().readScoreExcel(is,"test.xlsx");
 //        System.out.println(map);
     }

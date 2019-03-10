@@ -442,4 +442,14 @@ public class DetailedController {
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(scoreService.getScores(curriculumId,page));
     }
+
+    @GetMapping("/viewScore/{scoreId}")
+    public String viewScore(@PathVariable Long scoreId, HttpServletRequest request, Model model) throws Exception {
+        String userName= CookieUtils.getCookieValue(request,"userName");
+        String studentId=stInfoRepository.findById(userService.getUserId(userName)).get().getStudentId();
+        Map<String, Object> map=scoreService.getScoreAttributes(scoreId,studentId);
+        model.addAttribute("userName",userName);
+        model.addAllAttributes(map);
+        return "detailedST/scoreView";
+    }
 }
