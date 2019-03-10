@@ -96,6 +96,20 @@
                     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
                         <legend>统计详情</legend>
                     </fieldset>
+                    <div class="layui-tab layui-tab-card">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">选课</li>
+                            <li>退课</li>
+                            <li>成绩</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-show">
+                                <table class="layui-hide" id="select" lay-filter="select"></table>
+                            </div>
+                            <div class="layui-tab-item">2</div>
+                            <div class="layui-tab-item">3</div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="layui-tab-item">
@@ -292,6 +306,27 @@
             }
         });
     }
+</script>
+
+<script type="text/javascript" th:inline="none">
+    layui.use('table', function(){
+        var table = layui.table;
+        table.render({
+            elem: '#select'
+            ,url: '/getSelect' //数据接口
+            ,page: true //开启分页
+            ,width: 1208
+            ,cols: [[ //表头
+                {field: 'recId', title: '记录编号', width:100, fixed: 'left'}
+                ,{field: 'curriculumId', title: '开课编号', width:100}
+                ,{field: 'courseName', title: '课程名称', width:200}
+                ,{field: 'semester', title: '开课学期', width:100}
+                ,{field: 'schedule', title: '课程课时', width: 500}
+                ,{field: 'teacher', title: '任课教师', width: 100}
+                ,{field: 'result', title: '选课结果', width: 100}
+            ]]
+        });
+    });
 </script>
 
 </body>
