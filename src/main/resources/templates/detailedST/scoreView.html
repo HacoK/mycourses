@@ -47,7 +47,7 @@
             <br>
             <span>成绩总表：</span><br>
             <i class="layui-icon" style="color: #7700FF ;">&#xe60b;</i>
-            <a href="#" class="link" th:href="@{ http://localhost:8080/excel/{scoreId}(scoreId=${scoreId})}" th:text="${fileName}"></a>
+            <a href="#" class="link" th:href="@{ http://localhost:8080/excel/{scoreId}/{fileName}(scoreId=${scoreId},fileName=${fileName})}" th:text="${fileName}"></a>
         </div>
     </div>
 </fieldset>

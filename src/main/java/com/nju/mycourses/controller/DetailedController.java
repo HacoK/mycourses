@@ -452,4 +452,18 @@ public class DetailedController {
         model.addAllAttributes(map);
         return "detailedST/scoreView";
     }
+
+    @GetMapping("/excel/{scoreId}/{fileName}")
+    public void getScoreExcel(@PathVariable Long scoreId, @PathVariable String fileName, HttpServletResponse response) throws IOException {
+
+        try (InputStream inputStream = new FileInputStream(new File(scoreService.getExcelPath(scoreId)));
+             OutputStream outputStream = response.getOutputStream()) {
+
+            response.setHeader("Content-Disposition", "attachment; filename=" + java.net.URLEncoder.encode(fileName, "UTF-8"));
+            response.setContentType("application/x-download");
+            System.out.println("Downloading "+fileName);
+            IOUtils.copy(inputStream, outputStream);
+            outputStream.flush();
+        }
+    }
 }

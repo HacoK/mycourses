@@ -87,4 +87,8 @@ public class ScoreService {
 
         return map;
     }
+
+    public String getExcelPath(Long scoreId){
+        return scoreRepository.findById(scoreId).get().getExcelPath();
+    }
 }
