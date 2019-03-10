@@ -13,6 +13,8 @@ public class CSelecRec {
     private Long curriculumId;
     @Column(nullable = false)
     private Integer approved;
+    @Column(nullable = false)
+    private Boolean withdraw;
 
     public CSelecRec() {
     }
@@ -21,6 +23,7 @@ public class CSelecRec {
         this.studentId = studentId;
         this.curriculumId = curriculumId;
         this.approved = approved;
+        this.withdraw = false;
     }
 
     public Long getRecordId() {
@@ -53,5 +56,13 @@ public class CSelecRec {
 
     public void setApproved(Integer approved) {
         this.approved = approved;
+    }
+
+    public Boolean getWithdraw() {
+        return withdraw;
+    }
+
+    public void setWithdraw(Boolean withdraw) {
+        this.withdraw = withdraw;
     }
 }

@@ -300,6 +300,7 @@ public class CurriculumService {
         Long studentId=userRepository.findByUserName(studentName).getUserId();
         CSelecRec cSelecRec=cSelecRecRepository.findByStudentIdAndAndCurriculumId(studentId,curriculumId);
         cSelecRec.setApproved(-1);
+        cSelecRec.setWithdraw(true);
         cSelecRecRepository.save(cSelecRec);
         return true;
     }
