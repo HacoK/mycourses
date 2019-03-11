@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>User Model</title>
+</head>
+<body class="layui-layout-body">
+<div id="forumTopic" style="width: 600px;height:400px;"></div>
+<script src="/my-login-master/js/jquery.min.js"></script>
+<!-- 引入 echarts.js -->
+<script type="text/javascript" src="/echarts.min.js"></script>
+
+<script type="text/javascript">
+    $.ajax({
+        type : "post",
+        async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url : "/forumTopic",    //请求发送到TestServlet处
+        data : {},
+        dataType : "json",        //返回数据形式为json
+        success : function(result) {
+            var dom = document.getElementById("forumTopic");
+            var myChart = echarts.init(dom);
+            option = {
+                color: ['#3398DB'],
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                        type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis : [
+                    {
+                        type : 'category',
+                        data : ['0（无帖子）', '0<Num<=5', '5<Num<=10','10<Num<=25', '25以上'],
+                        axisTick: {
+                            alignWithLabel: true
+                        }
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : [
+                    {
+                        name:'课程数',
+                        type:'bar',
+                        barWidth: '60%',
+                        data:result
+                    }
+                ]
+            };
+            if (option && typeof option === "object") {
+                myChart.setOption(option);
+            }
+        },
+        error : function() {
+            //请求失败时执行该函数
+            alert("图表请求数据失败!");
+        }
+    });
+</script>
+</body>
+</html>

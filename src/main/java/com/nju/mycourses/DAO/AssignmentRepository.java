@@ -11,4 +11,5 @@ import java.util.List;
 public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
     List<Assignment> findByCurriculumIdOrderByAssignmentId(Long curriculumId);
     List<Assignment> findByCurriculumIdIn(Collection curriculumId);
+    Long countByAttachment(Boolean attachment);
 }

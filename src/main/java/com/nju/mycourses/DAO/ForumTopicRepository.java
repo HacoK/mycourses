@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ForumTopicRepository extends JpaRepository<ForumTopic, Long> {
     Page<ForumTopic> findByCourseIdOrderByReleaseTimeDesc(Long courseId, Pageable pageable);
+    Integer countByCourseId(Long courseId);
 }
