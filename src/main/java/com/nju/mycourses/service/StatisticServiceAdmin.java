@@ -1,7 +1,9 @@
 package com.nju.mycourses.service;
 
 import com.nju.mycourses.DAO.*;
+import com.nju.mycourses.StatisticObj.CurriculumStat;
 import com.nju.mycourses.entity.Course;
+import com.nju.mycourses.entity.Curriculum;
 import com.nju.mycourses.entity.ForumTopic;
 import com.nju.mycourses.enums.StType;
 import com.nju.mycourses.enums.UserType;
@@ -10,6 +12,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -199,5 +202,57 @@ public class StatisticServiceAdmin {
         map.put("forumTopic",topic);
         map.put("replyNum",replyNum);
         return map;
+    }
+
+    public JSONObject getCurriculumStat(){
+        JSONObject formatData=new JSONObject();
+        formatData.put("code",0);
+        formatData.put("msg","");
+        List<Curriculum> curricula=curriculumRepository.findAll();
+        List<CurriculumStat> CurriculumStats =new ArrayList<>();
+        for(Curriculum curriculum:curricula){
+            Long curriculumId=curriculum.getCurriculumId();
+            Long courseId=curriculum.getCourseId();
+            Long teacherId=courseRepository.findById(courseId).get().getTeacherId();
+            String season=(curriculum.getSemesterSeason().equals("spring"))?"春":"秋";
+            String semester=curriculum.getSemesterYear()+"年 "+season;
+            String description=courseRepository.findById(courseId).get().getDescription();
+            String courseName=courseRepository.findById(courseId).get().getCourseName();
+            String teacher=userRepository.findById(teacherId).get().getUserName();
+            Integer approved=curriculum.getApproved();
+            String state="";
+            switch (approved){
+                case -1:
+                    state="已否决";
+                    break;
+                case 0:
+                    state="待审批";
+                    break;
+                case 1:
+                    state="已通过";
+                    break;
+                case 2:
+                    state="已结课";
+                    break;
+                case 3:
+                    state="已开课";
+                    break;
+            }
+
+            String typeST="";
+            StType stType=curriculum.getTypeST();
+            if(stType==StType.Postgraduate)
+                typeST="研究生";
+            else if(stType==StType.Doctor)
+                typeST="博士生";
+            else
+                typeST="本科生";
+
+            CurriculumStat CurriculumStat =new CurriculumStat(curriculumId,teacherId,courseId,courseName,description,semester,typeST,teacher,state);
+            CurriculumStats.add(CurriculumStat);
+        }
+        formatData.put("count", CurriculumStats.size());
+        formatData.put("data",new JSONArray(CurriculumStats));
+        return formatData;
     }
 }

@@ -130,4 +130,17 @@ public class StatisticControllerAdmin {
         model.addAllAttributes(statisticServiceAdmin.getForumTop());
         return "eCharts/forumTop";
     }
+
+    @GetMapping("/curriculumStat")
+    public String teacherStat(HttpServletRequest request, Model model) {
+        String userName= CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        return "adminPages/curriculumStat";
+    }
+
+    @GetMapping("/getCurriculumStat")
+    public void getTeacherStat(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(statisticServiceAdmin.getCurriculumStat());
+    }
 }
