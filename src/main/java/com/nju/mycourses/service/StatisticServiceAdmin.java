@@ -31,6 +31,8 @@ public class StatisticServiceAdmin {
     ForumTopicRepository forumTopicRepository;
     @Autowired
     ForumReplyRepository forumReplyRepository;
+    @Autowired
+    StInfoRepository stInfoRepository;
 
     public Integer getTeacherNum(){
         return  userRepository.countByType(UserType.Teacher);
@@ -48,6 +50,16 @@ public class StatisticServiceAdmin {
     }
     public Integer countRejectCourse(){
         return courseRepository.countByApproved(-1);
+    }
+
+    public Integer countUndergraduate(){
+        return stInfoRepository.countByTypeST(StType.Undergraduate);
+    }
+    public Integer countPostgraduate(){
+        return stInfoRepository.countByTypeST(StType.Postgraduate);
+    }
+    public Integer countDoctor(){
+        return stInfoRepository.countByTypeST(StType.Doctor);
     }
 
     public JSONArray curriculumModel(){
@@ -253,6 +265,15 @@ public class StatisticServiceAdmin {
         }
         formatData.put("count", CurriculumStats.size());
         formatData.put("data",new JSONArray(CurriculumStats));
+        return formatData;
+    }
+
+    public JSONObject getStudentStat(){
+        JSONObject formatData=new JSONObject();
+        formatData.put("code",0);
+        formatData.put("msg","");
+//        formatData.put("count", CurriculumStats.size());
+//        formatData.put("data",new JSONArray(CurriculumStats));
         return formatData;
     }
 }

@@ -132,15 +132,52 @@ public class StatisticControllerAdmin {
     }
 
     @GetMapping("/curriculumStat")
-    public String teacherStat(HttpServletRequest request, Model model) {
+    public String curriculumStat(HttpServletRequest request, Model model) {
         String userName= CookieUtils.getCookieValue(request,"userName");
         model.addAttribute("userName",userName);
         return "adminPages/curriculumStat";
     }
 
     @GetMapping("/getCurriculumStat")
-    public void getTeacherStat(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void getCurriculumStat(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(statisticServiceAdmin.getCurriculumStat());
+    }
+
+    @GetMapping("/studentStat")
+    public String studentStat(HttpServletRequest request, Model model) {
+        String userName= CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        return "adminPages/studentStat";
+    }
+
+    @GetMapping("/getStudentStat")
+    public void getStudentStat(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(statisticServiceAdmin.getStudentStat());
+    }
+
+    @GetMapping("/studentModel")
+    public String studentModel() {
+        return "eCharts/studentModel";
+    }
+
+    @PostMapping("/studentModel")
+    public void studentModel(HttpServletResponse response) throws IOException {
+        JSONArray data=new JSONArray();
+        JSONObject undergraduate=new JSONObject();
+        undergraduate.put("name","本科生");
+        undergraduate.put("value",statisticServiceAdmin.countUndergraduate());
+        data.put(undergraduate);
+        JSONObject postgraduate=new JSONObject();
+        postgraduate.put("name","研究生");
+        postgraduate.put("value",statisticServiceAdmin.countPostgraduate());
+        data.put(postgraduate);
+        JSONObject doctor=new JSONObject();
+        doctor.put("name","博士生");
+        doctor.put("value",statisticServiceAdmin.countDoctor());
+        data.put(doctor);
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(data);
     }
 }

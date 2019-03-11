@@ -8,6 +8,27 @@
     <title>My Course - Admin Dashboard</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
     <link rel="stylesheet" href="/layui/css/tableFilter.css">
+    <style>
+        .link {
+            font: 20px/1.5 arial, helvetica, sans-serif;
+            color: #0070a8;
+            transition: .5s;
+            cursor:pointer;
+            text-decoration: none;
+        }
+        .link:visited {
+            color: #CCF;
+        }
+        .link:hover {
+            color: lime;
+            background: #CFF;
+            text-decoration: underline;
+        }
+        .link:active {
+            color: red;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -57,10 +78,10 @@
     <div class="layui-body">
         <!-- 内容主体区域 -->
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-            <legend>课程统计</legend>
+            <legend class="link" onclick="studentModel()">学生统计</legend>
         </fieldset>
         <div class="layui-tab-item layui-show">
-            <table class="layui-hide" id="curriculumStat" lay-filter="curriculumStat"></table>
+            <table class="layui-hide" id="studentStat" lay-filter="studentStat"></table>
         </div>
     </div>
 
@@ -82,41 +103,53 @@
         Cookies.remove('userName');
         window.location.href='login';
     };
+    var studentModel=function(){
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.open({
+                title: false,
+                type: 2,
+                area: ['625px', '420px'],
+                fixed: false, //不固定
+                maxmin: true,
+                scrollbar: false,
+                content: '/studentModel'
+            });
+        });
+    };
 </script>
 
 <script type="text/javascript" th:inline="none">
     layui.use(['table','tableFilter'], function(){
         var table = layui.table;
         var tableFilter = layui.tableFilter;
-
         table.render({
-            elem: '#curriculumStat'
-            ,url: '/getCurriculumStat' //数据接口
+            elem: '#studentStat'
+            ,url: '/getStudentStat' //数据接口
             ,toolbar: true
-            ,width: 1210
+            ,width: 1208
             ,cols: [[ //表头
-                {field: 'curriculumId', title: '开课编号', width:90, fixed: 'left'}
-                ,{field: 'teacherId', title: '教师编号', width:90}
-                ,{field: 'courseId', title: '课程编号', width:90}
-                ,{field: 'courseName', title: '课程名称', width:160}
-                ,{field: 'description', title: '课程描述', width:250}
-                ,{field: 'semester', title: '开课学期', width:120}
-                ,{field: 'typeST', title: '学生类型', width: 120}
-                ,{field: 'teacher', title: '任课教师', width: 160}
-                ,{field: 'state', title: '课程状态', width: 120}
+                {field: 'userId', title: '用户编号', width:100, fixed: 'left',sort:true}
+                ,{field: 'studentName', title: '学生名称', width:120}
+                ,{field: 'studentId', title: '学生学号', width:200}
+                ,{field: 'studentType', title: '学生类型', width:120}
+                ,{field: 'currentCourse', title: '目前课程', width:100,sort:true}
+                ,{field: 'totalCourse', title: '总选课数', width:100,sort:true}
+                ,{field: 'studentEmail', title: '学生邮箱', width: 350}
+                ,{field: 'activation', title: '激活状态', width: 110}
             ]]
             ,done: function () {
             }
         });
         tableFilter.render({
-            'elem': '#curriculumStat',//table的选择器
+            'elem': '#studentStat',//table的选择器
             'mode': 'local',//过滤模式
             'filters': [
-                {field: 'courseName', type: 'input'},
-                {field: 'semester', type: 'checkbox'},
-                {field: 'typeST', type: 'checkbox'},
-                {field: 'teacher', type: 'input'},
-                {field: 'state', type: 'checkbox'}
+                {field: 'studentName', type: 'input'},
+                {field: 'studentId', type: 'input'},
+                {field: 'studentType', type: 'checkbox'},
+                {field: 'studentEmail', type: 'input'},
+                {field: 'activation', type: 'ratio'}
             ],//过滤项配置
             'done': function (filters) {
             }
