@@ -1,20 +1,21 @@
 package com.nju.mycourses.service;
 
 import com.nju.mycourses.DAO.*;
+import com.nju.mycourses.StatisticObj.AssignmentItem;
 import com.nju.mycourses.StatisticObj.CurriculumItem;
 import com.nju.mycourses.StatisticObj.ScoreItem;
 import com.nju.mycourses.StatisticObj.SelectItem;
-import com.nju.mycourses.entity.CSelecRec;
-import com.nju.mycourses.entity.Course;
-import com.nju.mycourses.entity.Curriculum;
-import com.nju.mycourses.entity.Score;
+import com.nju.mycourses.entity.*;
 import com.nju.mycourses.enums.ScoreType;
 import com.nju.mycourses.enums.StType;
+import javafx.scene.input.DataFormat;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,8 @@ public class StatisticService {
     StInfoRepository stInfoRepository;
     @Autowired
     ScoreService scoreService;
+    @Autowired
+    AssignmentRepository assignmentRepository;
 
     public JSONObject getSelect(String userName){
         JSONObject formatData=new JSONObject();
@@ -111,9 +114,9 @@ public class StatisticService {
         JSONObject formatData=new JSONObject();
         Long userId=userRepository.findByUserName(userName).getUserId();
         List<Course> courses=courseRepository.findByTeacherIdAndApproved(userId,1);
-        List<Long> courseIds=new ArrayList<>();
         formatData.put("code",0);
         formatData.put("msg","");
+        List<Long> courseIds=new ArrayList<>();
         for(Course course:courses){
             courseIds.add(course.getCourseId());
         }
@@ -154,6 +157,62 @@ public class StatisticService {
         }
         formatData.put("count",curriculumItems.size());
         formatData.put("data",new JSONArray(curriculumItems));
+        return formatData;
+    }
+
+    public JSONObject getAssignmentStatic(String userName){
+        Long userId=userRepository.findByUserName(userName).getUserId();
+        List<Course> courses=courseRepository.findByTeacherIdAndApproved(userId,1);
+        List<Long> courseIds=new ArrayList<>();
+        JSONObject formatData=new JSONObject();
+        formatData.put("code",0);
+        formatData.put("msg","");
+        for(Course course:courses){
+            courseIds.add(course.getCourseId());
+        }
+        List<Curriculum> curricula=curriculumRepository.findByCourseIdIn(courseIds);
+        courseIds=new ArrayList<>();
+        for(Curriculum c:curricula){
+            courseIds.add(c.getCurriculumId());
+        }
+        List<Assignment> assignments=assignmentRepository.findByCurriculumIdIn(courseIds);
+        List<AssignmentItem> assignmentItems=new ArrayList<>();
+        for(Assignment assignment:assignments){
+            Long assignmentId=assignment.getAssignmentId();
+            Curriculum curriculum=curriculumRepository.findById(assignment.getCurriculumId()).get();
+            Long courseId=curriculum.getCourseId();
+            String season=(curriculum.getSemesterSeason().equals("spring"))?"春":"秋";
+            String semester=curriculum.getSemesterYear()+"年 "+season;
+            String courseName=courseRepository.findById(courseId).get().getCourseName();
+            String typeST="本科生";
+            StType stType=curriculum.getTypeST();
+            if(stType==StType.Postgraduate)
+                typeST="研究生";
+            else if(stType==StType.Doctor)
+                typeST="博士生";
+            String title=assignment.getTitle();
+            DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String startline = df.format(assignment.getStartline());
+            String deadline = df.format(assignment.getDeadline());
+            String size="/";
+            if(assignment.getSize()!=0)
+                size=assignment.getSize()+" "+assignment.getUnit();
+            String type="/";
+            if(!assignment.getType().equals(""))
+                type=assignment.getType();
+            File dirST=new File(assignment.getRootDir()+"dirST");
+            Integer submitNum=0;
+            String[] list=dirST.list();
+            if(list!=null)
+                submitNum=list.length;
+            Integer total= Math.toIntExact(cSelecRecRepository.countByCurriculumIdAndApproved(curriculum.getCurriculumId(), 1));
+            String submitted=submitNum+" / "+total;
+            AssignmentItem assignmentItem=new AssignmentItem(assignmentId,courseName,semester,typeST,title,startline,deadline,size,type,submitted);
+            assignmentItems.add(assignmentItem);
+        }
+
+        formatData.put("count",assignmentItems.size());
+        formatData.put("data",new JSONArray(assignmentItems));
         return formatData;
     }
 }

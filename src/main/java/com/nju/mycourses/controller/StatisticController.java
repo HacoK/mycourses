@@ -34,4 +34,11 @@ public class StatisticController {
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(statisticService.getCurriculumStatic(userName));
     }
+
+    @GetMapping("/getAssignmentStatic")
+    public void getAssignmentStatic(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String userName= CookieUtils.getCookieValue(request,"userName");
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(statisticService.getAssignmentStatic(userName));
+    }
 }

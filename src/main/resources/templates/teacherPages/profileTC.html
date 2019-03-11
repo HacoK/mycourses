@@ -346,6 +346,38 @@
             ],//过滤项配置
             'done': function (filters) {
             }
+        });
+
+        table.render({
+            elem: '#assignment'
+            ,url: '/getAssignmentStatic' //数据接口
+            ,toolbar: true
+            ,width: 1208
+            ,cols: [[ //表头
+                {field: 'assignmentId', title: '作业编号', width:100, fixed: 'left',sort: true}
+                ,{field: 'courseName', title: '课程名称', width:130}
+                ,{field: 'semester', title: '开课学期', width:120}
+                ,{field: 'typeST', title: '学生类型', width: 120}
+                ,{field: 'title', title: '作业标题', width:130}
+                ,{field: 'startline', title: '起始时间', width:160,sort: true}
+                ,{field: 'deadline', title: '截止时间', width:160,sort: true}
+                ,{field: 'size', title: '限制大小', width: 90}
+                ,{field: 'type', title: '限制类型', width: 100}
+                ,{field: 'submitted', title: '提交情况', width: 86}
+            ]]
+            ,done: function () {
+            }
+        });
+        tableFilter.render({
+            'elem': '#assignment',//table的选择器
+            'mode': 'local',//过滤模式
+            'filters': [
+                {field: 'courseName', type: 'input'},
+                {field: 'semester', type: 'checkbox'},
+                {field: 'typeST', type: 'checkbox'}
+            ],//过滤项配置
+            'done': function (filters) {
+            }
         })
     });
 
