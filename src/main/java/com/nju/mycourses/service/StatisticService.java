@@ -1,6 +1,7 @@
 package com.nju.mycourses.service;
 
 import com.nju.mycourses.DAO.*;
+import com.nju.mycourses.StatisticObj.CurriculumItem;
 import com.nju.mycourses.StatisticObj.ScoreItem;
 import com.nju.mycourses.StatisticObj.SelectItem;
 import com.nju.mycourses.entity.CSelecRec;
@@ -8,6 +9,7 @@ import com.nju.mycourses.entity.Course;
 import com.nju.mycourses.entity.Curriculum;
 import com.nju.mycourses.entity.Score;
 import com.nju.mycourses.enums.ScoreType;
+import com.nju.mycourses.enums.StType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,6 +104,56 @@ public class StatisticService {
         }
         formatData.put("count",scoreItems.size());
         formatData.put("data",new JSONArray(scoreItems));
+        return formatData;
+    }
+
+    public JSONObject getCurriculumStatic(String userName){
+        JSONObject formatData=new JSONObject();
+        Long userId=userRepository.findByUserName(userName).getUserId();
+        List<Course> courses=courseRepository.findByTeacherIdAndApproved(userId,1);
+        List<Long> courseIds=new ArrayList<>();
+        formatData.put("code",0);
+        formatData.put("msg","");
+        for(Course course:courses){
+            courseIds.add(course.getCourseId());
+        }
+        List<Curriculum> curricula=curriculumRepository.findByCourseIdIn(courseIds);
+        List<CurriculumItem> curriculumItems=new ArrayList<>();
+        for(Curriculum curriculum:curricula){
+            Long curriculumId=curriculum.getCurriculumId();
+            Long courseId=curriculum.getCourseId();
+            String courseName=courseRepository.findById(courseId).get().getCourseName();
+            String description=courseRepository.findById(courseId).get().getDescription();
+            String season=(curriculum.getSemesterSeason().equals("spring"))?"春":"秋";
+            String semester=curriculum.getSemesterYear()+"年 "+season;
+            String typeST="";
+            StType stType=curriculum.getTypeST();
+            if(stType==StType.Undergraduate)
+                typeST="本科生";
+            else if(stType==StType.Postgraduate)
+                typeST="研究生";
+            else
+                typeST="博士生";
+            Integer restriction=curriculum.getRestriction();
+            Integer selected=cSelecRecRepository.findByCurriculumIdAndApprovedOrderByRecordIdAsc(curriculumId,0).size();
+            selected+=cSelecRecRepository.findByCurriculumIdAndApprovedOrderByRecordIdAsc(curriculumId,1).size();
+            Integer approved=curriculum.getApproved();
+            String state;
+            if(approved==-1)
+                state="已否决";
+            else if(approved==0)
+                state="待审批";
+            else if(approved==1)
+                state="已通过";
+            else if(approved==2)
+                state="已结课";
+            else
+                state="已开课";
+            CurriculumItem curriculumItem=new CurriculumItem(curriculumId,courseId,courseName,description,semester,typeST,restriction,selected,state);
+            curriculumItems.add(curriculumItem);
+        }
+        formatData.put("count",curriculumItems.size());
+        formatData.put("data",new JSONArray(curriculumItems));
         return formatData;
     }
 }

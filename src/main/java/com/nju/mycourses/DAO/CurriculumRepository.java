@@ -14,4 +14,5 @@ public interface CurriculumRepository extends JpaRepository<Curriculum, Long> {
     List<Curriculum> findByApprovedEqualsOrderByCurriculumIdAsc(Integer approved);
     Page<Curriculum> findByApprovedEquals(Integer approved, Pageable pageable);
     Page<Curriculum> findByCourseIdIn(Collection courseIds, Pageable pageable);
+    List<Curriculum> findByCourseIdIn(Collection courseIds);
 }
