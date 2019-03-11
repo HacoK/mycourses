@@ -2,9 +2,8 @@ package com.nju.mycourses.service;
 
 import com.nju.mycourses.DAO.*;
 import com.nju.mycourses.StatisticObj.CurriculumStat;
-import com.nju.mycourses.entity.Course;
-import com.nju.mycourses.entity.Curriculum;
-import com.nju.mycourses.entity.ForumTopic;
+import com.nju.mycourses.StatisticObj.StudentStat;
+import com.nju.mycourses.entity.*;
 import com.nju.mycourses.enums.StType;
 import com.nju.mycourses.enums.UserType;
 import org.json.JSONArray;
@@ -33,6 +32,8 @@ public class StatisticServiceAdmin {
     ForumReplyRepository forumReplyRepository;
     @Autowired
     StInfoRepository stInfoRepository;
+    @Autowired
+    CSelecRecRepository cSelecRecRepository;
 
     public Integer getTeacherNum(){
         return  userRepository.countByType(UserType.Teacher);
@@ -269,11 +270,38 @@ public class StatisticServiceAdmin {
     }
 
     public JSONObject getStudentStat(){
+        List<StudentStat> studentStats=new ArrayList<>();
         JSONObject formatData=new JSONObject();
         formatData.put("code",0);
         formatData.put("msg","");
-//        formatData.put("count", CurriculumStats.size());
-//        formatData.put("data",new JSONArray(CurriculumStats));
+        List<StInfo> stInfos=stInfoRepository.findAll();
+        for(StInfo stInfo:stInfos){
+            Long userId=stInfo.getUserId();
+            String studentId=stInfo.getStudentId();
+            String studentType="本科生";
+            StType stType=stInfo.getTypeST();
+            if(stType==StType.Postgraduate)
+                studentType="研究生";
+            else if(stType==StType.Doctor)
+                studentType="博士生";
+            User student=userRepository.findById(userId).get();
+            String studentName=student.getUserName();
+            List<CSelecRec> cSelecRecList=cSelecRecRepository.findByStudentIdAndApproved(userId,1);
+            Integer totalCourse=cSelecRecList.size();
+            Integer currentCourse=totalCourse;
+            for(CSelecRec cSelecRec:cSelecRecList){
+                Long curriculumId=cSelecRec.getCurriculumId();
+                if(curriculumRepository.findById(curriculumId).get().getApproved()!=3)
+                    currentCourse--;
+            }
+            String studentEmail=student.getEmail();
+            String activation=(student.getActive())?"已激活":"未激活";
+
+            StudentStat studentStat=new StudentStat(userId,studentId,studentName,studentType,currentCourse,totalCourse,studentEmail,activation);
+            studentStats.add(studentStat);
+        }
+        formatData.put("count", studentStats.size());
+        formatData.put("data",new JSONArray(studentStats));
         return formatData;
     }
 }

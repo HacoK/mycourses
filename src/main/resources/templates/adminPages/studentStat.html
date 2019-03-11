@@ -130,8 +130,8 @@
             ,width: 1208
             ,cols: [[ //表头
                 {field: 'userId', title: '用户编号', width:100, fixed: 'left',sort:true}
-                ,{field: 'studentName', title: '学生名称', width:120}
                 ,{field: 'studentId', title: '学生学号', width:200}
+                ,{field: 'studentName', title: '学生名称', width:120}
                 ,{field: 'studentType', title: '学生类型', width:120}
                 ,{field: 'currentCourse', title: '目前课程', width:100,sort:true}
                 ,{field: 'totalCourse', title: '总选课数', width:100,sort:true}
@@ -145,11 +145,11 @@
             'elem': '#studentStat',//table的选择器
             'mode': 'local',//过滤模式
             'filters': [
-                {field: 'studentName', type: 'input'},
                 {field: 'studentId', type: 'input'},
+                {field: 'studentName', type: 'input'},
                 {field: 'studentType', type: 'checkbox'},
                 {field: 'studentEmail', type: 'input'},
-                {field: 'activation', type: 'ratio'}
+                {field: 'activation', type: 'radio'}
             ],//过滤项配置
             'done': function (filters) {
             }
