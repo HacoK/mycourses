@@ -12,6 +12,6 @@ public interface CSelecRecRepository extends JpaRepository<CSelecRec, Long> {
     List<CSelecRec> findByStudentIdAndApprovedNot(Long studentId,Integer approved);
     List<CSelecRec> findByStudentIdAndApprovedEqualsOrderByCurriculumId(Long studentId,Integer approved);
     List<CSelecRec> findByStudentId(Long studentId);
-    CSelecRec findByStudentIdAndAndCurriculumId(Long studentId,Long curriculumId);
+    CSelecRec findByStudentIdAndAndCurriculumIdAndApprovedNot(Long studentId,Long curriculumId,Integer approved);
     Long countByCurriculumIdAndApproved(Long curriculumId,Integer approved);
 }

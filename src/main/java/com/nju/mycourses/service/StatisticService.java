@@ -39,7 +39,8 @@ public class StatisticService {
             Long recId=rec.getRecordId();
             Long curriculumId=rec.getCurriculumId();
             Curriculum curriculum=curriculumRepository.findById(curriculumId).get();
-            Course course=courseRepository.findById(curriculum.getCourseId()).get();
+            Long courseId=curriculum.getCourseId();
+            Course course=courseRepository.findById(courseId).get();
             String courseName=course.getCourseName();
             String season=(curriculum.getSemesterSeason().equals("spring"))?"春":"秋";
             String semester=curriculum.getSemesterYear()+"年 "+season;

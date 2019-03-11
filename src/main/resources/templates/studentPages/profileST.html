@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>My Homepage</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/layui/css/tableFilter.css">
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -98,8 +99,7 @@
                     </fieldset>
                     <div class="layui-tab layui-tab-card">
                         <ul class="layui-tab-title">
-                            <li class="layui-this">选课</li>
-                            <li>退课</li>
+                            <li class="layui-this">选课/退课</li>
                             <li>成绩</li>
                         </ul>
                         <div class="layui-tab-content">
@@ -107,7 +107,6 @@
                                 <table class="layui-hide" id="select" lay-filter="select"></table>
                             </div>
                             <div class="layui-tab-item">2</div>
-                            <div class="layui-tab-item">3</div>
                         </div>
                     </div>
                 </div>
@@ -309,24 +308,41 @@
 </script>
 
 <script type="text/javascript" th:inline="none">
-    layui.use('table', function(){
+    layui.use(['table','tableFilter'], function(){
         var table = layui.table;
+        var tableFilter = layui.tableFilter;
         table.render({
             elem: '#select'
             ,url: '/getSelect' //数据接口
-            ,page: true //开启分页
+            ,toolbar: true
             ,width: 1208
             ,cols: [[ //表头
-                {field: 'recId', title: '记录编号', width:100, fixed: 'left'}
-                ,{field: 'curriculumId', title: '开课编号', width:100}
-                ,{field: 'courseName', title: '课程名称', width:200}
-                ,{field: 'semester', title: '开课学期', width:100}
+                {field: 'recId', title: '记录编号', width:90, fixed: 'left'}
+                ,{field: 'curriculumId', title: '开课编号', width:90}
+                ,{field: 'courseName', title: '课程名称', width:160}
+                ,{field: 'semester', title: '开课学期', width:120}
                 ,{field: 'schedule', title: '课程课时', width: 500}
-                ,{field: 'teacher', title: '任课教师', width: 100}
-                ,{field: 'result', title: '选课结果', width: 100}
+                ,{field: 'teacher', title: '任课教师', width: 120}
+                ,{field: 'result', title: '选课结果', width: 120}
             ]]
+            ,done: function () {
+            }
         });
+        tableFilter.render({
+            'elem': '#select',//table的选择器
+            'mode': 'local',//过滤模式
+            'filters': [
+                {field: 'courseName', type: 'input'},
+                {field: 'semester', type: 'checkbox'},
+                {field: 'schedule', type: 'input'},
+                {field: 'teacher', type: 'input'},
+                {field: 'result', type: 'checkbox'}
+            ],//过滤项配置
+            'done': function (filters) {
+            }
+        })
     });
+    $('.layui-table-tool').css("background-color","white")
 </script>
 
 </body>
