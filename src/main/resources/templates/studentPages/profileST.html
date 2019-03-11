@@ -100,13 +100,15 @@
                     <div class="layui-tab layui-tab-card">
                         <ul class="layui-tab-title">
                             <li class="layui-this">选课/退课</li>
-                            <li>成绩</li>
+                            <li>成绩详情</li>
                         </ul>
                         <div class="layui-tab-content">
                             <div class="layui-tab-item layui-show">
                                 <table class="layui-hide" id="select" lay-filter="select"></table>
                             </div>
-                            <div class="layui-tab-item">2</div>
+                            <div class="layui-tab-item">
+                                <table class="layui-hide" id="score" lay-filter="score"></table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -340,9 +342,41 @@
             ],//过滤项配置
             'done': function (filters) {
             }
+        });
+
+        table.render({
+            elem: '#score'
+            ,url: '/getScore' //数据接口
+            ,toolbar: true
+            ,width: 1208
+            ,cols: [[ //表头
+                {field: 'scoreId', title: '成绩编号', width:90, fixed: 'left', sort: true}
+                ,{field: 'curriculumId', title: '开课编号', width:90}
+                ,{field: 'courseName', title: '课程名称', width:160}
+                ,{field: 'semester', title: '开课学期', width:120}
+                ,{field: 'teacher', title: '任课教师', width: 120}
+                ,{field: 'title', title: '发布标题', width: 380}
+                ,{field: 'method', title: '发布形式', width: 120}
+                ,{field: 'result', title: '个人成绩', width: 120, sort: true}
+            ]]
+            ,done: function () {
+            }
+        });
+        tableFilter.render({
+            'elem': '#score',//table的选择器
+            'mode': 'local',//过滤模式
+            'filters': [
+                {field: 'courseName', type: 'input'},
+                {field: 'semester', type: 'checkbox'},
+                {field: 'teacher', type: 'input'},
+                {field: 'title', type: 'input'},
+                {field: 'method', type: 'checkbox'}
+            ],//过滤项配置
+            'done': function (filters) {
+            }
         })
     });
-    $('.layui-table-tool').css("background-color","white")
+
 </script>
 
 </body>

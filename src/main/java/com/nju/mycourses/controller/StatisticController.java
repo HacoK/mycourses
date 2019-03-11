@@ -20,4 +20,11 @@ public class StatisticController {
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(statisticService.getSelect(userName));
     }
+
+    @GetMapping("/getScore")
+    public void getScore(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String userName= CookieUtils.getCookieValue(request,"userName");
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(statisticService.getScore(userName));
+    }
 }

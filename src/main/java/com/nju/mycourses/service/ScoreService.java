@@ -77,7 +77,7 @@ public class ScoreService {
         Double scoreNum=scoreMap.get(studentId);
         if(scoreNum==null) scoreNum=(double)0;
 
-        Boolean pub=(score.getScoreType()==ScoreType.Publish)?true:false;
+        Boolean pub=score.getScoreType()==ScoreType.Publish;
 
         map.put("title",score.getTitle());
         map.put("score",scoreNum);
@@ -90,5 +90,15 @@ public class ScoreService {
 
     public String getExcelPath(Long scoreId){
         return scoreRepository.findById(scoreId).get().getExcelPath();
+    }
+
+    public Double getScore(Long scoreId, String studentId) throws Exception {
+        String excel=scoreRepository.findById(scoreId).get().getExcelPath();
+        InputStream is = new FileInputStream(excel);
+        String fileName=excel.substring(excel.lastIndexOf('/')+1);
+        Map<String,Double> scoreMap=ExcelUtil.getInstance().readScoreExcel(is,fileName);
+        Double scoreNum=scoreMap.get(studentId);
+        if(scoreNum==null) scoreNum=(double)0;
+        return scoreNum;
     }
 }

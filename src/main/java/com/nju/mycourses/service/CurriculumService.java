@@ -298,7 +298,7 @@ public class CurriculumService {
 
     public boolean withdrawal(String studentName,Long curriculumId){
         Long studentId=userRepository.findByUserName(studentName).getUserId();
-        CSelecRec cSelecRec=cSelecRecRepository.findByStudentIdAndAndCurriculumIdAndApprovedNot(studentId,curriculumId,-1);
+        CSelecRec cSelecRec=cSelecRecRepository.findByStudentIdAndCurriculumIdAndApprovedNot(studentId,curriculumId,-1);
         cSelecRec.setApproved(-1);
         cSelecRec.setWithdraw(true);
         cSelecRecRepository.save(cSelecRec);
