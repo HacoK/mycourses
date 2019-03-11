@@ -223,6 +223,17 @@
         </div>
     </div>
 
+    <div class="layui-form-item">
+        <label class="layui-form-label">学生类型</label>
+        <div class="layui-input-inline">
+            <select name="studentType" id="studentType">
+                <option value="Undergraduate" selected="">本科生</option>
+                <option value="Postgraduate">研究生</option>
+                <option value="Doctor">博士生</option>
+            </select>
+        </div>
+    </div>
+
     <div class="layui-form-item" style="text-align:center">
         <button class="layui-btn layui-bg-blue" lay-submit="" lay-filter="formDemo">提交</button>
         <button type="reset" class="layui-btn layui-btn-primary" onclick="resetForm()">重置</button>
@@ -291,7 +302,7 @@
             }
         }
     }
-    tabCell()
+    tabCell();
     function resetForm(){
         $('form')[0].reset();
         var tab=document.getElementById('tab')
@@ -367,6 +378,7 @@
                 var year=data.field.year;
                 var season=data.field.season;
                 var restriction=data.field.restriction;
+                var studentType=data.field.studentType;
                 $.ajax({
                     type: 'post', // 提交方式 get/post
                     url: '/releaseCourse', // 需要提交的 url
@@ -376,7 +388,8 @@
                         'year': year,
                         'season': season,
                         'schedule': schedule,
-                        'restriction': restriction
+                        'restriction': restriction,
+                        'studentType': studentType
                     },
                     success: function (data) { // data 保存提交后返回的数据，一般为 json 数据
                         // 此处可对 data 作相关处理

@@ -3,6 +3,7 @@ package com.nju.mycourses.controller;
 import com.nju.mycourses.config.PathConfig;
 import com.nju.mycourses.entity.Curriculum;
 import com.nju.mycourses.enums.ScoreType;
+import com.nju.mycourses.enums.StType;
 import com.nju.mycourses.service.CurriculumService;
 import com.nju.mycourses.POJO.Prompt;
 import com.nju.mycourses.util.CookieUtils;
@@ -29,8 +30,9 @@ public class CurriculumContorller {
         String season=request.getParameter("season");
         String schedule=request.getParameter("schedule");
         Integer restriction= Integer.valueOf(request.getParameter("restriction"));
+        String studentType=request.getParameter("studentType");
 
-        Curriculum c=new Curriculum(courseId,year,season,schedule,restriction,0);
+        Curriculum c=new Curriculum(courseId,year,season,schedule,restriction,0, StType.valueOf(studentType));
         curriculumService.releaseCourse(c);
 
         Prompt prompt=new Prompt("Release course successfully!");

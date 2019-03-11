@@ -1,6 +1,7 @@
 package com.nju.mycourses.entity;
 
 import com.nju.mycourses.enums.ScoreType;
+import com.nju.mycourses.enums.StType;
 
 import javax.persistence.*;
 
@@ -22,18 +23,23 @@ public class Curriculum {
     //-1:已否决,0:待审批,1:已通过,2:已结课,3:已开课
     @Column(nullable = false)
     private Integer approved;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StType typeST;
+
 
 
     public Curriculum() {
     }
 
-    public Curriculum(Long courseId, String semesterYear, String semesterSeason, String schedule, Integer restriction, Integer approved) {
+    public Curriculum(Long courseId, String semesterYear, String semesterSeason, String schedule, Integer restriction, Integer approved,StType typeST) {
         this.courseId = courseId;
         this.semesterYear = semesterYear;
         this.semesterSeason = semesterSeason;
         this.schedule = schedule;
         this.restriction = restriction;
         this.approved = approved;
+        this.typeST = typeST;
     }
 
     public Long getCurriculumId() {
@@ -92,4 +98,11 @@ public class Curriculum {
         this.approved = approved;
     }
 
+    public StType getTypeST() {
+        return typeST;
+    }
+
+    public void setTypeST(StType typeST) {
+        this.typeST = typeST;
+    }
 }

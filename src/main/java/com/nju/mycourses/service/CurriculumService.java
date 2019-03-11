@@ -1,15 +1,13 @@
 package com.nju.mycourses.service;
 
-import com.nju.mycourses.DAO.CSelecRecRepository;
-import com.nju.mycourses.DAO.CourseRepository;
-import com.nju.mycourses.DAO.CurriculumRepository;
-import com.nju.mycourses.DAO.UserRepository;
+import com.nju.mycourses.DAO.*;
 import com.nju.mycourses.POJO.CourseCardST;
 import com.nju.mycourses.POJO.CurriculumCardST;
 import com.nju.mycourses.POJO.CurriculumCardTC;
 import com.nju.mycourses.entity.CSelecRec;
 import com.nju.mycourses.entity.Course;
 import com.nju.mycourses.entity.Curriculum;
+import com.nju.mycourses.enums.StType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +31,8 @@ public class CurriculumService {
     UserRepository userRepository;
     @Autowired
     CSelecRecRepository cSelecRecRepository;
+    @Autowired
+    StInfoRepository stInfoRepository;
 
     public void releaseCourse(Curriculum curriculum){
         curriculumRepository.save(curriculum);
@@ -103,6 +103,7 @@ public class CurriculumService {
 
     public JSONObject drawCurriculumOp(String studentName,Integer page){
         Long studentId=userRepository.findByUserName(studentName).getUserId();
+        StType typeST=stInfoRepository.findById(studentId).get().getTypeST();
         Integer itemNum=8;
         page--;
         List<CSelecRec> cSelecRecList=cSelecRecRepository.findByStudentIdAndApprovedNot(studentId,-1);
@@ -125,7 +126,7 @@ public class CurriculumService {
 
         for(int i=0;i<curriculumList.size();i++){
             Curriculum curriculum=curriculumList.get(i);
-            if(curriculumIds.contains(curriculum.getCurriculumId()))
+            if(curriculumIds.contains(curriculum.getCurriculumId())||curriculum.getTypeST()!=typeST)
                 continue;
 
             Course course=courseRepository.findById(curriculum.getCourseId()).get();
@@ -154,7 +155,7 @@ public class CurriculumService {
         curriculumList=curricula.getContent();
         for(int i=0;i<curriculumList.size();i++){
             Curriculum curriculum=curriculumList.get(i);
-            if(curriculumIds.contains(curriculum.getCurriculumId()))
+            if(curriculumIds.contains(curriculum.getCurriculumId())||curriculum.getTypeST()!=typeST)
                 continue;
             Long cid=curriculum.getCurriculumId();
             Integer selected=cSelecRecRepository.findByCurriculumIdAndApprovedOrderByRecordIdAsc(cid,1).size();
