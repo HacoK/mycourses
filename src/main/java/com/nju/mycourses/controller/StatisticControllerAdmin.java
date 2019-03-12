@@ -180,4 +180,11 @@ public class StatisticControllerAdmin {
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(data);
     }
+
+    @GetMapping("/teacherStat")
+    public String teacherStat(HttpServletRequest request, Model model) {
+        String userName= CookieUtils.getCookieValue(request,"userName");
+        model.addAttribute("userName",userName);
+        return "adminPages/teacherStat";
+    }
 }
