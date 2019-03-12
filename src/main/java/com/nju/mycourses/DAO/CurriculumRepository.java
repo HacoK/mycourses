@@ -18,4 +18,6 @@ public interface CurriculumRepository extends JpaRepository<Curriculum, Long> {
     List<Curriculum> findByCourseIdIn(Collection courseIds);
     Integer countByApproved(Integer approved);
     Integer countByApprovedNotAndTypeST(Integer approved, StType typeST);
+    Integer countByCourseIdInAndApproved(Collection courseIds,Integer approved);
+    List<Curriculum> findByCourseIdInAndApprovedGreaterThan(Collection courseIds,Integer approved);
 }

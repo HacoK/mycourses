@@ -187,4 +187,10 @@ public class StatisticControllerAdmin {
         model.addAttribute("userName",userName);
         return "adminPages/teacherStat";
     }
+
+    @GetMapping("/getTeacherStat")
+    public void getTeacherStat(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(statisticServiceAdmin.getTeacherStat());
+    }
 }

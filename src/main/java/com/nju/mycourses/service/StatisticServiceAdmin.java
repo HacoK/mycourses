@@ -3,6 +3,7 @@ package com.nju.mycourses.service;
 import com.nju.mycourses.DAO.*;
 import com.nju.mycourses.StatisticObj.CurriculumStat;
 import com.nju.mycourses.StatisticObj.StudentStat;
+import com.nju.mycourses.StatisticObj.TeacherStat;
 import com.nju.mycourses.entity.*;
 import com.nju.mycourses.enums.StType;
 import com.nju.mycourses.enums.UserType;
@@ -34,6 +35,8 @@ public class StatisticServiceAdmin {
     StInfoRepository stInfoRepository;
     @Autowired
     CSelecRecRepository cSelecRecRepository;
+    @Autowired
+    ScoreRepository scoreRepository;
 
     public Integer getTeacherNum(){
         return  userRepository.countByType(UserType.Teacher);
@@ -302,6 +305,40 @@ public class StatisticServiceAdmin {
         }
         formatData.put("count", studentStats.size());
         formatData.put("data",new JSONArray(studentStats));
+        return formatData;
+    }
+
+    public JSONObject getTeacherStat(){
+        List<TeacherStat> teacherStats=new ArrayList<>();
+        JSONObject formatData=new JSONObject();
+        List<User> teachers=userRepository.findByType(UserType.Teacher);
+        for(User teacher:teachers){
+            Long userId=teacher.getUserId();
+            String teacherName=teacher.getUserName();
+            List<Course> courses=courseRepository.findByTeacherIdAndApproved(userId,1);
+            Integer courseNum=courses.size();
+            List<Long> courseIds=new ArrayList<>();
+            for(Course course:courses){
+                courseIds.add(course.getCourseId());
+            }
+            Integer currentCurriculum=curriculumRepository.countByCourseIdInAndApproved(courseIds,3);
+            List<Curriculum> curricula=curriculumRepository.findByCourseIdInAndApprovedGreaterThan(courseIds,0);
+            Integer totalCurriculum=curricula.size();
+            List<Long> curriculumIds=new ArrayList<>();
+            for(Curriculum curriculum:curricula){
+                curriculumIds.add(curriculum.getCurriculumId());
+            }
+            Integer assignmentNum=assignmentRepository.countByCurriculumIdIn(curriculumIds);
+            Integer scoreNum=scoreRepository.countByCurriculumIdIn(curriculumIds);
+            String teacherEmail=teacher.getEmail();
+            String activation=(teacher.getActive())?"已激活":"未激活";
+            TeacherStat teacherStat=new TeacherStat(userId,teacherName,courseNum,currentCurriculum,totalCurriculum,assignmentNum,scoreNum,teacherEmail,activation);
+            teacherStats.add(teacherStat);
+        }
+        formatData.put("code",0);
+        formatData.put("msg","");
+        formatData.put("count", teacherStats.size());
+        formatData.put("data",new JSONArray(teacherStats));
         return formatData;
     }
 }
