@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Course Selection</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/layui/css/tableFilter.css">
+</head>
+<body>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+    <legend>选课名单</legend>
+</fieldset>
+<div class="layui-tab-item layui-show">
+    <table class="layui-hide" id="curriculumSelection" lay-filter="curriculumSelection"></table>
+</div>
+
+<script src="/layui/layui.js"></script>
+<script src="/js.cookie.js"></script>
+<script src="/my-login-master/js/jquery.min.js"></script>
+
+<script type="text/javascript" th:inline="none">
+    layui.use(['table','tableFilter'], function(){
+        var table = layui.table;
+        var tableFilter = layui.tableFilter;
+        table.render({
+            elem: '#curriculumSelection'
+            ,width: 652
+            ,url: location.pathname //数据接口
+            ,method: 'post'
+            ,toolbar: true
+            ,cols: [[ //表头
+                {field: 'studentId', title: '学生学号', width:200}
+                ,{field: 'studentName', title: '学生姓名', width:120}
+                ,{field: 'studentEmail', title: '学生邮箱', width: 328}
+            ]]
+            ,done: function () {
+            }
+        });
+        tableFilter.render({
+            'elem': '#curriculumSelection',//table的选择器
+            'mode': 'local',//过滤模式
+            'filters': [
+                {field: 'studentId', type: 'input'},
+                {field: 'studentName', type: 'input'},
+                {field: 'studentEmail', type: 'input'}
+            ],//过滤项配置
+            'done': function (filters) {
+            }
+        });
+    });
+</script>
+</body>
+</html>

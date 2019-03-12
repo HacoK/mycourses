@@ -466,4 +466,21 @@ public class DetailedController {
             outputStream.flush();
         }
     }
+
+    @GetMapping("/curriculumSelection/{curriculumId}")
+    public String curriculumSelection(@PathVariable Long curriculumId) throws IOException {
+        System.out.println(curriculumId);
+        return "detailedTC/curriculumSelection";
+    }
+
+    @PostMapping("/curriculumSelection/{curriculumId}")
+    public void curriculumSelection(@PathVariable Long curriculumId,HttpServletResponse response) throws IOException {
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().print(curriculumService.curriculumSelection(curriculumId));
+    }
+
+    @GetMapping("/curriculumSelection/tableFilter.js")
+    public String tableFilter(){
+        return "redirect:/tableFilter.js";
+    }
 }

@@ -4,9 +4,11 @@ import com.nju.mycourses.DAO.*;
 import com.nju.mycourses.POJO.CourseCardST;
 import com.nju.mycourses.POJO.CurriculumCardST;
 import com.nju.mycourses.POJO.CurriculumCardTC;
+import com.nju.mycourses.POJO.CurriculumSelectionItem;
 import com.nju.mycourses.entity.CSelecRec;
 import com.nju.mycourses.entity.Course;
 import com.nju.mycourses.entity.Curriculum;
+import com.nju.mycourses.entity.User;
 import com.nju.mycourses.enums.StType;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -324,5 +326,28 @@ public class CurriculumService {
             recipients.add(email);
         }
         return recipients;
+    }
+
+    public JSONObject curriculumSelection(Long curriculumId){
+        List<CurriculumSelectionItem> curriculumSelectionItems=new ArrayList<>();
+        JSONObject formatData=new JSONObject();
+        List<CSelecRec> cSelecRecList=cSelecRecRepository.findByCurriculumIdAndApprovedNot(curriculumId,-1);
+        List<Long> userIds=new ArrayList<>();
+        for(CSelecRec cSelecRec:cSelecRecList){
+            userIds.add(cSelecRec.getStudentId());
+        }
+        for(Long userId:userIds){
+            String studentId=stInfoRepository.findById(userId).get().getStudentId();
+            User student=userRepository.findById(userId).get();
+            String studentName=student.getUserName();
+            String studentEmail=student.getEmail();
+            CurriculumSelectionItem curriculumSelectionItem=new CurriculumSelectionItem(studentId,studentName,studentEmail);
+            curriculumSelectionItems.add(curriculumSelectionItem);
+        }
+        formatData.put("count", curriculumSelectionItems.size());
+        formatData.put("data",new JSONArray(curriculumSelectionItems));
+        formatData.put("code",0);
+        formatData.put("msg","");
+        return formatData;
     }
 }
