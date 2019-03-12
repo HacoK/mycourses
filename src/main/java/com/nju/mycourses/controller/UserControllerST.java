@@ -128,10 +128,11 @@ public class UserControllerST {
         StType stType=StType.valueOf(studentType);
         String studentId=request.getParameter("studentId");
         String email=request.getParameter("email");
+        User userCheck=userRepository.findByUserName(newName);
         User user=userRepository.findByUserName(userName);
         StInfo stInfo=stInfoRepository.findByStudentId(studentId);
         Prompt prompt;
-        if(user!=null&&!(user.getEmail().equals(email))){
+        if(userCheck!=null&&!(userCheck.getEmail().equals(email))){
             prompt=new Prompt("UserName Exist...");
         }else if(stInfo!=null&&stInfo.getUserId()!=user.getUserId()){
             prompt=new Prompt("StudentId Exist...");
