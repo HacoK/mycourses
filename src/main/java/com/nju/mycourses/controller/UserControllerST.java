@@ -128,7 +128,7 @@ public class UserControllerST {
         StType stType=StType.valueOf(studentType);
         String studentId=request.getParameter("studentId");
         String email=request.getParameter("email");
-        User user=userRepository.findByUserName(newName);
+        User user=userRepository.findByUserName(userName);
         StInfo stInfo=stInfoRepository.findByStudentId(studentId);
         Prompt prompt;
         if(user!=null&&!(user.getEmail().equals(email))){
