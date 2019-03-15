@@ -118,7 +118,7 @@ public class CookieUtils {
     public static void setCookie(HttpServletResponse response,
                                  String name,
                                  String value) {
-        setCookie(response,name, value, COOKIE_MAX_AGE);
+        setCookie(response,name, value, COOKIE_HALF_HOUR);
     }
 
     /**
