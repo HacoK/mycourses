@@ -184,8 +184,8 @@ public class StatisticServiceUser {
             String season=(curriculum.getSemesterSeason().equals("spring"))?"春":"秋";
             String semester=curriculum.getSemesterYear()+"年 "+season;
             String courseName=courseRepository.findById(courseId).get().getCourseName();
-            String typeST="本科生";
             StType stType=curriculum.getTypeST();
+            String typeST="本科生";
             if(stType==StType.Postgraduate)
                 typeST="研究生";
             else if(stType==StType.Doctor)
