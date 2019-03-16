@@ -1,0 +1,57 @@
+Insert into goods values(1,"clothes_1","clothes",50.0,10);
+Insert into goods values(2,"clothes_2","clothes",65.5,10);
+Insert into goods values(3,"clothes_3","clothes",70.0,10);
+Insert into goods values(4,"clothes_4","clothes",50.0,10);
+Insert into goods values(5,"clothes_5","clothes",80.8,8);
+Insert into goods values(6,"clothes_6","clothes",98.8,8);
+Insert into goods values(7,"clothes_7","clothes",110.0,6);
+Insert into goods values(8,"clothes_8","clothes",125.0,5);
+Insert into goods values(9,"clothes_9","clothes",220.0,3);
+
+Insert into goods values(10,"movie_0","movie",25.8,25);
+
+Insert into goods values(11,"shoes_1","shoes",50.0,10);
+Insert into goods values(12,"shoes_2","shoes",65.5,10);
+Insert into goods values(13,"shoes_3","shoes",70.0,10);
+Insert into goods values(14,"shoes_4","shoes",50.0,10);
+Insert into goods values(15,"shoes_5","shoes",80.8,8);
+Insert into goods values(16,"shoes_6","shoes",98.8,8);
+Insert into goods values(17,"shoes_7","shoes",110.0,6);
+Insert into goods values(18,"shoes_8","shoes",125.0,5);
+Insert into goods values(19,"shoes_9","shoes",220.0,3);
+
+Insert into goods values(20,"toy_0","toy",18.0,55);
+
+Insert into goods values(21,"food_1","food",50.0,10);
+Insert into goods values(22,"food_2","food",65.5,10);
+Insert into goods values(23,"food_3","food",70.0,10);
+Insert into goods values(24,"food_4","food",50.0,10);
+Insert into goods values(25,"food_5","food",80.8,8);
+Insert into goods values(26,"food_6","food",98.8,8);
+Insert into goods values(27,"food_7","food",110.0,6);
+Insert into goods values(28,"food_8","food",125.0,5);
+Insert into goods values(29,"food_9","food",220.0,3);
+
+Insert into goods values(30,"medicina_0","medicine",50.0,16);
+
+Insert into goods values(31,"drink_1","drink",50.0,10);
+Insert into goods values(32,"drink_2","drink",65.5,10);
+Insert into goods values(33,"drink_3","drink",70.0,10);
+Insert into goods values(34,"drink_4","drink",50.0,10);
+Insert into goods values(35,"drink_5","drink",80.8,8);
+Insert into goods values(36,"drink_6","drink",98.8,8);
+Insert into goods values(37,"drink_7","drink",110.0,6);
+Insert into goods values(38,"drink_8","drink",125.0,5);
+Insert into goods values(39,"drink_9","drink",220.0,3);
+
+Insert into goods values(40,"device_0","device",5888.8,4);
+
+Insert into goods values(41,"book_1","book",50.0,10);
+Insert into goods values(42,"book_2","book",65.5,10);
+Insert into goods values(43,"book_3","book",70.0,10);
+Insert into goods values(44,"book_4","book",50.0,10);
+Insert into goods values(45,"book_5","book",80.8,8);
+Insert into goods values(46,"book_6","book",98.8,8);
+Insert into goods values(47,"book_7","book",110.0,6);
+Insert into goods values(48,"book_8","book",125.0,5);
+Insert into goods values(49,"book_9","book",220.0,3);
