@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -196,7 +197,7 @@ public class CurriculumService {
         return result;
 
     }
-    @Transient
+    @Transactional
     public boolean selectCurriculum(String studentName,Long curriculumId){
         Long studentId=userRepository.findByUserName(studentName).getUserId();
         Curriculum curriculum=curriculumRepository.findById(curriculumId).get();

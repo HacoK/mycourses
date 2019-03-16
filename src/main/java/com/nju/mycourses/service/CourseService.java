@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.Transient;
 import java.time.LocalDateTime;
@@ -127,7 +128,7 @@ public class CourseService {
         return result;
     }
 
-    @Transient
+    @Transactional
     public JSONObject postForumTopic(Long curriculumId,String userName,String topic,String description,String releaseTime){
         Long courseId=curriculumRepository.findById(curriculumId).get().getCourseId();
         Long userId=userRepository.findByUserName(userName).getUserId();
